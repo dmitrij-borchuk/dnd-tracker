@@ -9,7 +9,7 @@ import { render } from 'react-dom';
 // import 'normalize.css';
 import './styles.css';
 // import reducers from './reducers';
-// import App from './components/App/container';
+import App from './components/App';
 // import localStorageMiddleware from './utils/localStorageMiddleware';
 // import initServiceWorker from './utils/serviceWorkerInstaller';
 
@@ -36,7 +36,7 @@ const root = document.getElementById('root');
   </MuiThemeProvider>
 </Provider> , */}
 render(
-  <div>It Works!</div>,
+  <App />,
   root,
 );
 
