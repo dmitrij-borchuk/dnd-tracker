@@ -1,16 +1,16 @@
 import React from 'react';
 import { render } from 'react-dom';
-// import { Provider } from 'react-redux';
-// import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
 // import thunk from 'redux-thunk';
-// import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 // import { createMuiTheme } from '@material-ui/core/styles';
 // import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 // import 'normalize.css';
 import './styles.css';
-// import reducers from './reducers';
+import reducers from './reducers';
 import App from './components/App';
-// import localStorageMiddleware from './utils/localStorageMiddleware';
+import localStorageMiddleware from './utils/localStorageMiddleware';
 // import initServiceWorker from './utils/serviceWorkerInstaller';
 
 // const theme = createMuiTheme({
@@ -19,24 +19,24 @@ import App from './components/App';
 //   },
 // });
 
-// const store = createStore(
-//   reducers,
-//   composeWithDevTools(applyMiddleware(
-//     thunk,
-//     localStorageMiddleware,
-//   )),
-// );
+const store = createStore(
+  reducers,
+  composeWithDevTools(applyMiddleware(
+    // thunk,
+    localStorageMiddleware,
+  )),
+);
 
 // eslint-disable-next-line no-undef
 const root = document.getElementById('root');
 
-{/* <Provider store={store}>
-  <MuiThemeProvider theme={theme}>
-    <App />
-  </MuiThemeProvider>
-</Provider> , */}
+// {/* <MuiThemeProvider theme={theme}>
+//   <App />
+// </MuiThemeProvider> */}
 render(
-  <App />,
+  <Provider store={store}>
+    <App />
+  </Provider>,
   root,
 );
 
