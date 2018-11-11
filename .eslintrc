@@ -1,0 +1,19 @@
+{
+  "extends": "airbnb",
+  "globals": {
+    "describe": true,
+    "it": true,
+    "xit": true,
+    "expect": true,
+    "jest": true,
+    "afterEach": true,
+    "Audio": true
+  },
+  "parser": "babel-eslint",
+  "rules": {
+    "function-paren-newline": [
+      "error",
+      "consistent"
+    ]
+  }
+}
