@@ -11,6 +11,7 @@ import './styles.css';
 import reducers from './reducers';
 import App from './components/App';
 import localStorageMiddleware from './utils/localStorageMiddleware';
+import firebaseMiddleware from './utils/firebaseMiddleware';
 // import initServiceWorker from './utils/serviceWorkerInstaller';
 
 // const theme = createMuiTheme({
@@ -24,6 +25,7 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(
     // thunk,
     localStorageMiddleware,
+    firebaseMiddleware,
   )),
 );
 

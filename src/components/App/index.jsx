@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { getScenarios } from '../../actions';
+import ScenarioPage from '../scenario-page';
 // import PropTypes from 'prop-types';
 // import { Helmet } from 'react-helmet';
 // import Select from '@material-ui/core/Select';
@@ -29,11 +32,43 @@ import React from 'react';
 //         <meta name="msapplication-TileColor" content="#da532c" />
 //         <meta name="theme-color" content="#ffffff" />
 //       </Helmet> */}
-export default function App() {
-  return (
-    <div>It Works!</div>
-  );
+class App extends PureComponent {
+  componentDidMount() {
+    const {
+      getScenarios,
+    } = this.props;
+
+    getScenarios();
+  }
+
+  render() {
+    const {
+      scenarios,
+    } = this.props;
+
+    return (
+      <>
+        <ScenarioPage
+          scenarios={scenarios}
+        />
+      </>
+    );
+  }
 }
+
+const mapStateToProps = ({ scenarios }) => ({
+  scenarios: scenarios.list,
+});
+
+const mapDispatchToProps = dispatch => ({
+  getScenarios: () => dispatch(getScenarios()),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(App);
+
 
 // App.propTypes = {
 //   showSettings: PropTypes.func.isRequired,
