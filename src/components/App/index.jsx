@@ -1,88 +1,67 @@
 import React, { PureComponent } from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect,
+} from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getScenarios } from '../../actions';
+import * as scenariosAction from '../../actions/scenarios';
 import ScenarioPage from '../scenario-page';
-// import PropTypes from 'prop-types';
-// import { Helmet } from 'react-helmet';
-// import Select from '@material-ui/core/Select';
-// import MenuItem from '@material-ui/core/MenuItem';
-// import Timer from '../Timer/container';
-// import Settings from '../Settings/container';
-// import SettingsIcon from '../Icons/settings';
-// import TimerControls from '../TimerControls/container';
-// import appleTouchIcon from '../../assets/favicon/apple-touch-icon.png';
-// import favicon32x32 from '../../assets/favicon/favicon-32x32.png';
-// import favicon16x16 from '../../assets/favicon/favicon-16x16.png';
-// import webmanifest from '../../assets/favicon/site.webmanifest';
-// import safariPinnedTab from '../../assets/favicon/safari-pinned-tab.svg';
-// import {
-//   AppWrapper,
-//   Circle,
-//   Controls,
-//   SettingsIconWrapper,
-// } from './styles';
+import ScenarioEditPage from '../scenario-edit-page';
+import Header from '../header';
+import {
+  Sidebar,
+  SidebarItem,
+} from '../sidebar';
+import styles from './styles.css';
 
-// {/* <Helmet> */ }
-// {/* Favicon */ }
-// {/* <link rel="apple-touch-icon" sizes="144x144" href={appleTouchIcon} />
-//         <link rel="icon" type="image/png" sizes="32x32" href={favicon32x32} />
-//         <link rel="icon" type="image/png" sizes="16x16" href={favicon16x16} />
-//         <link rel="manifest" href={webmanifest} />
-//         <link rel="mask-icon" href={safariPinnedTab} color="#5bbad5" />
-//         <meta name="msapplication-TileColor" content="#da532c" />
-//         <meta name="theme-color" content="#ffffff" />
-//       </Helmet> */}
+const redirectTo = url => () => (
+  <Redirect
+    to={{
+      pathname: url,
+    }}
+  />
+);
+
 class App extends PureComponent {
-  componentDidMount() {
-    const {
-      getScenarios,
-    } = this.props;
-
-    getScenarios();
-  }
-
   render() {
-    const {
-      scenarios,
-    } = this.props;
-
     return (
       <>
-        <ScenarioPage
-          scenarios={scenarios}
-        />
+        <Header />
+        <Router>
+          <div className={styles.appBody}>
+            <Sidebar>
+              <SidebarItem>
+                <Link to="/scenarios/">Scenarios</Link>
+              </SidebarItem>
+            </Sidebar>
+            <div className={styles.content}>
+              <Route path="/" exact component={redirectTo('/scenarios')} />
+              <Route path="/scenarios/" exact component={ScenarioPage} />
+              <Route path="/scenarios/edit" component={ScenarioEditPage} />
+            </div>
+          </div>
+        </Router>
       </>
     );
   }
 }
+
+App.propTypes = {
+};
+App.defaultProps = {
+};
 
 const mapStateToProps = ({ scenarios }) => ({
   scenarios: scenarios.list,
 });
 
 const mapDispatchToProps = dispatch => ({
-  getScenarios: () => dispatch(getScenarios()),
+  getScenarios: () => dispatch(scenariosAction.getScenarios()),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(App);
-
-
-// App.propTypes = {
-//   showSettings: PropTypes.func.isRequired,
-//   setCurrentSession: PropTypes.func.isRequired,
-//   settingsPopupShown: PropTypes.bool.isRequired,
-//   currentSession: PropTypes.shape({
-//     id: PropTypes.string.isRequired,
-//   }),
-//   sessions: PropTypes.arrayOf(PropTypes.shape({
-//     id: PropTypes.string.isRequired,
-//     name: PropTypes.string.isRequired,
-//   })).isRequired,
-// };
-
-// App.defaultProps = {
-//   currentSession: { id: '' },
-// };

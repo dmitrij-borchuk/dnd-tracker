@@ -1,0 +1,18 @@
+.sidebar {
+  background: #2f353a;
+  color: #fff;
+  height: calc(100vh - 55px);
+  position: fixed;
+  width: 200px;
+  position: fixed;
+}
+
+.sidebarItem {
+  cursor: pointer;
+  padding: .75rem 1rem;
+  line-height: 1.5;
+}
+
+.sidebarItem:hover {
+  background: #20a8d8;
+}

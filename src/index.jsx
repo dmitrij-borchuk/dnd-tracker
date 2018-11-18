@@ -13,6 +13,7 @@ import App from './components/App';
 import localStorageMiddleware from './utils/localStorageMiddleware';
 import firebaseMiddleware from './utils/firebaseMiddleware';
 // import initServiceWorker from './utils/serviceWorkerInstaller';
+import 'normalize.css';
 
 // const theme = createMuiTheme({
 //   palette: {

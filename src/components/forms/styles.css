@@ -1,0 +1,22 @@
+.formGroup {
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.input {
+  background-color: #fff;
+  border: 1px solid #e4e7ea;
+  border-radius: .25rem;
+  color: #5c6873;
+  font-size: .875rem;
+  line-height: 1.5;
+  padding: .375rem .75rem;
+}
+
+.label {
+  margin-bottom: .5rem;
+}
