@@ -8,6 +8,8 @@ const InputWithLabel = (props) => {
     fullWidth,
     label,
     id,
+    value,
+    onChange,
   } = props;
 
   return (
@@ -22,6 +24,8 @@ const InputWithLabel = (props) => {
         type="text"
         id={id}
         className={cn(styles.input, { [styles.fullWidth]: fullWidth })}
+        value={value}
+        onChange={onChange}
       />
     </label>
   );
@@ -30,11 +34,15 @@ InputWithLabel.propTypes = {
   fullWidth: PropTypes.bool,
   label: PropTypes.string,
   id: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
 };
 InputWithLabel.defaultProps = {
   fullWidth: false,
   label: '',
   id: '',
+  value: '',
+  onChange: () => {},
 };
 
 export default InputWithLabel;

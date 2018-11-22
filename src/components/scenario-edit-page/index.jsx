@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as scenariosAction from '../../actions/scenarios';
@@ -17,69 +17,73 @@ import {
 } from '../forms';
 import styles from './styles.css';
 
-class ScenarioEditPage extends PureComponent {
-  // componentDidMount() {
-  //   const {
-  //     getScenarios,
-  //   } = this.props;
+const ScenarioEditPage = (props) => {
+  const {
+    saveScenario,
+  } = props;
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
 
-  //   getScenarios();
-  // }
-
-  render() {
-    const {
-      scenarios,
-    } = this.props;
-
-    return (
-      <div className="page-content">
-        <Card>
-          <CardHeader>
-            <div className={styles.listHeader}>
-              Create scenario
-              <div className={styles.controls}>
-                <Button
-                  onClick={() => console.log('=-= click')}
-                  kind={KIND.DANGER}
-                >
-                  Cancel
-                </Button>
-                <Button onClick={() => console.log('=-= click')}>Save</Button>
-              </div>
+  return (
+    <div className="page-content">
+      <Card>
+        <CardHeader>
+          <div className={styles.listHeader}>
+            Create scenario
+            <div className={styles.controls}>
+              <Button
+                onClick={() => console.log('=-= click')}
+                kind={KIND.DANGER}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => saveScenario({
+                  name,
+                  description,
+                })}
+              >
+                Save
+              </Button>
             </div>
-          </CardHeader>
-          <CardBody>
-            <InputWithLabel
-              label="Name"
-              id="name"
-              fullWidth
-            />
-            <TextAriaWithLabel
-              label="Description"
-              id="description"
-              fullWidth
-            />
-          </CardBody>
-        </Card>
-      </div>
-    );
-  }
-}
+          </div>
+        </CardHeader>
+        <CardBody>
+          <InputWithLabel
+            label="Name"
+            id="name"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            fullWidth
+          />
+          <TextAriaWithLabel
+            label="Description"
+            id="description"
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+            fullWidth
+          />
+        </CardBody>
+      </Card>
+    </div>
+  );
+};
 
 ScenarioEditPage.propTypes = {
-  scenarios: PropTypes.arrayOf(PropTypes.shape({})),
+  saveScenario: PropTypes.func,
 };
 ScenarioEditPage.defaultProps = {
-  scenarios: [],
+  saveScenario: () => {},
 };
 
 const mapStateToProps = ({ scenarios }) => ({
   scenarios: scenarios.list,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getScenarios: () => dispatch(scenariosAction.getScenarios()),
-});
+const mapDispatchToProps = {
+  getScenarios: scenariosAction.getScenarios,
+  saveScenario: scenariosAction.saveScenario,
+};
 
 export default connect(
   mapStateToProps,

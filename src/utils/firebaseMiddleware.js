@@ -16,10 +16,24 @@ export default function firebaseMiddleware(store) {
         type: `${action.type}_REQUEST`,
       });
 
-      return db.collection(action.firebase.path).get().then(querySnapshot => next({
-        ...action,
-        payload: querySnapshot.docs.map(doc => doc.data()),
-      }));
+      switch (action.firebase.method) {
+        case 'get':
+          return db.collection(action.firebase.path).get().then(querySnapshot => next({
+            ...action,
+            payload: querySnapshot.docs.map(doc => doc.data()),
+          }));
+
+        case 'save':
+          return db.collection(action.firebase.path).add(
+            action.payload,
+          ).then(querySnapshot => next({
+            ...action,
+            payload: querySnapshot.docs.map(doc => doc.data()),
+          }));
+
+        default:
+          throw new Error('`action.firebase.method` key should be one of the next: `get`, `save`');
+      }
     }
 
     return next(action);
