@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
 import {
-  BrowserRouter as Router,
+  Router,
   Route,
   Link,
   Redirect,
 } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { history } from '../../utils/history';
+import { ROUTES } from '../../constants';
 import * as scenariosAction from '../../actions/scenarios';
 import ScenarioPage from '../scenario-page';
 import ScenarioEditPage from '../scenario-edit-page';
@@ -29,7 +31,7 @@ class App extends PureComponent {
     return (
       <>
         <Header />
-        <Router>
+        <Router history={history}>
           <div className={styles.appBody}>
             <Sidebar>
               <SidebarItem>
@@ -38,7 +40,7 @@ class App extends PureComponent {
             </Sidebar>
             <div className={styles.content}>
               <Route path="/" exact component={redirectTo('/scenarios')} />
-              <Route path="/scenarios/" exact component={ScenarioPage} />
+              <Route path={ROUTES.SCENARIOS} exact component={ScenarioPage} />
               <Route path="/scenarios/edit" component={ScenarioEditPage} />
             </div>
           </div>
