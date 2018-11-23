@@ -1,4 +1,7 @@
-import { GET_SCENARIOS } from '../actions/scenarios';
+import {
+  GET_SCENARIOS,
+  SET_SCENARIOS,
+} from '../actions/scenarios';
 
 const defaultState = {
   list: [],
@@ -12,6 +15,13 @@ export default function (state = defaultState, action) {
         ...state,
         list: action.payload,
       };
+
+    case SET_SCENARIOS:
+      return {
+        ...state,
+        list: action.payload,
+      };
+
     default:
       return state;
   }

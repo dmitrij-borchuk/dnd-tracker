@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { history } from '../../utils/history';
 import { ROUTES } from '../../constants';
 import * as scenariosAction from '../../actions/scenarios';
-import ScenarioPage from '../scenario-page';
+import ScenariosListPage from '../scenarios-list-page';
 import ScenarioEditPage from '../scenario-edit-page';
 import Header from '../header';
 import {
@@ -40,7 +40,7 @@ class App extends PureComponent {
             </Sidebar>
             <div className={styles.content}>
               <Route path="/" exact component={redirectTo('/scenarios')} />
-              <Route path={ROUTES.SCENARIOS} exact component={ScenarioPage} />
+              <Route path={ROUTES.SCENARIOS} exact component={ScenariosListPage} />
               <Route path="/scenarios/edit" component={ScenarioEditPage} />
             </div>
           </div>

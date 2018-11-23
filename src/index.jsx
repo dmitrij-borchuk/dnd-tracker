@@ -13,7 +13,7 @@ import reducers from './reducers';
 import App from './components/App';
 import localStorageMiddleware from './utils/localStorageMiddleware';
 // import initServiceWorker from './utils/serviceWorkerInstaller';
-import sagas from './sagas/index';
+import sagas from './sagas';
 import 'normalize.css';
 
 // const theme = createMuiTheme({

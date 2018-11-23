@@ -14,7 +14,7 @@ import {
 import { SmallButton } from '../button';
 import styles from './styles.css';
 
-class ScenarioPage extends PureComponent {
+class ScenariosListPage extends PureComponent {
   componentDidMount() {
     const {
       getScenarios,
@@ -50,11 +50,11 @@ class ScenarioPage extends PureComponent {
   }
 }
 
-ScenarioPage.propTypes = {
+ScenariosListPage.propTypes = {
   getScenarios: PropTypes.func.isRequired,
   scenarios: PropTypes.arrayOf(PropTypes.shape({})),
 };
-ScenarioPage.defaultProps = {
+ScenariosListPage.defaultProps = {
   scenarios: [],
 };
 
@@ -62,11 +62,11 @@ const mapStateToProps = ({ scenarios }) => ({
   scenarios: scenarios.list,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getScenarios: () => dispatch(scenariosAction.getScenarios()),
-});
+const mapDispatchToProps = {
+  getScenarios: scenariosAction.getScenarios,
+};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ScenarioPage);
+)(ScenariosListPage);

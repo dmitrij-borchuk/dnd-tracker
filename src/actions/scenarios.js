@@ -7,6 +7,12 @@ export const getScenarios = () => ({
   },
 });
 
+export const SET_SCENARIOS = 'SET_SCENARIOS';
+export const setScenarios = data => ({
+  type: SET_SCENARIOS,
+  payload: data,
+});
+
 export const SAVE_SCENARIO = 'SAVE_SCENARIO';
 export const saveScenario = data => ({
   type: SAVE_SCENARIO,
