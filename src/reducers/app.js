@@ -1,6 +1,6 @@
-import todosRef from '../utils/firebase';
+// import todosRef from '../utils/firebase';
 
-const FETCH_TODOS = 'FETCH_TODOS';
+// const FETCH_TODOS = 'FETCH_TODOS';
 
 // export const fetchToDos = () => async (dispatch) => {
 //   console.log('=-= 1')

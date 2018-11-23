@@ -1,4 +1,4 @@
-import { GET_SCENARIOS } from '../actions';
+import { GET_SCENARIOS } from '../actions/scenarios';
 
 const defaultState = {
   list: [],
