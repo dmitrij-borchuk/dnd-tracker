@@ -12,6 +12,7 @@ import './styles.css';
 import reducers from './reducers';
 import App from './components/App';
 import localStorageMiddleware from './utils/localStorageMiddleware';
+import routingMiddleware from './utils/routingMiddleware';
 // import initServiceWorker from './utils/serviceWorkerInstaller';
 import sagas from './sagas';
 import 'normalize.css';
@@ -28,6 +29,7 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(
     // thunk,
     localStorageMiddleware,
+    routingMiddleware,
     sagaMiddleware,
   )),
 );

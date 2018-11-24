@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as scenariosAction from '../../actions/scenarios';
+import * as commonActions from '../../actions/common';
+import { ROUTES } from '../../constants';
 import {
   Card,
   CardHeader,
@@ -26,6 +28,7 @@ class ScenariosListPage extends PureComponent {
   render() {
     const {
       scenarios,
+      redirect,
     } = this.props;
 
     return (
@@ -40,7 +43,13 @@ class ScenariosListPage extends PureComponent {
           <CardBody>
             <List>
               {scenarios.map(scenario => (
-                <ListItem key={scenario.name}>{scenario.name}</ListItem>
+                <ListItem
+                  className={styles.listItem}
+                  key={scenario.id}
+                  onClick={() => redirect(`${ROUTES.SCENARIOS}/${scenario.id}`)}
+                >
+                  {scenario.name}
+                </ListItem>
               ))}
             </List>
           </CardBody>
@@ -52,6 +61,7 @@ class ScenariosListPage extends PureComponent {
 
 ScenariosListPage.propTypes = {
   getScenarios: PropTypes.func.isRequired,
+  redirect: PropTypes.func.isRequired,
   scenarios: PropTypes.arrayOf(PropTypes.shape({})),
 };
 ScenariosListPage.defaultProps = {
@@ -64,6 +74,7 @@ const mapStateToProps = ({ scenarios }) => ({
 
 const mapDispatchToProps = {
   getScenarios: scenariosAction.getScenarios,
+  redirect: commonActions.redirect,
 };
 
 export default connect(

@@ -9,6 +9,7 @@ import {
   SAVE_SCENARIO,
   GET_SCENARIOS,
   SET_SCENARIOS,
+  saveScenarioFailed,
 } from '../actions/scenarios';
 import {
   saveScenario,
@@ -16,12 +17,8 @@ import {
 } from '../api/scenarios';
 
 function* fetchScenariosSaga() {
-  try {
-    const list = yield call(getScenarios);
-    yield put({ type: SET_SCENARIOS, payload: list });
-  } catch (e) {
-    yield put({ type: 'USER_FETCH_FAILED', message: e.message });
-  }
+  const list = yield call(getScenarios);
+  yield put({ type: SET_SCENARIOS, payload: list });
 }
 
 function* saveScenarioSaga(action) {
@@ -29,7 +26,7 @@ function* saveScenarioSaga(action) {
     yield call(saveScenario, action.payload);
     push(ROUTES.SCENARIOS);
   } catch (e) {
-    yield put({ type: 'USER_FETCH_FAILED', message: e.message });
+    yield put(saveScenarioFailed(e));
   }
 }
 
