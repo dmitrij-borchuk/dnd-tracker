@@ -20,9 +20,15 @@ import styles from './styles.css';
 const ScenarioEditPage = (props) => {
   const {
     saveScenario,
+    match: {
+      params: {
+        id,
+      },
+    },
   } = props;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  console.log('=-= id', id)
 
   return (
     <div className="page-content">
@@ -71,6 +77,11 @@ const ScenarioEditPage = (props) => {
 
 ScenarioEditPage.propTypes = {
   saveScenario: PropTypes.func,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string,
+    }),
+  }).isRequired,
 };
 ScenarioEditPage.defaultProps = {
   saveScenario: () => {},

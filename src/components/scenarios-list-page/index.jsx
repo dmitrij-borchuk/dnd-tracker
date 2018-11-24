@@ -46,7 +46,7 @@ class ScenariosListPage extends PureComponent {
                 <ListItem
                   className={styles.listItem}
                   key={scenario.id}
-                  onClick={() => redirect(`${ROUTES.SCENARIOS}/${scenario.id}`)}
+                  onClick={() => redirect(`${ROUTES.SCENARIOS_EDIT}/${scenario.id}`)}
                 >
                   {scenario.name}
                 </ListItem>

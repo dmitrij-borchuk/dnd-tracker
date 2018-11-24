@@ -39,9 +39,20 @@ class App extends PureComponent {
               </SidebarItem>
             </Sidebar>
             <div className={styles.content}>
-              <Route path="/" exact component={redirectTo('/scenarios')} />
-              <Route path={ROUTES.SCENARIOS} exact component={ScenariosListPage} />
-              <Route path="/scenarios/edit" component={ScenarioEditPage} />
+              <Route
+                path="/"
+                exact
+                component={redirectTo(ROUTES.SCENARIOS)}
+              />
+              <Route
+                path={ROUTES.SCENARIOS}
+                exact
+                component={ScenariosListPage}
+              />
+              <Route
+                path={`${ROUTES.SCENARIOS_EDIT}/:id`}
+                component={ScenarioEditPage}
+              />
             </div>
           </div>
         </Router>
