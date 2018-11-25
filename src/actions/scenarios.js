@@ -1,3 +1,20 @@
+export const FETCH_SCENARIO = 'FETCH_SCENARIO';
+export const fetchScenario = data => ({
+  type: FETCH_SCENARIO,
+  payload: data,
+});
+
+export const SET_SCENARIO = 'SET_SCENARIO';
+export const setScenario = data => ({
+  type: SET_SCENARIO,
+  payload: data,
+});
+
+export const RESET_SCENARIO = 'RESET_SCENARIO';
+export const resetScenario = () => ({
+  type: RESET_SCENARIO,
+});
+
 export const GET_SCENARIOS = 'GET_SCENARIOS';
 export const getScenarios = () => ({
   type: GET_SCENARIOS,

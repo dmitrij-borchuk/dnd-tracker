@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, {
+  useState,
+  useEffect,
+} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as scenariosAction from '../../actions/scenarios';
@@ -20,6 +23,9 @@ import styles from './styles.css';
 const ScenarioEditPage = (props) => {
   const {
     saveScenario,
+    getScenario,
+    resetScenario,
+    scenario,
     match: {
       params: {
         id,
@@ -28,7 +34,13 @@ const ScenarioEditPage = (props) => {
   } = props;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  console.log('=-= id', id)
+
+  useEffect(() => {
+    resetScenario();
+    if (id) {
+      getScenario(id);
+    }
+  }, []);
 
   return (
     <div className="page-content">
@@ -76,7 +88,13 @@ const ScenarioEditPage = (props) => {
 };
 
 ScenarioEditPage.propTypes = {
-  saveScenario: PropTypes.func,
+  saveScenario: PropTypes.func.isRequired,
+  resetScenario: PropTypes.func.isRequired,
+  getScenario: PropTypes.func.isRequired,
+  scenario: PropTypes.shape({
+    name: PropTypes.string,
+    description: PropTypes.string,
+  }),
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string,
@@ -84,16 +102,18 @@ ScenarioEditPage.propTypes = {
   }).isRequired,
 };
 ScenarioEditPage.defaultProps = {
-  saveScenario: () => {},
+  scenario: null,
 };
 
 const mapStateToProps = ({ scenarios }) => ({
-  scenarios: scenarios.list,
+  scenario: scenarios.currentScenario,
 });
 
 const mapDispatchToProps = {
   getScenarios: scenariosAction.getScenarios,
+  getScenario: scenariosAction.fetchScenario,
   saveScenario: scenariosAction.saveScenario,
+  resetScenario: scenariosAction.resetScenario,
 };
 
 export default connect(
