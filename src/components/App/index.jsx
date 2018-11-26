@@ -11,6 +11,7 @@ import { ROUTES } from '../../constants';
 import * as scenariosAction from '../../actions/scenarios';
 import ScenariosListPage from '../scenarios-list-page';
 import ScenarioEditPage from '../scenario-edit-page';
+import CampaignsListPage from '../campaigns-list-page';
 import Header from '../header';
 import {
   Sidebar,
@@ -34,9 +35,16 @@ class App extends PureComponent {
         <Router history={history}>
           <div className={styles.appBody}>
             <Sidebar>
-              <SidebarItem>
-                <Link to="/scenarios/">Scenarios</Link>
-              </SidebarItem>
+              <Link to={ROUTES.SCENARIOS}>
+                <SidebarItem>
+                  Scenarios
+                </SidebarItem>
+              </Link>
+              <Link to={ROUTES.CAMPAIGNS}>
+                <SidebarItem>
+                  Campaigns
+                </SidebarItem>
+              </Link>
             </Sidebar>
             <div className={styles.content}>
               <Route
@@ -52,6 +60,11 @@ class App extends PureComponent {
               <Route
                 path={`${ROUTES.SCENARIOS_EDIT}/:id`}
                 component={ScenarioEditPage}
+              />
+              <Route
+                path={ROUTES.CAMPAIGNS}
+                exact
+                component={CampaignsListPage}
               />
             </div>
           </div>

@@ -1,4 +1,6 @@
+// eslint-disable-next-line import/prefer-default-export
 export const ROUTES = {
   SCENARIOS: '/scenarios',
   SCENARIOS_EDIT: '/scenarios/edit',
+  CAMPAIGNS: '/campaigns',
 };
