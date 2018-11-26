@@ -1,5 +1,4 @@
 import {
-  GET_SCENARIOS,
   SET_SCENARIOS,
   SET_SCENARIO,
   RESET_SCENARIO,
@@ -13,12 +12,6 @@ const defaultState = {
 
 export default function (state = defaultState, action) {
   switch (action.type) {
-    case GET_SCENARIOS:
-      return {
-        ...state,
-        list: action.payload,
-      };
-
     case SET_SCENARIOS:
       return {
         ...state,

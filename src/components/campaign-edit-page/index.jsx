@@ -1,10 +1,9 @@
-import React, {
-  useState,
-  useEffect,
-} from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as campaignsAction from '../../actions/campaigns';
+import * as commonActions from '../../actions/common';
+import { ROUTES } from '../../constants';
 import EditPage, {
   TYPES,
 } from '../edit-page';
@@ -16,19 +15,19 @@ const CampaignEditPage = (props) => {
     getCampaign,
     resetCampaign,
     campaign,
+    redirect,
     match: {
       params: {
         id,
       },
     },
   } = props;
-  console.log('=-= campaign', campaign)
 
   useEffect(() => {
-    resetCampaign();
     if (id) {
       getCampaign(id);
     }
+    return () => resetCampaign();
   }, []);
 
   const inputs = [{
@@ -48,15 +47,15 @@ const CampaignEditPage = (props) => {
     // TODO: Use loader
     return null;
   }
-  // onSaveClick = {() => saveCampaign({
-  //   name,
-  //   description,
-  // })}
+
   return (
     <EditPage
       title="Create campaign"
-      onCancelClick={() => console.log('=-= click')}
-      onSaveClick={d => console.log('=-= save', d)}
+      onCancelClick={() => redirect(ROUTES.CAMPAIGNS)}
+      onSaveClick={data => saveCampaign({
+        id,
+        ...data,
+      })}
       inputs={inputs}
     />
   );
@@ -64,6 +63,7 @@ const CampaignEditPage = (props) => {
 
 CampaignEditPage.propTypes = {
   saveCampaign: PropTypes.func.isRequired,
+  redirect: PropTypes.func.isRequired,
   resetCampaign: PropTypes.func.isRequired,
   getCampaign: PropTypes.func.isRequired,
   campaign: PropTypes.shape({
@@ -89,6 +89,7 @@ const mapDispatchToProps = {
   getCampaign: campaignsAction.fetchCampaign,
   saveCampaign: campaignsAction.saveCampaign,
   resetCampaign: campaignsAction.resetCampaign,
+  redirect: commonActions.redirect,
 };
 
 export default connect(

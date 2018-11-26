@@ -1,8 +1,7 @@
 import {
   SET_CAMPAIGNS,
-  // SET_SCENARIOS,
   SET_CAMPAIGN,
-  // RESET_SCENARIO,
+  RESET_CAMPAIGN,
 } from '../actions/campaigns';
 
 const defaultState = {
@@ -19,23 +18,17 @@ export default function (state = defaultState, action) {
         list: action.payload,
       };
 
-    // case SET_SCENARIOS:
-    //   return {
-    //     ...state,
-    //     list: action.payload,
-    //   };
-
     case SET_CAMPAIGN:
       return {
         ...state,
         currentCampaign: action.payload,
       };
 
-    // case RESET_SCENARIO:
-    //   return {
-    //     ...state,
-    //     currentScenario: null,
-    //   };
+    case RESET_CAMPAIGN:
+      return {
+        ...state,
+        currentCampaign: null,
+      };
 
     default:
       return state;
