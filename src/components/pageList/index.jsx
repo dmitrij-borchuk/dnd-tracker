@@ -40,7 +40,7 @@ const PageList = (props) => {
               <ListItem
                 className={styles.listItem}
                 key={item.id || item.key}
-                onClick={onItemClick}
+                onClick={() => onItemClick(item)}
               >
                 {renderItem(item)}
               </ListItem>

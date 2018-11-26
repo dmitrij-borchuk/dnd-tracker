@@ -5,7 +5,9 @@ import React, {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as campaignsAction from '../../actions/campaigns';
+import * as commonActions from '../../actions/common';
 import PageList from '../pageList';
+import { ROUTES } from '../../constants';
 
 const renderItem = item => item.name;
 
@@ -13,6 +15,7 @@ const ScenarioEditPage = (props) => {
   const {
     getList,
     list,
+    redirect,
   } = props;
 
   useEffect(() => {
@@ -22,16 +25,17 @@ const ScenarioEditPage = (props) => {
   return (
     <PageList
       title="Campaigns"
-      onAddClick={() => console.log('=-= onAddClick')}
+      onAddClick={() => redirect(ROUTES.CAMPAIGNS_EDIT)}
       list={list}
       renderItem={renderItem}
-      onItemClick={() => console.log('=-= onItemClick')}
+      onItemClick={item => redirect(`${ROUTES.CAMPAIGNS_EDIT}/${item.id}`)}
     />
   );
 };
 
 ScenarioEditPage.propTypes = {
   getList: PropTypes.func.isRequired,
+  redirect: PropTypes.func.isRequired,
   scenario: PropTypes.shape({
     name: PropTypes.string,
     description: PropTypes.string,
@@ -50,6 +54,7 @@ const mapStateToProps = ({ campaigns }) => ({
 
 const mapDispatchToProps = {
   getList: campaignsAction.getCampaigns,
+  redirect: commonActions.redirect,
 };
 
 export default connect(

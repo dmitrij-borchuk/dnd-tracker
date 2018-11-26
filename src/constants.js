@@ -3,4 +3,5 @@ export const ROUTES = {
   SCENARIOS: '/scenarios',
   SCENARIOS_EDIT: '/scenarios/edit',
   CAMPAIGNS: '/campaigns',
+  CAMPAIGNS_EDIT: '/campaigns/edit',
 };

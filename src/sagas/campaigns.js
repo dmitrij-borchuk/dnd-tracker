@@ -3,20 +3,21 @@ import {
   put,
   takeLatest,
 } from 'redux-saga/effects';
-// import { ROUTES } from '../constants';
-// import { push } from '../utils/history';
+import { ROUTES } from '../constants';
+import { push } from '../utils/history';
 import {
   GET_CAMPAIGNS,
+  SAVE_CAMPAIGN,
   setCampaigns,
   // SAVE_SCENARIO,
-  // FETCH_SCENARIO,
-  // saveScenarioFailed,
-  // setScenario,
+  FETCH_CAMPAIGN,
+  saveCampaignFailed,
+  setCampaign,
 } from '../actions/campaigns';
 import {
   getCampaigns,
-  // saveScenario,
-  // getScenario,
+  getCampaign,
+  saveCampaign,
 } from '../api/campaigns';
 
 function* fetchCampaignsSaga() {
@@ -24,24 +25,24 @@ function* fetchCampaignsSaga() {
   yield put(setCampaigns(list));
 }
 
-// function* fetchScenarioSaga(action) {
-//   const data = yield call(getScenario, action.payload);
-//   yield put(setScenario(data));
-// }
+function* fetchCampaignSaga(action) {
+  const data = yield call(getCampaign, action.payload);
+  yield put(setCampaign(data));
+}
 
-// function* saveScenarioSaga(action) {
-//   try {
-//     yield call(saveScenario, action.payload);
-//     push(ROUTES.SCENARIOS);
-//   } catch (e) {
-//     yield put(saveScenarioFailed(e));
-//   }
-// }
+function* saveCampaignSaga(action) {
+  try {
+    yield call(saveCampaign, action.payload);
+    push(ROUTES.CAMPAIGNS);
+  } catch (e) {
+    yield put(saveCampaignFailed(e));
+  }
+}
 
 function* campaignsSaga() {
   yield takeLatest(GET_CAMPAIGNS, fetchCampaignsSaga);
-  // yield takeLatest(SAVE_SCENARIO, saveScenarioSaga);
-  // yield takeLatest(FETCH_SCENARIO, fetchScenarioSaga);
+  yield takeLatest(SAVE_CAMPAIGN, saveCampaignSaga);
+  yield takeLatest(FETCH_CAMPAIGN, fetchCampaignSaga);
 }
 
 export default campaignsSaga;

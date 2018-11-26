@@ -1,7 +1,7 @@
 import {
   SET_CAMPAIGNS,
   // SET_SCENARIOS,
-  // SET_SCENARIO,
+  SET_CAMPAIGN,
   // RESET_SCENARIO,
 } from '../actions/campaigns';
 
@@ -25,11 +25,11 @@ export default function (state = defaultState, action) {
     //     list: action.payload,
     //   };
 
-    // case SET_SCENARIO:
-    //   return {
-    //     ...state,
-    //     currentScenario: action.payload,
-    //   };
+    case SET_CAMPAIGN:
+      return {
+        ...state,
+        currentCampaign: action.payload,
+      };
 
     // case RESET_SCENARIO:
     //   return {
