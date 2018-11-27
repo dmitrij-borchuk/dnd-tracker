@@ -28,7 +28,7 @@ const ScenarioEditPage = (props) => {
       onAddClick={() => redirect(ROUTES.CAMPAIGNS_EDIT)}
       list={list}
       renderItem={renderItem}
-      onItemClick={item => redirect(`${ROUTES.CAMPAIGNS_EDIT}/${item.id}`)}
+      onItemClick={item => redirect(`${ROUTES.CAMPAIGNS}/${item.id}`)}
     />
   );
 };

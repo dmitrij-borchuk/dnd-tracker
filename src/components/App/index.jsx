@@ -13,6 +13,8 @@ import ScenariosListPage from '../scenarios-list-page';
 import ScenarioEditPage from '../scenario-edit-page';
 import CampaignsListPage from '../campaigns-list-page';
 import CampaignEditPage from '../campaign-edit-page';
+import CampaignPage from '../../pages/campaign';
+import ScenarioPage from '../../pages/scenario';
 import Header from '../header';
 import {
   Sidebar,
@@ -41,11 +43,11 @@ class App extends PureComponent {
                   Campaigns
                 </SidebarItem>
               </Link>
-              <Link to={ROUTES.SCENARIOS}>
+              {/* <Link to={ROUTES.SCENARIOS}>
                 <SidebarItem>
                   Scenarios
                 </SidebarItem>
-              </Link>
+              </Link> */}
             </Sidebar>
             <div className={styles.content}>
               <Route
@@ -53,13 +55,25 @@ class App extends PureComponent {
                 exact
                 component={redirectTo(ROUTES.SCENARIOS)}
               />
+
+              {/* Scenarios */}
               <Route
                 path={ROUTES.SCENARIOS}
-                exact
                 component={ScenariosListPage}
+                exact
               />
               <Route
-                path={`${ROUTES.SCENARIOS_EDIT}/:id`}
+                path={`${ROUTES.SCENARIOS}/:campaignId/:id`}
+                component={ScenarioPage}
+                exact
+              />
+              <Route
+                path={`${ROUTES.SCENARIOS_EDIT}/:campaignId`}
+                component={ScenarioEditPage}
+                exact
+              />
+              <Route
+                path={`${ROUTES.SCENARIOS_EDIT}/:campaignId/:id`}
                 component={ScenarioEditPage}
               />
 
@@ -67,6 +81,11 @@ class App extends PureComponent {
               <Route
                 path={ROUTES.CAMPAIGNS}
                 component={CampaignsListPage}
+                exact
+              />
+              <Route
+                path={`${ROUTES.CAMPAIGNS}/:id`}
+                component={CampaignPage}
                 exact
               />
               <Route

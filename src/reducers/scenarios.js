@@ -2,6 +2,7 @@ import {
   SET_SCENARIOS,
   SET_SCENARIO,
   RESET_SCENARIO,
+  RESET_SCENARIO_LIST,
 } from '../actions/scenarios';
 
 const defaultState = {
@@ -28,6 +29,12 @@ export default function (state = defaultState, action) {
       return {
         ...state,
         currentScenario: null,
+      };
+
+    case RESET_SCENARIO_LIST:
+      return {
+        ...state,
+        list: [],
       };
 
     default:

@@ -9,15 +9,16 @@ import {
   Card,
   CardHeader,
   CardBody,
-} from '../card';
+} from '../../components/card';
 import {
   Button,
   KIND,
-} from '../button';
+} from '../../components/button';
 import {
   InputWithLabel,
   TextAriaWithLabel,
-} from '../forms';
+} from '../../components/forms';
+import Page from '../../components/page';
 import styles from './styles.css';
 
 const ScenarioEditPage = (props) => {
@@ -44,8 +45,21 @@ const ScenarioEditPage = (props) => {
   }, []);
   console.log('=-= scenario', scenario)
 
+  if (!scenario) {
+    // TODO: use loader
+    return null;
+  }
+
   return (
-    <div className="page-content">
+    <Page>
+      <Card className={styles.card}>
+        <CardHeader>
+          {scenario.name}
+        </CardHeader>
+        <CardBody>
+          {scenario.description}
+        </CardBody>
+      </Card>
       <Card>
         <CardHeader>
           <div className={styles.listHeader}>
@@ -87,7 +101,7 @@ const ScenarioEditPage = (props) => {
           />
         </CardBody>
       </Card>
-    </div>
+    </Page>
   );
 };
 

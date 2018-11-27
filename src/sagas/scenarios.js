@@ -19,8 +19,8 @@ import {
   getScenario,
 } from '../api/scenarios';
 
-function* fetchScenariosSaga() {
-  const list = yield call(getScenarios);
+function* fetchScenariosSaga(action) {
+  const list = yield call(getScenarios, action.payload);
   yield put({ type: SET_SCENARIOS, payload: list });
 }
 
@@ -32,7 +32,7 @@ function* fetchScenarioSaga(action) {
 function* saveScenarioSaga(action) {
   try {
     yield call(saveScenario, action.payload);
-    push(ROUTES.SCENARIOS);
+    push(`${ROUTES.CAMPAIGN}/${action.payload.campaignId}`);
   } catch (e) {
     yield put(saveScenarioFailed(e));
   }

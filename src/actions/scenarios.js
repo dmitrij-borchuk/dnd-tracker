@@ -15,9 +15,15 @@ export const resetScenario = () => ({
   type: RESET_SCENARIO,
 });
 
+export const RESET_SCENARIO_LIST = 'RESET_SCENARIO_LIST';
+export const resetScenarioList = () => ({
+  type: RESET_SCENARIO_LIST,
+});
+
 export const GET_SCENARIOS = 'GET_SCENARIOS';
-export const getScenarios = () => ({
+export const getScenarios = campaignId => ({
   type: GET_SCENARIOS,
+  payload: campaignId,
 });
 
 export const SET_SCENARIOS = 'SET_SCENARIOS';
