@@ -9,12 +9,13 @@ import { connect } from 'react-redux';
 import { history } from '../../utils/history';
 import { ROUTES } from '../../constants';
 import * as scenariosAction from '../../actions/scenarios';
-import ScenariosListPage from '../scenarios-list-page';
 import ScenarioEditPage from '../scenario-edit-page';
 import CampaignsListPage from '../campaigns-list-page';
 import CampaignEditPage from '../campaign-edit-page';
 import CampaignPage from '../../pages/campaign';
 import ScenarioPage from '../../pages/scenario';
+import ScenePage from '../../pages/scene';
+import SceneEditPage from '../../pages/scene/editScene';
 import Header from '../header';
 import {
   Sidebar,
@@ -53,17 +54,17 @@ class App extends PureComponent {
               <Route
                 path="/"
                 exact
-                component={redirectTo(ROUTES.SCENARIOS)}
+                component={redirectTo(ROUTES.CAMPAIGNS)}
               />
 
               {/* Scenarios */}
-              <Route
+              {/* <Route
                 path={ROUTES.SCENARIOS}
                 component={ScenariosListPage}
                 exact
-              />
+              /> */}
               <Route
-                path={`${ROUTES.SCENARIOS}/:campaignId/:id`}
+                path={`${ROUTES.SCENARIOS}/:id`}
                 component={ScenarioPage}
                 exact
               />
@@ -75,6 +76,22 @@ class App extends PureComponent {
               <Route
                 path={`${ROUTES.SCENARIOS_EDIT}/:campaignId/:id`}
                 component={ScenarioEditPage}
+              />
+
+              {/* Scenes */}
+              <Route
+                path={`${ROUTES.SCENES}/:id`}
+                component={ScenePage}
+                exact
+              />
+              <Route
+                path={`${ROUTES.SCENES_EDIT}/:scenarioId`}
+                component={SceneEditPage}
+                exact
+              />
+              <Route
+                path={`${ROUTES.SCENES_EDIT}/:scenarioId/:id`}
+                component={SceneEditPage}
               />
 
               {/* Campaigns */}

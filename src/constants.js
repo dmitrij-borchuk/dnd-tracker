@@ -5,4 +5,7 @@ export const ROUTES = {
 
   CAMPAIGNS: '/campaigns',
   CAMPAIGNS_EDIT: '/campaigns/edit',
+
+  SCENES: '/scenes',
+  SCENES_EDIT: '/scenes/edit',
 };

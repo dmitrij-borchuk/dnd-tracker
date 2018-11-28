@@ -4,44 +4,50 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as scenariosAction from '../../actions/scenarios';
+import * as scenesAction from '../../actions/scenes';
 import {
   Card,
   CardHeader,
   CardBody,
-} from '../card';
+} from '../../components/card';
 import {
   Button,
   KIND,
-} from '../button';
+} from '../../components/button';
 import {
   InputWithLabel,
   TextAriaWithLabel,
-} from '../forms';
+} from '../../components/forms';
 import styles from './styles.css';
 
-const ScenarioEditPage = (props) => {
+const SceneEditPage = (props) => {
   const {
-    saveScenario,
-    getScenario,
-    resetScenario,
-    scenario,
+    saveScene,
+    getScene,
+    resetScene,
+    scene,
     match: {
       params: {
-        campaignId,
+        scenarioId,
         id,
       },
     },
   } = props;
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
 
   useEffect(() => {
     if (id) {
-      getScenario(id);
+      getScene(id);
     }
-    return () => resetScenario();
+    return () => resetScene();
   }, []);
+
+  if (id && !scene) {
+    // TODO: Use loader
+    return null;
+  }
+
+  const [name, setName] = useState(scene?.name || '');
+  const [description, setDescription] = useState(scene?.description || '');
 
   return (
     <div className="page-content">
@@ -49,7 +55,7 @@ const ScenarioEditPage = (props) => {
         <CardHeader>
           <div className={styles.listHeader}>
             {id ? 'Edit' : 'Create'}
-            &nbsp;scenario
+            &nbsp;scene
             <div className={styles.controls}>
               <Button
                 onClick={() => console.log('=-= click')}
@@ -58,8 +64,8 @@ const ScenarioEditPage = (props) => {
                 Cancel
               </Button>
               <Button
-                onClick={() => saveScenario({
-                  campaignId,
+                onClick={() => saveScene({
+                  scenarioId,
                   name,
                   description,
                 })}
@@ -90,11 +96,11 @@ const ScenarioEditPage = (props) => {
   );
 };
 
-ScenarioEditPage.propTypes = {
-  saveScenario: PropTypes.func.isRequired,
-  resetScenario: PropTypes.func.isRequired,
-  getScenario: PropTypes.func.isRequired,
-  scenario: PropTypes.shape({
+SceneEditPage.propTypes = {
+  saveScene: PropTypes.func.isRequired,
+  resetScene: PropTypes.func.isRequired,
+  getScene: PropTypes.func.isRequired,
+  scene: PropTypes.shape({
     name: PropTypes.string,
     description: PropTypes.string,
   }),
@@ -104,22 +110,22 @@ ScenarioEditPage.propTypes = {
     }),
   }).isRequired,
 };
-ScenarioEditPage.defaultProps = {
-  scenario: null,
+SceneEditPage.defaultProps = {
+  scene: null,
 };
 
-const mapStateToProps = ({ scenarios }) => ({
-  scenario: scenarios.currentScenario,
+const mapStateToProps = ({ scenes }) => ({
+  scene: scenes.currentScene,
 });
 
 const mapDispatchToProps = {
-  getScenarios: scenariosAction.getScenarios,
-  getScenario: scenariosAction.fetchScenario,
-  saveScenario: scenariosAction.saveScenario,
-  resetScenario: scenariosAction.resetScenario,
+  getScenes: scenesAction.getScenes,
+  getScene: scenesAction.fetchScene,
+  saveScene: scenesAction.saveScene,
+  resetScene: scenesAction.resetScene,
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ScenarioEditPage);
+)(SceneEditPage);

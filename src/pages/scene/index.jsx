@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as campaignsAction from '../../actions/campaigns';
-import * as scenariosAction from '../../actions/scenarios';
+import * as scenesAction from '../../actions/scenes';
 import * as commonActions from '../../actions/common';
-import { ROUTES } from '../../constants';
 import {
   Card,
   CardHeader,
@@ -16,17 +14,19 @@ import {
   ListItem,
 } from '../../components/list';
 import Page from '../../components/page';
+import { ROUTES } from '../../constants';
+
 import styles from './styles.css';
 
-const CampaignPage = (props) => {
+const SceneEditPage = (props) => {
   const {
-    getCampaign,
-    getScenarios,
-    resetCampaign,
-    resetScenarioList,
-    campaign,
-    scenarios,
+    getScene,
+    getScenes,
+    resetScene,
+    resetSceneList,
+    scene,
     redirect,
+    scenes,
     match: {
       params: {
         id,
@@ -36,19 +36,19 @@ const CampaignPage = (props) => {
 
   useEffect(() => {
     if (id) {
-      getCampaign(id);
+      getScene(id);
     }
-    return () => resetCampaign();
+    return () => resetScene();
   }, []);
   useEffect(() => {
     if (id) {
-      getScenarios(id);
+      getScenes(id);
     }
-    return () => resetScenarioList();
+    return () => resetSceneList();
   }, []);
 
-  if (!campaign) {
-    // TODO: Use loader
+  if (!scene) {
+    // TODO: use loader
     return null;
   }
 
@@ -56,20 +56,20 @@ const CampaignPage = (props) => {
     <Page>
       <Card className={styles.card}>
         <CardHeader>
-          {campaign.name}
+          {scene.name}
         </CardHeader>
         <CardBody>
-          {campaign.description}
+          {scene.description}
         </CardBody>
       </Card>
 
       <Card>
         <CardHeader>
           <div className={styles.listHeader}>
-            Scenarios
+            Scenes
             <div className={styles.controls}>
               <Button
-                onClick={() => redirect(`${ROUTES.SCENARIOS_EDIT}/${id}`)}
+                onClick={() => redirect(`${ROUTES.SCENES_EDIT}/${id}`)}
               >
                 Add
               </Button>
@@ -78,11 +78,11 @@ const CampaignPage = (props) => {
         </CardHeader>
         <CardBody>
           <List>
-            {scenarios.map(item => (
+            {scenes.map(item => (
               <ListItem
                 className={styles.listItem}
                 key={item.id}
-                onClick={() => redirect(`${ROUTES.SCENARIOS}/${item.id}`)}
+                onClick={() => redirect(`${ROUTES.SCENES}/${item.id}`)}
               >
                 {item.name}
               </ListItem>
@@ -94,17 +94,17 @@ const CampaignPage = (props) => {
   );
 };
 
-CampaignPage.propTypes = {
+SceneEditPage.propTypes = {
   redirect: PropTypes.func.isRequired,
-  resetCampaign: PropTypes.func.isRequired,
-  resetScenarioList: PropTypes.func.isRequired,
-  getCampaign: PropTypes.func.isRequired,
-  getScenarios: PropTypes.func.isRequired,
-  campaign: PropTypes.shape({
+  getScenes: PropTypes.func.isRequired,
+  resetSceneList: PropTypes.func.isRequired,
+  resetScene: PropTypes.func.isRequired,
+  getScene: PropTypes.func.isRequired,
+  scene: PropTypes.shape({
     name: PropTypes.string,
     description: PropTypes.string,
   }),
-  scenarios: PropTypes.arrayOf(PropTypes.shape({
+  scenes: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
     description: PropTypes.string,
   })),
@@ -114,25 +114,25 @@ CampaignPage.propTypes = {
     }),
   }).isRequired,
 };
-CampaignPage.defaultProps = {
-  campaign: null,
-  scenarios: [],
+SceneEditPage.defaultProps = {
+  scene: null,
+  scenes: [],
 };
 
-const mapStateToProps = ({ campaigns, scenarios }) => ({
-  campaign: campaigns.currentCampaign,
-  scenarios: scenarios.list,
+const mapStateToProps = ({ scenes }) => ({
+  scene: scenes.currentScene,
+  scenes: scenes.list,
 });
 
 const mapDispatchToProps = {
-  getCampaign: campaignsAction.fetchCampaign,
-  resetCampaign: campaignsAction.resetCampaign,
-  getScenarios: scenariosAction.getScenarios,
-  resetScenarioList: scenariosAction.resetScenarioList,
+  getScenes: scenesAction.getScenes,
+  resetSceneList: scenesAction.resetSceneList,
+  getScene: scenesAction.fetchScene,
+  resetScene: scenesAction.resetScene,
   redirect: commonActions.redirect,
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(CampaignPage);
+)(SceneEditPage);
