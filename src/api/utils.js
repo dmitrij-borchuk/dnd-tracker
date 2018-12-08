@@ -1,4 +1,4 @@
-import db from '../utils/firebase';
+import { db } from '../utils/firebase';
 
 export const getList = collection => db.collection(collection).get().then(
   querySnapshot => querySnapshot.docs.map(doc => ({

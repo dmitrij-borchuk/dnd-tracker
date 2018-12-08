@@ -1,4 +1,4 @@
-import db from '../utils/firebase';
+import { db } from '../utils/firebase';
 
 export const getScenario = id => db.collection('scenario').doc(id).get().then(
   querySnapshot => querySnapshot.data(),

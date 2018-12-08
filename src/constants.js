@@ -8,4 +8,7 @@ export const ROUTES = {
 
   SCENES: '/scenes',
   SCENES_EDIT: '/scenes/edit',
+
+  RESOURCES: '/resources',
+  RESOURCES_EDIT: '/resources/edit',
 };

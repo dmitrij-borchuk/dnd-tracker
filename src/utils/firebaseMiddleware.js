@@ -1,4 +1,4 @@
-import db from './firebase';
+import { db } from './firebase';
 
 const assert = (obj, prop, message) => {
   if (!obj[prop]) {

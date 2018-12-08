@@ -13,6 +13,7 @@ import {
   FETCH_CAMPAIGN,
   saveCampaignFailed,
   setCampaign,
+  setCampaignError,
 } from '../actions/campaigns';
 import {
   getCampaigns,
@@ -21,8 +22,12 @@ import {
 } from '../api/campaigns';
 
 function* fetchCampaignsSaga() {
-  const list = yield call(getCampaigns);
-  yield put(setCampaigns(list));
+  try {
+    const list = yield call(getCampaigns);
+    yield put(setCampaigns(list));
+  } catch (error) {
+    yield put(setCampaignError(error));
+  }
 }
 
 function* fetchCampaignSaga(action) {

@@ -1,30 +1,33 @@
-import {
-  SET_CAMPAIGNS,
-  SET_CAMPAIGN,
-  RESET_CAMPAIGN,
-} from '../actions/campaigns';
+import * as actions from '../actions/campaigns';
 
 const defaultState = {
   list: [],
   loading: false,
   currentCampaign: null,
+  error: null,
 };
 
 export default function (state = defaultState, action) {
   switch (action.type) {
-    case SET_CAMPAIGNS:
+    case actions.SET_CAMPAIGNS:
       return {
         ...state,
         list: action.payload,
       };
 
-    case SET_CAMPAIGN:
+    case actions.SET_CAMPAIGN:
       return {
         ...state,
         currentCampaign: action.payload,
       };
 
-    case RESET_CAMPAIGN:
+    case actions.SET_CAMPAIGN_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case actions.RESET_CAMPAIGN:
       return {
         ...state,
         currentCampaign: null,

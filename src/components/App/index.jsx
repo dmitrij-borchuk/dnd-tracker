@@ -10,12 +10,14 @@ import { history } from '../../utils/history';
 import { ROUTES } from '../../constants';
 import * as scenariosAction from '../../actions/scenarios';
 import ScenarioEditPage from '../scenario-edit-page';
-import CampaignsListPage from '../campaigns-list-page';
+import CampaignsListPage from '../../pages/campaign/list';
 import CampaignEditPage from '../campaign-edit-page';
 import CampaignPage from '../../pages/campaign';
 import ScenarioPage from '../../pages/scenario';
 import ScenePage from '../../pages/scene';
 import SceneEditPage from '../../pages/scene/editScene';
+import ResourceEditPage from '../../pages/resource/resourceEdit';
+import ResourcesPage from '../../pages/resource';
 import Header from '../header';
 import {
   Sidebar,
@@ -44,11 +46,11 @@ class App extends PureComponent {
                   Campaigns
                 </SidebarItem>
               </Link>
-              {/* <Link to={ROUTES.SCENARIOS}>
+              <Link to={ROUTES.RESOURCES}>
                 <SidebarItem>
-                  Scenarios
+                  Resources
                 </SidebarItem>
-              </Link> */}
+              </Link>
             </Sidebar>
             <div className={styles.content}>
               <Route
@@ -113,6 +115,22 @@ class App extends PureComponent {
               <Route
                 path={`${ROUTES.CAMPAIGNS_EDIT}/:id`}
                 component={CampaignEditPage}
+              />
+
+              {/* Resources */}
+              <Route
+                path={`${ROUTES.RESOURCES}`}
+                component={ResourcesPage}
+                exact
+              />
+              <Route
+                path={`${ROUTES.RESOURCES_EDIT}`}
+                component={ResourceEditPage}
+                exact
+              />
+              <Route
+                path={`${ROUTES.RESOURCES_EDIT}/:id`}
+                component={ResourceEditPage}
               />
             </div>
           </div>

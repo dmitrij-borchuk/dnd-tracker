@@ -20,6 +20,13 @@ export const getCampaigns = () => ({
   type: GET_CAMPAIGNS,
 });
 
+export const SET_CAMPAIGN_ERROR = 'SET_CAMPAIGN_ERROR';
+export const setCampaignError = error => ({
+  type: SET_CAMPAIGN_ERROR,
+  error: true,
+  payload: error,
+});
+
 export const SET_CAMPAIGNS = 'SET_CAMPAIGNS';
 export const setCampaigns = data => ({
   type: SET_CAMPAIGNS,

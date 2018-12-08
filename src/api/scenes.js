@@ -1,4 +1,4 @@
-import db from '../utils/firebase';
+import { db } from '../utils/firebase';
 
 export const getScene = id => db.collection('scene').doc(id).get().then(
   querySnapshot => querySnapshot.data(),

@@ -27,11 +27,11 @@ const FirebaseConfig = getConfig();
 
 firebase.initializeApp(FirebaseConfig);
 
+export const storage = firebase.storage();
+
 // Initialize Cloud Firestore through Firebase
-const db = firebase.firestore();
+export const db = firebase.firestore();
 // Disable deprecated features
 db.settings({
   timestampsInSnapshots: true,
 });
-
-export default db;

@@ -1,0 +1,19 @@
+.alert {
+  position: relative;
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+}
+
+.danger {
+  color: #813838;
+  background-color: #fee2e1;
+  border-color: #fdd6d6;
+}
+
+.primary {
+  color: #115770;
+  background-color: #d2eef7;
+  border-color: #c1e7f4;
+}
