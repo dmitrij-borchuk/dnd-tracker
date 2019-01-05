@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux';
-// import { reducer as formReducer } from 'redux-form';
-import app from './app';
+import common from './common';
 import scenarios from './scenarios';
 import campaigns from './campaigns';
 import scenes from './scenes';
+import auth from './auth';
 
 export default combineReducers({
-  app,
+  common,
   scenarios,
   campaigns,
   scenes,
-  // form: formReducer,
+  auth,
 });

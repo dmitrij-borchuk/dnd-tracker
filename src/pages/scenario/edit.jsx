@@ -5,19 +5,22 @@ import React, {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as scenariosAction from '../../actions/scenarios';
+import * as commonActions from '../../actions/common';
 import {
   Card,
   CardHeader,
   CardBody,
-} from '../card';
+} from '../../components/card';
 import {
   Button,
   KIND,
-} from '../button';
+} from '../../components/button';
 import {
   InputWithLabel,
   TextAriaWithLabel,
-} from '../forms';
+} from '../../components/forms';
+import { ROUTES } from '../../constants';
+import Alert, { TYPES } from '../../components/alert';
 import styles from './styles.css';
 
 const ScenarioEditPage = (props) => {
@@ -26,6 +29,8 @@ const ScenarioEditPage = (props) => {
     getScenario,
     resetScenario,
     scenario,
+    error,
+    redirect,
     match: {
       params: {
         campaignId,
@@ -35,6 +40,7 @@ const ScenarioEditPage = (props) => {
   } = props;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const isEmpty = name === '';
 
   useEffect(() => {
     if (id) {
@@ -52,7 +58,7 @@ const ScenarioEditPage = (props) => {
             &nbsp;scenario
             <div className={styles.controls}>
               <Button
-                onClick={() => console.log('=-= click')}
+                onClick={() => redirect(`${ROUTES.CAMPAIGNS}/${campaignId}`)}
                 kind={KIND.DANGER}
               >
                 Cancel
@@ -63,6 +69,7 @@ const ScenarioEditPage = (props) => {
                   name,
                   description,
                 })}
+                disabled={isEmpty}
               >
                 Save
               </Button>
@@ -70,6 +77,11 @@ const ScenarioEditPage = (props) => {
           </div>
         </CardHeader>
         <CardBody>
+          {error && (
+            <Alert type={TYPES.DANGER}>
+              {error.message}
+            </Alert>
+          )}
           <InputWithLabel
             label="Name"
             id="name"
@@ -91,6 +103,7 @@ const ScenarioEditPage = (props) => {
 };
 
 ScenarioEditPage.propTypes = {
+  redirect: PropTypes.func.isRequired,
   saveScenario: PropTypes.func.isRequired,
   resetScenario: PropTypes.func.isRequired,
   getScenario: PropTypes.func.isRequired,
@@ -103,13 +116,16 @@ ScenarioEditPage.propTypes = {
       id: PropTypes.string,
     }),
   }).isRequired,
+  error: PropTypes.instanceOf(Error),
 };
 ScenarioEditPage.defaultProps = {
   scenario: null,
+  error: null,
 };
 
 const mapStateToProps = ({ scenarios }) => ({
   scenario: scenarios.currentScenario,
+  error: scenarios.error,
 });
 
 const mapDispatchToProps = {
@@ -117,6 +133,7 @@ const mapDispatchToProps = {
   getScenario: scenariosAction.fetchScenario,
   saveScenario: scenariosAction.saveScenario,
   resetScenario: scenariosAction.resetScenario,
+  redirect: commonActions.redirect,
 };
 
 export default connect(

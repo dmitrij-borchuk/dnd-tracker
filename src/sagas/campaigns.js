@@ -2,6 +2,7 @@ import {
   call,
   put,
   takeLatest,
+  select,
 } from 'redux-saga/effects';
 import { ROUTES } from '../constants';
 import { push } from '../utils/history';
@@ -21,9 +22,12 @@ import {
   saveCampaign,
 } from '../api/campaigns';
 
+const getUserIdSelector = state => state.auth.currentUser.uid;
+
 function* fetchCampaignsSaga() {
   try {
-    const list = yield call(getCampaigns);
+    const userId = yield select(getUserIdSelector);
+    const list = yield call(getCampaigns, userId);
     yield put(setCampaigns(list));
   } catch (error) {
     yield put(setCampaignError(error));
@@ -31,13 +35,15 @@ function* fetchCampaignsSaga() {
 }
 
 function* fetchCampaignSaga(action) {
-  const data = yield call(getCampaign, action.payload);
+  const userId = yield select(getUserIdSelector);
+  const data = yield call(getCampaign, userId, action.payload);
   yield put(setCampaign(data));
 }
 
 function* saveCampaignSaga(action) {
   try {
-    yield call(saveCampaign, action.payload);
+    const userId = yield select(getUserIdSelector);
+    yield call(saveCampaign, userId, action.payload);
     push(ROUTES.CAMPAIGNS);
   } catch (e) {
     yield put(saveCampaignFailed(e));

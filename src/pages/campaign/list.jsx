@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardBody,
 } from '../../components/card';
-import { SmallButton } from '../../components/button';
+import { Button } from '../../components/button';
 import { List, ListItem } from '../../components/list';
 import Page from '../../components/page';
 import Alert, { TYPES } from '../../components/alert';
@@ -29,7 +29,6 @@ const CampaignsListPage = (props) => {
   useEffect(() => {
     getList();
   }, []);
-  console.log('=-=error', error)
 
   return (
     <Page>
@@ -39,7 +38,7 @@ const CampaignsListPage = (props) => {
             Campaigns
 
             <div className={styles.controls}>
-              <SmallButton onClick={() => redirect(ROUTES.CAMPAIGNS_EDIT)}>Add</SmallButton>
+              <Button onClick={() => redirect(ROUTES.CAMPAIGNS_EDIT)}>Add</Button>
             </div>
           </div>
         </CardHeader>

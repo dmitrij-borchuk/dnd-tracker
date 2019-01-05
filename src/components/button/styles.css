@@ -17,6 +17,10 @@
   border-color: #20a8d8;
 }
 
+.btn[disabled] {
+  opacity: 0.3;
+}
+
 .small {
   font-size: 8px;
 }

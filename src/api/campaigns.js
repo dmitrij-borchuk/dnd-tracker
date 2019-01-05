@@ -4,6 +4,6 @@ import {
   saveItem,
 } from './utils';
 
-export const getCampaigns = () => getList('campaign');
-export const getCampaign = id => getItem('campaign', id);
-export const saveCampaign = data => saveItem('campaign', data);
+export const getCampaigns = userId => getList(`users/${userId}/campaigns`);
+export const getCampaign = (userId, id) => getItem(`users/${userId}/campaigns`, id);
+export const saveCampaign = (userId, data) => saveItem(`users/${userId}/campaigns`, data);

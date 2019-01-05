@@ -60,7 +60,6 @@ const ResourceEditPage = (props) => {
   const [description, setDescription] = useState('');
   const [type, setType] = useState(TYPES.IMAGE);
   const [files, setFile] = useState('');
-  console.log('=-= files', files)
 
   // useEffect(() => {
   //   if (id) {

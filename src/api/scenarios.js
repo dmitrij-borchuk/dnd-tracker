@@ -1,15 +1,9 @@
-import { db } from '../utils/firebase';
+import {
+  getList,
+  getItem,
+  saveItem,
+} from './utils';
 
-export const getScenario = id => db.collection('scenario').doc(id).get().then(
-  querySnapshot => querySnapshot.data(),
-);
-
-export const getScenarios = campaignId => db.collection('scenario')
-  .where('campaignId', '==', campaignId)
-  .get()
-  .then(querySnapshot => querySnapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data(),
-  })));
-
-export const saveScenario = data => db.collection('scenario').add(data);
+export const getScenarios = userId => getList(`users/${userId}/scenarios`);
+export const getScenario = (userId, id) => getItem(`users/${userId}/scenarios`, id);
+export const saveScenario = (userId, data) => saveItem(`users/${userId}/scenarios`, data);

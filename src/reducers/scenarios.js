@@ -1,40 +1,42 @@
-import {
-  SET_SCENARIOS,
-  SET_SCENARIO,
-  RESET_SCENARIO,
-  RESET_SCENARIO_LIST,
-} from '../actions/scenarios';
+import * as scenariosActions from '../actions/scenarios';
 
 const defaultState = {
   list: [],
   loading: false,
   currentScenario: null,
+  error: null,
 };
 
 export default function (state = defaultState, action) {
   switch (action.type) {
-    case SET_SCENARIOS:
+    case scenariosActions.SET_SCENARIOS:
       return {
         ...state,
         list: action.payload,
       };
 
-    case SET_SCENARIO:
+    case scenariosActions.SET_SCENARIO:
       return {
         ...state,
         currentScenario: action.payload,
       };
 
-    case RESET_SCENARIO:
+    case scenariosActions.RESET_SCENARIO:
       return {
         ...state,
         currentScenario: null,
       };
 
-    case RESET_SCENARIO_LIST:
+    case scenariosActions.RESET_SCENARIO_LIST:
       return {
         ...state,
         list: [],
+      };
+
+    case scenariosActions.SAVE_SCENARIO_FAILED:
+      return {
+        ...state,
+        error: action.payload,
       };
 
     default:

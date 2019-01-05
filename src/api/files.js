@@ -4,14 +4,19 @@ import { storage } from '../utils/firebase';
 const storageRef = storage.ref();
 
 // eslint-disable-next-line import/prefer-default-export
-export const uploadFile = (name, file) => {
-  console.log('=-= name', name)
-  console.log('=-= file', file)
-  // Create a reference to 'mountains.jpg'
-  const ref = storageRef.child(name);
+export const uploadFile = (userId, name, file) => {
+  // Create a reference to image
+  const ref = storageRef.child(`users/${userId}/${name}`);
+  // const ref = storageRef.child(name);
 
   return ref.put(file);
-  // .then(function (snapshot) {
-  //   console.log('Uploaded a blob or file!');
-  // });
+};
+
+// eslint-disable-next-line import/prefer-default-export
+export const getResources = (userId) => {
+  // Create a reference to image
+  const ref = storageRef.child(`users/${userId}/${name}`);
+  // const ref = storageRef.child(name);
+
+  return ref.put(file);
 };
