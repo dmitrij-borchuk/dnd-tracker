@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardBody,
 } from '../../components/card';
-import { Button } from '../../components/button';
+import { Button, SmallButton } from '../../components/button';
 import {
   List,
   ListItem,
@@ -47,16 +47,20 @@ const ResourceEditPage = (props) => {
         <CardBody>
           <List>
             {list.map(item => (
-              <a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                key={item.id}
-              >
-                <ListItem className={styles.listItem}>
-                  {item.name}
-                </ListItem>
-              </a>
+              <ListItem className={styles.listItem}>
+                {item.name}
+                <a
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  key={item.id}
+                  className={styles.controls}
+                >
+                  <SmallButton>
+                    <i className="fas fa-external-link-alt" />
+                  </SmallButton>
+                </a>
+              </ListItem>
             ))}
           </List>
         </CardBody>
