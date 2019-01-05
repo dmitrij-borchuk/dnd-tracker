@@ -5,6 +5,8 @@ import React, {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as scenesAction from '../../actions/scenes';
+import * as commonActions from '../../actions/common';
+import { ROUTES } from '../../constants';
 import {
   Card,
   CardHeader,
@@ -26,6 +28,7 @@ const SceneEditPage = (props) => {
     getScene,
     resetScene,
     scene,
+    redirect,
     match: {
       params: {
         scenarioId,
@@ -48,6 +51,7 @@ const SceneEditPage = (props) => {
 
   const [name, setName] = useState(scene?.name || '');
   const [description, setDescription] = useState(scene?.description || '');
+  const isEmpty = name === '';
 
   return (
     <div className="page-content">
@@ -58,7 +62,7 @@ const SceneEditPage = (props) => {
             &nbsp;scene
             <div className={styles.controls}>
               <Button
-                onClick={() => console.log('=-= click')}
+                onClick={() => redirect(`${ROUTES.SCENARIOS}/${scenarioId}`)}
                 kind={KIND.DANGER}
               >
                 Cancel
@@ -69,6 +73,7 @@ const SceneEditPage = (props) => {
                   name,
                   description,
                 })}
+                disabled={isEmpty}
               >
                 Save
               </Button>
@@ -97,6 +102,7 @@ const SceneEditPage = (props) => {
 };
 
 SceneEditPage.propTypes = {
+  redirect: PropTypes.func.isRequired,
   saveScene: PropTypes.func.isRequired,
   resetScene: PropTypes.func.isRequired,
   getScene: PropTypes.func.isRequired,
@@ -123,6 +129,7 @@ const mapDispatchToProps = {
   getScene: scenesAction.fetchScene,
   saveScene: scenesAction.saveScene,
   resetScene: scenesAction.resetScene,
+  redirect: commonActions.redirect,
 };
 
 export default connect(

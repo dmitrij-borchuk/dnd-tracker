@@ -14,3 +14,9 @@ export const GET_RESOURCES = 'GET_RESOURCES';
 export const getResources = () => ({
   type: GET_RESOURCES,
 });
+
+export const SET_RESOURCES = 'SET_RESOURCES';
+export const setResources = data => ({
+  type: SET_RESOURCES,
+  payload: data,
+});

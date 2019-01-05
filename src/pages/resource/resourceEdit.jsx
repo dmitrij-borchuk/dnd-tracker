@@ -18,6 +18,7 @@ import {
 //   ListItem,
 // } from '../../components/list';
 import Page from '../../components/page';
+import Alert, { TYPES } from '../../components/alert';
 import {
   InputWithLabel,
   TextAriaWithLabel,
@@ -30,12 +31,12 @@ import {
 } from '../../components/button';
 import styles from './styles.css';
 
-const TYPES = {
+const FILE_TYPES = {
   IMAGE: 'IMAGE',
 };
 const TYPES_OPTIONS = [
   {
-    value: TYPES.IMAGE,
+    value: FILE_TYPES.IMAGE,
     text: 'Image',
   },
 ];
@@ -54,11 +55,12 @@ const ResourceEditPage = (props) => {
     //     id,
     //   },
     // },
+    error,
     save,
   } = props;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [type, setType] = useState(TYPES.IMAGE);
+  const [type, setType] = useState(FILE_TYPES.IMAGE);
   const [files, setFile] = useState('');
 
   // useEffect(() => {
@@ -95,6 +97,8 @@ const ResourceEditPage = (props) => {
               <Button
                 onClick={() => save({
                   name,
+                  description,
+                  type,
                   file: files.data[0],
                 })}
               >
@@ -104,6 +108,11 @@ const ResourceEditPage = (props) => {
           </div>
         </CardHeader>
         <CardBody>
+          {error && (
+            <Alert type={TYPES.DANGER}>
+              {error.message}
+            </Alert>
+          )}
           <InputWithLabel
             label="Name"
             id="name"
@@ -127,7 +136,7 @@ const ResourceEditPage = (props) => {
             fullWidth
           />
 
-          {type === TYPES.IMAGE && (
+          {type === FILE_TYPES.IMAGE && (
             <InputWithLabel
               type="file"
               label="Select file"
@@ -166,15 +175,15 @@ ResourceEditPage.propTypes = {
     }),
   }).isRequired,
   save: PropTypes.func.isRequired,
+  error: PropTypes.instanceOf(Error),
 };
 ResourceEditPage.defaultProps = {
   scenario: null,
-  // scenes: [],
+  error: null,
 };
 
-const mapStateToProps = ({ scenarios, scenes }) => ({
-  scenario: scenarios.currentScenario,
-  scenes: scenes.list,
+const mapStateToProps = ({ resources }) => ({
+  error: resources.error,
 });
 
 const mapDispatchToProps = {

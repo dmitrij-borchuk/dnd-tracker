@@ -4,6 +4,7 @@ import scenarios from './scenarios';
 import campaigns from './campaigns';
 import scenes from './scenes';
 import auth from './auth';
+import resources from './resources';
 
 export default combineReducers({
   common,
@@ -11,4 +12,5 @@ export default combineReducers({
   campaigns,
   scenes,
   auth,
+  resources,
 });

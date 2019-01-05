@@ -20,7 +20,7 @@ import ScenarioPage from '../../pages/scenario';
 import ScenePage from '../../pages/scene';
 import SceneEditPage from '../../pages/scene/editScene';
 import ResourceEditPage from '../../pages/resource/resourceEdit';
-import ResourcesPage from '../../pages/resource';
+import ResourcesPage from '../../pages/resource/list';
 import Header from '../header';
 import {
   Sidebar,
