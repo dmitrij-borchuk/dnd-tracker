@@ -2,6 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, select } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
+import relativeContainer from '../../utils/storyDecorators/relativeContainer';
 import {
   Modal,
   ModalBody,
@@ -16,6 +17,7 @@ const options = Object.keys(MODAL_KIND);
 
 storiesOf('Modal', module)
   .addDecorator(withKnobs)
+  .addDecorator(relativeContainer({ height: '300px' }))
   .add('default', () => <Modal><ModalBody>Modal content</ModalBody></Modal>)
   .add('With header', () => (
     <Modal>

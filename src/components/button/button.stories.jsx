@@ -2,11 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { withKnobs, select } from '@storybook/addon-knobs';
-import {
-  Button,
-  SmallButton,
-  KIND,
-} from './index';
+import { Button, SmallButton, KIND } from './index';
 
 const label = 'Kind';
 const options = [
