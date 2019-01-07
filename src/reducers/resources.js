@@ -21,18 +21,6 @@ export default function (state = defaultState, action) {
         error: action.payload,
       };
 
-    // case actions.SET_CAMPAIGN_ERROR:
-    //   return {
-    //     ...state,
-    //     error: action.payload,
-    //   };
-
-    // case actions.RESET_CAMPAIGN:
-    //   return {
-    //     ...state,
-    //     currentCampaign: null,
-    //   };
-
     default:
       return state;
   }

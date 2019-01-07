@@ -16,6 +16,7 @@ import { Button } from '../../components/button';
 import { List, ListItem } from '../../components/list';
 import Page from '../../components/page';
 import Alert, { TYPES } from '../../components/alert';
+import Loader from '../../components/loader';
 import styles from './styles.css';
 
 const CampaignsListPage = (props) => {
@@ -24,6 +25,7 @@ const CampaignsListPage = (props) => {
     list,
     redirect,
     error,
+    loading,
   } = props;
 
   useEffect(() => {
@@ -43,6 +45,9 @@ const CampaignsListPage = (props) => {
           </div>
         </CardHeader>
         <CardBody>
+          {loading && (
+            <Loader fillParent />
+          )}
           {error && (
             <Alert type={TYPES.DANGER}>
               {error.message}
@@ -76,15 +81,18 @@ CampaignsListPage.propTypes = {
     id: PropTypes.string,
   })).isRequired,
   error: PropTypes.instanceOf(Error),
+  loading: PropTypes.bool,
 };
 CampaignsListPage.defaultProps = {
   scenario: null,
   error: null,
+  loading: false,
 };
 
 const mapStateToProps = ({ campaigns }) => ({
   list: campaigns.list,
   error: campaigns.error,
+  loading: campaigns.loading,
 });
 
 const mapDispatchToProps = {

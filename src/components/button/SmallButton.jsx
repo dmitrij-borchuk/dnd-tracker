@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 import styles from './styles.css';
-import KIND from './kind';
+import KIND, { kind2class } from './kind';
 
 const SmallButton = (props) => {
   const {
@@ -14,7 +14,7 @@ const SmallButton = (props) => {
   return (
     <button
       type="button"
-      className={cn(styles.btn, styles.small, kind)}
+      className={cn(styles.btn, styles.small, kind2class[kind])}
       onClick={onClick}
     >
       {children}

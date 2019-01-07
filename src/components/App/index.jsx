@@ -63,7 +63,7 @@ class App extends PureComponent {
       return (
         <>
           {header}
-          <div>
+          <div className={styles.appBody}>
             You need to sign in to use this website
           </div>
         </>
@@ -99,11 +99,6 @@ class App extends PureComponent {
               />
 
               {/* Scenarios */}
-              {/* <Route
-                path={ROUTES.SCENARIOS}
-                component={ScenariosListPage}
-                exact
-              /> */}
               <Route
                 path={`${ROUTES.SCENARIOS}/:id`}
                 component={ScenarioPage}

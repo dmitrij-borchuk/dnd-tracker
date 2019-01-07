@@ -9,16 +9,25 @@ const defaultState = {
 
 export default function (state = defaultState, action) {
   switch (action.type) {
+    case actions.GET_CAMPAIGNS:
+    case actions.FETCH_CAMPAIGN:
+      return {
+        ...state,
+        loading: true,
+      };
+
     case actions.SET_CAMPAIGNS:
       return {
         ...state,
         list: action.payload,
+        loading: false,
       };
 
     case actions.SET_CAMPAIGN:
       return {
         ...state,
         currentCampaign: action.payload,
+        loading: false,
       };
 
     case actions.SET_CAMPAIGN_ERROR:

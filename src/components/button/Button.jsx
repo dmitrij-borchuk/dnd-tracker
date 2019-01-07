@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 import styles from './styles.css';
-import KIND from './kind';
+import KIND, { kind2class } from './kind';
 
-const SmallButton = (props) => {
+const Button = (props) => {
   const {
     children,
     onClick,
@@ -15,7 +15,7 @@ const SmallButton = (props) => {
   return (
     <button
       type="button"
-      className={cn(styles.btn, kind)}
+      className={cn(styles.btn, kind2class[kind])}
       onClick={onClick}
       disabled={disabled}
     >
@@ -23,17 +23,16 @@ const SmallButton = (props) => {
     </button>
   );
 };
-SmallButton.propTypes = {
-  children: PropTypes.node,
+Button.propTypes = {
+  children: PropTypes.node.isRequired,
   onClick: PropTypes.func,
   kind: PropTypes.string,
   disabled: PropTypes.bool,
 };
-SmallButton.defaultProps = {
-  children: '',
+Button.defaultProps = {
   onClick: () => {},
   kind: KIND.DEFAULT,
   disabled: false,
 };
 
-export default SmallButton;
+export default Button;

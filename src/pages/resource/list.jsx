@@ -47,18 +47,20 @@ const ResourceEditPage = (props) => {
         <CardBody>
           <List>
             {list.map(item => (
-              <ListItem className={styles.listItem}>
+              <ListItem
+                className={styles.listItem}
+                key={item.id}
+              >
                 {item.name}
                 <a
                   href={item.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  key={item.id}
                   className={styles.controls}
                 >
-                  <SmallButton>
+                  <Button>
                     <i className="fas fa-external-link-alt" />
-                  </SmallButton>
+                  </Button>
                 </a>
               </ListItem>
             ))}

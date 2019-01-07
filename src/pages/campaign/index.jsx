@@ -10,12 +10,13 @@ import {
   CardHeader,
   CardBody,
 } from '../../components/card';
-import { Button } from '../../components/button';
+import { Button, KIND as BIN_KIND } from '../../components/button';
 import {
   List,
   ListItem,
 } from '../../components/list';
 import Page from '../../components/page';
+import Loader from '../../components/loader';
 import styles from './styles.css';
 
 const CampaignPage = (props) => {
@@ -27,6 +28,7 @@ const CampaignPage = (props) => {
     campaign,
     scenarios,
     redirect,
+    loading,
     match: {
       params: {
         id,
@@ -47,19 +49,14 @@ const CampaignPage = (props) => {
     return () => resetScenarioList();
   }, []);
 
-  if (!campaign) {
-    // TODO: Use loader
-    return null;
-  }
-
   return (
     <Page>
       <Card className={styles.card}>
         <CardHeader>
-          {campaign.name}
+          {campaign?.name}
         </CardHeader>
         <CardBody>
-          {campaign.description}
+          {campaign?.description}
         </CardBody>
       </Card>
 
@@ -77,6 +74,11 @@ const CampaignPage = (props) => {
           </div>
         </CardHeader>
         <CardBody>
+          {loading && (
+            <Loader fillParent />
+          )}
+
+          {/* Scenarios */}
           <List>
             {scenarios.map(item => (
               <ListItem
@@ -85,6 +87,11 @@ const CampaignPage = (props) => {
                 onClick={() => redirect(`${ROUTES.SCENARIOS}/${item.id}`)}
               >
                 {item.name}
+                <span className={styles.controls}>
+                  <Button kind={BIN_KIND.DANGER}>
+                    <i className="fas fa-trash-alt" />
+                  </Button>
+                </span>
               </ListItem>
             ))}
           </List>
@@ -113,15 +120,18 @@ CampaignPage.propTypes = {
       id: PropTypes.string,
     }),
   }).isRequired,
+  loading: PropTypes.bool,
 };
 CampaignPage.defaultProps = {
   campaign: null,
   scenarios: [],
+  loading: false,
 };
 
 const mapStateToProps = ({ campaigns, scenarios }) => ({
   campaign: campaigns.currentCampaign,
   scenarios: scenarios.list,
+  loading: campaigns.loading,
 });
 
 const mapDispatchToProps = {
