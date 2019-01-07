@@ -38,7 +38,11 @@ function* saveSceneSaga(action) {
   try {
     const userId = yield select(getUserIdSelector);
     yield call(saveScene, userId, action.payload);
-    push(`${ROUTES.SCENARIOS}/${action.payload.scenarioId}`);
+    if (action.payload.id) {
+      push(`${ROUTES.SCENES_EDIT}/${action.payload.scenarioId}/${action.payload.id}`);
+    } else {
+      push(`${ROUTES.SCENARIOS}/${action.payload.scenarioId}`);
+    }
   } catch (e) {
     yield put(saveSceneFailed(e));
   }

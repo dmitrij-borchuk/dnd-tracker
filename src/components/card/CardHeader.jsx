@@ -6,14 +6,19 @@ import styles from './styles.css';
 const CardHeader = (props) => {
   const {
     children,
+    className,
     flex,
   } = props;
-  const className = cn(styles.cardHeader, {
-    [styles.headerFlex]: flex,
-  });
+  const classNames = cn(
+    styles.cardHeader,
+    {
+      [styles.headerFlex]: flex,
+    },
+    className,
+  );
 
   return (
-    <div className={className}>
+    <div className={classNames}>
       {children}
     </div>
   );
@@ -21,9 +26,11 @@ const CardHeader = (props) => {
 CardHeader.propTypes = {
   children: PropTypes.node,
   flex: PropTypes.bool,
+  className: PropTypes.string,
 };
 CardHeader.defaultProps = {
   children: '',
+  className: '',
   flex: false,
 };
 

@@ -1,4 +1,4 @@
-import * as scenariosActions from '../actions/scenarios';
+import * as actions from '../actions/scenarios';
 
 const defaultState = {
   list: [],
@@ -9,33 +9,60 @@ const defaultState = {
 
 export default function (state = defaultState, action) {
   switch (action.type) {
-    case scenariosActions.SET_SCENARIOS:
+    case actions.GET_SCENARIOS:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case actions.SET_SCENARIOS:
       return {
         ...state,
         list: action.payload,
+        loading: false,
       };
 
-    case scenariosActions.SET_SCENARIO:
+    case actions.SET_SCENARIO:
       return {
         ...state,
         currentScenario: action.payload,
       };
 
-    case scenariosActions.RESET_SCENARIO:
+    case actions.RESET_SCENARIO:
       return {
         ...state,
         currentScenario: null,
       };
 
-    case scenariosActions.RESET_SCENARIO_LIST:
+    case actions.RESET_SCENARIO_LIST:
       return {
         ...state,
         list: [],
       };
 
-    case scenariosActions.SAVE_SCENARIO_FAILED:
+    case actions.SAVE_SCENARIO_FAILED:
       return {
         ...state,
+        error: action.payload,
+      };
+
+    case actions.REMOVE_SCENARIO:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case actions.REMOVE_SCENARIO_SUCCESS:
+      return {
+        ...state,
+        list: state.list.filter(item => item.id !== action.payload),
+        loading: false,
+      };
+
+    case actions.REMOVE_SCENARIO_FAILED:
+      return {
+        ...state,
+        loading: false,
         error: action.payload,
       };
 

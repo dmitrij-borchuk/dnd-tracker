@@ -12,14 +12,18 @@ import {
   setCampaigns,
   // SAVE_SCENARIO,
   FETCH_CAMPAIGN,
+  REMOVE_CAMPAIGN,
   saveCampaignFailed,
   setCampaign,
   setCampaignError,
+  removeCampaignSuccess,
+  removeCampaignFailed,
 } from '../actions/campaigns';
 import {
   getCampaigns,
   getCampaign,
   saveCampaign,
+  removeCampaign,
 } from '../api/campaigns';
 
 const getUserIdSelector = state => state.auth.currentUser.uid;
@@ -50,10 +54,21 @@ function* saveCampaignSaga(action) {
   }
 }
 
+function* removeCampaignSaga(action) {
+  try {
+    const userId = yield select(getUserIdSelector);
+    yield call(removeCampaign, userId, action.payload);
+    yield put(removeCampaignSuccess, action.payload);
+  } catch (e) {
+    yield put(removeCampaignFailed(e));
+  }
+}
+
 function* campaignsSaga() {
   yield takeLatest(GET_CAMPAIGNS, fetchCampaignsSaga);
   yield takeLatest(SAVE_CAMPAIGN, saveCampaignSaga);
   yield takeLatest(FETCH_CAMPAIGN, fetchCampaignSaga);
+  yield takeLatest(REMOVE_CAMPAIGN, removeCampaignSaga);
 }
 
 export default campaignsSaga;

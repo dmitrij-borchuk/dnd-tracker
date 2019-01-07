@@ -44,3 +44,21 @@ export const saveCampaignFailed = data => ({
   type: SAVE_CAMPAIGN_FAILED,
   payload: data,
 });
+
+export const REMOVE_CAMPAIGN = 'REMOVE_CAMPAIGN';
+export const removeCampaign = data => ({
+  type: REMOVE_CAMPAIGN,
+  payload: data,
+});
+
+export const REMOVE_CAMPAIGN_FAILED = 'REMOVE_CAMPAIGN_FAILED';
+export const removeCampaignFailed = data => ({
+  type: REMOVE_CAMPAIGN_FAILED,
+  payload: data,
+});
+
+export const REMOVE_CAMPAIGN_SUCCESS = 'REMOVE_CAMPAIGN_SUCCESS';
+export const removeCampaignSuccess = data => ({
+  type: REMOVE_CAMPAIGN_SUCCESS,
+  payload: data,
+});

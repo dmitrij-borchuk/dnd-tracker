@@ -11,13 +11,17 @@ import {
   GET_SCENARIOS,
   SET_SCENARIOS,
   FETCH_SCENARIO,
+  REMOVE_SCENARIO,
   saveScenarioFailed,
   setScenario,
+  removeScenarioSuccess,
+  removeScenarioFailed,
 } from '../actions/scenarios';
 import {
   saveScenario,
   getScenarios,
   getScenario,
+  removeScenario,
 } from '../api/scenarios';
 
 const getUserIdSelector = state => state.auth.currentUser.uid;
@@ -44,10 +48,21 @@ function* saveScenarioSaga(action) {
   }
 }
 
+function* removeScenarioSaga(action) {
+  try {
+    const userId = yield select(getUserIdSelector);
+    yield call(removeScenario, userId, action.payload);
+    yield put(removeScenarioSuccess(action.payload));
+  } catch (e) {
+    yield put(removeScenarioFailed(e));
+  }
+}
+
 function* mySaga() {
   yield takeLatest(SAVE_SCENARIO, saveScenarioSaga);
   yield takeLatest(GET_SCENARIOS, fetchScenariosSaga);
   yield takeLatest(FETCH_SCENARIO, fetchScenarioSaga);
+  yield takeLatest(REMOVE_SCENARIO, removeScenarioSaga);
 }
 
 export default mySaga;

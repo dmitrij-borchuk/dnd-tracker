@@ -55,8 +55,15 @@ const SceneEditPage = (props) => {
   return (
     <Page>
       <Card className={styles.card}>
-        <CardHeader>
+        <CardHeader className={styles.listHeader}>
           {scene.name}
+          <div className={styles.controls}>
+            <Button
+              onClick={() => redirect(`${ROUTES.SCENES_EDIT}/${scene.scenarioId}/${scene.id}`)}
+            >
+              Edit
+            </Button>
+          </div>
         </CardHeader>
         <CardBody>
           {scene.description}

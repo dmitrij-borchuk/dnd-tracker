@@ -43,3 +43,22 @@ export const saveScenarioFailed = data => ({
   type: SAVE_SCENARIO_FAILED,
   payload: data,
 });
+
+
+export const REMOVE_SCENARIO = 'REMOVE_SCENARIO';
+export const removeScenario = data => ({
+  type: REMOVE_SCENARIO,
+  payload: data,
+});
+
+export const REMOVE_SCENARIO_FAILED = 'REMOVE_SCENARIO_FAILED';
+export const removeScenarioFailed = data => ({
+  type: REMOVE_SCENARIO_FAILED,
+  payload: data,
+});
+
+export const REMOVE_SCENARIO_SUCCESS = 'REMOVE_SCENARIO_SUCCESS';
+export const removeScenarioSuccess = data => ({
+  type: REMOVE_SCENARIO_SUCCESS,
+  payload: data,
+});

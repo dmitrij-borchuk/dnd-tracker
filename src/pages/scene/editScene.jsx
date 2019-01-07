@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardBody,
 } from '../../components/card';
+import Loader from '../../components/loader';
 import {
   Button,
   KIND,
@@ -25,10 +26,9 @@ import styles from './styles.css';
 const SceneEditPage = (props) => {
   const {
     saveScene,
-    getScene,
-    resetScene,
     scene,
     redirect,
+    loading,
     match: {
       params: {
         scenarioId,
@@ -36,18 +36,9 @@ const SceneEditPage = (props) => {
       },
     },
   } = props;
-
-  useEffect(() => {
-    if (id) {
-      getScene(id);
-    }
-    return () => resetScene();
-  }, []);
-
-  if (id && !scene) {
-    // TODO: Use loader
-    return null;
-  }
+  const cancelUrl = id
+    ? `${ROUTES.SCENES}/${id}`
+    : `${ROUTES.SCENARIOS}/${scenarioId}`;
 
   const [name, setName] = useState(scene?.name || '');
   const [description, setDescription] = useState(scene?.description || '');
@@ -62,13 +53,14 @@ const SceneEditPage = (props) => {
             &nbsp;scene
             <div className={styles.controls}>
               <Button
-                onClick={() => redirect(`${ROUTES.SCENARIOS}/${scenarioId}`)}
+                onClick={() => redirect(cancelUrl)}
                 kind={KIND.DANGER}
               >
                 Cancel
               </Button>
               <Button
                 onClick={() => saveScene({
+                  ...scene,
                   scenarioId,
                   name,
                   description,
@@ -81,6 +73,9 @@ const SceneEditPage = (props) => {
           </div>
         </CardHeader>
         <CardBody>
+          {loading && (
+            <Loader fillParent />
+          )}
           <InputWithLabel
             label="Name"
             id="name"
@@ -104,12 +99,11 @@ const SceneEditPage = (props) => {
 SceneEditPage.propTypes = {
   redirect: PropTypes.func.isRequired,
   saveScene: PropTypes.func.isRequired,
-  resetScene: PropTypes.func.isRequired,
-  getScene: PropTypes.func.isRequired,
   scene: PropTypes.shape({
     name: PropTypes.string,
     description: PropTypes.string,
   }),
+  loading: PropTypes.bool,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string,
@@ -118,21 +112,49 @@ SceneEditPage.propTypes = {
 };
 SceneEditPage.defaultProps = {
   scene: null,
+  loading: false,
 };
 
 const mapStateToProps = ({ scenes }) => ({
   scene: scenes.currentScene,
+  loading: scenes.loading,
 });
 
 const mapDispatchToProps = {
-  getScenes: scenesAction.getScenes,
   getScene: scenesAction.fetchScene,
   saveScene: scenesAction.saveScene,
   resetScene: scenesAction.resetScene,
   redirect: commonActions.redirect,
 };
 
+const loaderHoc = Component => (props) => {
+  const {
+    getScene,
+    resetScene,
+    scene,
+    match: {
+      params: {
+        id,
+      },
+    },
+  } = props;
+  // const [loading, setLoading] = useState(true);
+  const loaded = !!scene;
+
+  useEffect(() => {
+    if (id) {
+      getScene(id);
+    }
+    return () => resetScene();
+  }, []);
+
+  if (id && !loaded) {
+    return (<Loader fillParent />);
+  }
+  return <Component {...props} />;
+};
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(SceneEditPage);
+)(loaderHoc(SceneEditPage));

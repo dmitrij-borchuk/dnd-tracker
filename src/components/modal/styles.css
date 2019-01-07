@@ -13,11 +13,14 @@
 .modal {
   background-color: white;
   border-radius: 4px;
+  box-shadow: 3px 6px 9px -1px rgba(0,0,0,0.75);
   overflow: hidden;
 }
 
 .header {
-  padding: 10px;
+  font-size: 18px;
+  color: #fff;
+  padding: 16px 10px;
 }
 
 .header.primary {
@@ -29,10 +32,12 @@
 }
 
 .body {
-  padding: 10px;
+  padding: 16px 10px;
 }
 
 .controls {
-  padding: 10px;
   border-top: 1px solid rgba(0,0,0,0.2);
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
 }

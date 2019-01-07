@@ -42,6 +42,26 @@ export default function (state = defaultState, action) {
         currentCampaign: null,
       };
 
+    case actions.REMOVE_CAMPAIGN:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case actions.REMOVE_CAMPAIGN_SUCCESS:
+      return {
+        ...state,
+        list: state.list.filter(item => item.id !== action.payload),
+        loading: false,
+      };
+
+    case actions.REMOVE_CAMPAIGN_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
     default:
       return state;
   }
