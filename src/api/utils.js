@@ -16,10 +16,15 @@ export const getList = (collection, filterFn) => {
 };
 
 export const getItem = (collection, id) => db.collection(collection).doc(id).get().then(
-  doc => ({
-    id: doc.id,
-    ...doc.data(),
-  }),
+  (doc) => {
+    if (!doc.exists) {
+      throw new Error('This document is not exist');
+    }
+    return ({
+      id: doc.id,
+      ...doc.data(),
+    });
+  },
 );
 
 export const addItem = (collection, data) => db.collection(collection).add(data);

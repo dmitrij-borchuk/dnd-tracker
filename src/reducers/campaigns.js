@@ -16,6 +16,13 @@ export default function (state = defaultState, action) {
         loading: true,
       };
 
+    case actions.FETCH_CAMPAIGN_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
     case actions.SET_CAMPAIGNS:
       return {
         ...state,

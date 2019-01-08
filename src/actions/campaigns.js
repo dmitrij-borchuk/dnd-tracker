@@ -3,6 +3,11 @@ export const fetchCampaign = data => ({
   type: FETCH_CAMPAIGN,
   payload: data,
 });
+export const FETCH_CAMPAIGN_ERROR = 'FETCH_CAMPAIGN_ERROR';
+export const fetchCampaignError = data => ({
+  type: FETCH_CAMPAIGN_ERROR,
+  payload: data,
+});
 
 export const SET_CAMPAIGN = 'SET_CAMPAIGN';
 export const setCampaign = data => ({

@@ -18,6 +18,7 @@ import {
   setCampaignError,
   removeCampaignSuccess,
   removeCampaignFailed,
+  fetchCampaignError,
 } from '../actions/campaigns';
 import {
   getCampaigns,
@@ -39,9 +40,13 @@ function* fetchCampaignsSaga() {
 }
 
 function* fetchCampaignSaga(action) {
-  const userId = yield select(getUserIdSelector);
-  const data = yield call(getCampaign, userId, action.payload);
-  yield put(setCampaign(data));
+  try {
+    const userId = yield select(getUserIdSelector);
+    const data = yield call(getCampaign, userId, action.payload);
+    yield put(setCampaign(data));
+  } catch (error) {
+    yield put(fetchCampaignError(error));
+  }
 }
 
 function* saveCampaignSaga(action) {

@@ -32,6 +32,7 @@ const CampaignPage = (props) => {
     scenariosLoading,
     removeScenario,
     error,
+    scenariosError,
     match: {
       params: {
         id,
@@ -61,6 +62,11 @@ const CampaignPage = (props) => {
             {campaign ?.name}
           </CardHeader>
           <CardBody>
+            {error && (
+              <Alert type={TYPES.DANGER}>
+                {error.message}
+              </Alert>
+            )}
             {campaign ?.description}
           </CardBody>
         </Card>
@@ -79,9 +85,9 @@ const CampaignPage = (props) => {
             </div>
           </CardHeader>
           <CardBody>
-            {error && (
+            {scenariosError && (
               <Alert type={TYPES.DANGER}>
-                {error.message}
+                {scenariosError.message}
               </Alert>
             )}
             {scenariosLoading && (
@@ -156,6 +162,7 @@ CampaignPage.propTypes = {
   }).isRequired,
   scenariosLoading: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
+  scenariosError: PropTypes.instanceOf(Error),
 };
 CampaignPage.defaultProps = {
   campaign: null,
@@ -165,9 +172,10 @@ CampaignPage.defaultProps = {
 
 const mapStateToProps = ({ campaigns, scenarios }) => ({
   campaign: campaigns.currentCampaign,
+  error: campaigns.error,
   scenariosLoading: scenarios.loading,
   scenarios: scenarios.list,
-  error: scenarios.error,
+  scenariosError: scenarios.error,
 });
 
 const mapDispatchToProps = {
