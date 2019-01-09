@@ -9,6 +9,7 @@ import {
   CardBody,
 } from '../../components/card';
 import { Button } from '../../components/button';
+import SanitizeHtml from '../../components/sanitizeHtml';
 import {
   List,
   ListItem,
@@ -66,7 +67,7 @@ const SceneEditPage = (props) => {
           </div>
         </CardHeader>
         <CardBody>
-          {scene.description}
+          <SanitizeHtml>{scene.description}</SanitizeHtml>
         </CardBody>
       </Card>
 

@@ -59,7 +59,7 @@ const CampaignPage = (props) => {
       <Page>
         <Card className={styles.card}>
           <CardHeader>
-            {campaign ?.name}
+            {campaign?.name}
           </CardHeader>
           <CardBody>
             {error && (
@@ -67,55 +67,57 @@ const CampaignPage = (props) => {
                 {error.message}
               </Alert>
             )}
-            {campaign ?.description}
+            {campaign?.description}
           </CardBody>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <div className={styles.listHeader}>
-              Scenarios
-              <div className={styles.controls}>
-                <Button
-                  onClick={() => redirect(`${ROUTES.SCENARIOS_EDIT}/${id}`)}
-                >
-                  Add
-                </Button>
+        {campaign && (
+          <Card>
+            <CardHeader>
+              <div className={styles.listHeader}>
+                Scenarios
+                <div className={styles.controls}>
+                  <Button
+                    onClick={() => redirect(`${ROUTES.SCENARIOS_EDIT}/${id}`)}
+                  >
+                    Add
+                  </Button>
+                </div>
               </div>
-            </div>
-          </CardHeader>
-          <CardBody>
-            {scenariosError && (
-              <Alert type={TYPES.DANGER}>
-                {scenariosError.message}
-              </Alert>
-            )}
-            {scenariosLoading && (
-              <Loader fillParent />
-            )}
+            </CardHeader>
+            <CardBody>
+              {scenariosError && (
+                <Alert type={TYPES.DANGER}>
+                  {scenariosError.message}
+                </Alert>
+              )}
+              {scenariosLoading && (
+                <Loader fillParent />
+              )}
 
-            {/* Scenarios */}
-            <List>
-              {scenarios.map(item => (
-                <ListItem
-                  className={styles.listItem}
-                  key={item.id}
-                  onClick={() => redirect(`${ROUTES.SCENARIOS}/${item.id}`)}
-                >
-                  {item.name}
-                  <span className={styles.controls}>
-                    <Button
-                      kind={BTN_KIND.DANGER}
-                      onClick={stopPropagation(() => setItemToDelete(item))}
-                    >
-                      <i className="fas fa-trash-alt" />
-                    </Button>
-                  </span>
-                </ListItem>
-              ))}
-            </List>
-          </CardBody>
-        </Card>
+              {/* Scenarios */}
+              <List>
+                {scenarios.map(item => (
+                  <ListItem
+                    className={styles.listItem}
+                    key={item.id}
+                    onClick={() => redirect(`${ROUTES.SCENARIOS}/${item.id}`)}
+                  >
+                    {item.name}
+                    <span className={styles.controls}>
+                      <Button
+                        kind={BTN_KIND.DANGER}
+                        onClick={stopPropagation(() => setItemToDelete(item))}
+                      >
+                        <i className="fas fa-trash-alt" />
+                      </Button>
+                    </span>
+                  </ListItem>
+                ))}
+              </List>
+            </CardBody>
+          </Card>
+        )}
       </Page>
 
       {deleteItem && (

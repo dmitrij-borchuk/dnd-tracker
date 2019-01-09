@@ -1,5 +1,6 @@
 import { configure, addDecorator } from '@storybook/react';
 import { withInfo } from '@storybook/addon-info';
+import '!style-loader!css-loader!../src/styles.css';
 
 addDecorator(
   withInfo({

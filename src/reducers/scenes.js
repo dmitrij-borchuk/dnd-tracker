@@ -1,40 +1,55 @@
-import {
-  SET_SCENES,
-  SET_SCENE,
-  RESET_SCENE,
-  RESET_SCENE_LIST,
-} from '../actions/scenes';
+import * as actions from '../actions/scenes';
 
 const defaultState = {
   list: [],
   loading: false,
   currentScene: null,
+  error: null,
 };
 
 export default function (state = defaultState, action) {
   switch (action.type) {
-    case SET_SCENES:
+    case actions.SET_SCENES:
       return {
         ...state,
         list: action.payload,
       };
 
-    case SET_SCENE:
+    case actions.SET_SCENE:
       return {
         ...state,
         currentScene: action.payload,
       };
 
-    case RESET_SCENE:
+    case actions.RESET_SCENE:
       return {
         ...state,
         currentScene: null,
       };
 
-    case RESET_SCENE_LIST:
+    case actions.RESET_SCENE_LIST:
       return {
         ...state,
         list: [],
+      };
+
+    case actions.SAVE_SCENE:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case actions.SAVE_SCENE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
+
+    case actions.SAVE_SCENE_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
       };
 
     default:

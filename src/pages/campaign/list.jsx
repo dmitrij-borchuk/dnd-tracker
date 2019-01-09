@@ -45,13 +45,13 @@ const CampaignsListPage = (props) => {
           </div>
         </CardHeader>
         <CardBody>
-          {loading && (
-            <Loader fillParent />
-          )}
           {error && (
             <Alert type={TYPES.DANGER}>
               {error.message}
             </Alert>
+          )}
+          {loading && (
+            <Loader fillParent />
           )}
           <List>
             {list.map(item => (

@@ -4,23 +4,18 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import ReactQuill from 'react-quill';
+// eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
+import '!style-loader!css-loader!react-quill/dist/quill.snow.css';
 import * as scenesAction from '../../actions/scenes';
 import * as commonActions from '../../actions/common';
 import { ROUTES } from '../../constants';
-import {
-  Card,
-  CardHeader,
-  CardBody,
-} from '../../components/card';
+import { Card, CardHeader, CardBody } from '../../components/card';
 import Loader from '../../components/loader';
-import {
-  Button,
-  KIND,
-} from '../../components/button';
-import {
-  InputWithLabel,
-  TextAriaWithLabel,
-} from '../../components/forms';
+import { Button, KIND } from '../../components/button';
+import { InputWithLabel } from '../../components/forms';
+import Alert, { TYPES } from '../../components/alert';
+import Label from '../../components/label';
 import styles from './styles.css';
 
 const SceneEditPage = (props) => {
@@ -29,6 +24,7 @@ const SceneEditPage = (props) => {
     scene,
     redirect,
     loading,
+    error,
     match: {
       params: {
         scenarioId,
@@ -73,6 +69,11 @@ const SceneEditPage = (props) => {
           </div>
         </CardHeader>
         <CardBody>
+          {error && (
+            <Alert type={TYPES.DANGER}>
+              {error.message}
+            </Alert>
+          )}
           {loading && (
             <Loader fillParent />
           )}
@@ -83,12 +84,17 @@ const SceneEditPage = (props) => {
             onChange={e => setName(e.target.value)}
             fullWidth
           />
-          <TextAriaWithLabel
+          {/* <TextAriaWithLabel
             label="Description"
             id="description"
             value={description}
             onChange={e => setDescription(e.target.value)}
             fullWidth
+          /> */}
+          <Label>Description</Label>
+          <ReactQuill
+            value={description}
+            onChange={setDescription}
           />
         </CardBody>
       </Card>
@@ -109,15 +115,18 @@ SceneEditPage.propTypes = {
       id: PropTypes.string,
     }),
   }).isRequired,
+  error: PropTypes.instanceOf(Error),
 };
 SceneEditPage.defaultProps = {
   scene: null,
   loading: false,
+  error: null,
 };
 
 const mapStateToProps = ({ scenes }) => ({
   scene: scenes.currentScene,
   loading: scenes.loading,
+  error: scenes.error,
 });
 
 const mapDispatchToProps = {

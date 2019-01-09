@@ -13,6 +13,7 @@ import {
   saveSceneFailed,
   setScene,
   setScenes,
+  saveSceneSuccess,
 } from '../actions/scenes';
 import {
   saveScene,
@@ -38,8 +39,9 @@ function* saveSceneSaga(action) {
   try {
     const userId = yield select(getUserIdSelector);
     yield call(saveScene, userId, action.payload);
+    yield put(saveSceneSuccess());
     if (action.payload.id) {
-      push(`${ROUTES.SCENES_EDIT}/${action.payload.scenarioId}/${action.payload.id}`);
+      push(`${ROUTES.SCENES}/${action.payload.id}`);
     } else {
       push(`${ROUTES.SCENARIOS}/${action.payload.scenarioId}`);
     }

@@ -14,6 +14,7 @@ export default function (state = defaultState, action) {
       return {
         ...state,
         loading: true,
+        error: null,
       };
 
     case actions.FETCH_CAMPAIGN_ERROR:

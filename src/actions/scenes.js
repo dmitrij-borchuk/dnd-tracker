@@ -43,3 +43,9 @@ export const saveSceneFailed = data => ({
   type: SAVE_SCENE_FAILED,
   payload: data,
 });
+
+export const SAVE_SCENE_SUCCESS = 'SAVE_SCENE_SUCCESS';
+export const saveSceneSuccess = data => ({
+  type: SAVE_SCENE_SUCCESS,
+  payload: data,
+});
