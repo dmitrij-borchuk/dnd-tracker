@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Button, KIND } from '../button';
 import styles from './styles.css';
 
 const Header = (props) => {
@@ -7,25 +8,26 @@ const Header = (props) => {
     user,
     onSignIn,
     onSignOut,
+    title,
   } = props;
 
   return (
     <header className={styles.header}>
-      <div>DnD Tracker</div>
+      <div>{title}</div>
       {user ? (
-        <button
-          type="button"
+        <Button
+          kind={KIND.DANGER}
           onClick={() => onSignOut()}
         >
           Sign out
-        </button>
+        </Button>
       ) : (
-        <button
-          type="button"
+        <Button
+          kind={KIND.DEFAULT}
           onClick={() => onSignIn()}
         >
-          Sign in
-        </button>
+          Sign in with Google
+        </Button>
       )}
     </header>
   );
@@ -36,6 +38,7 @@ Header.propTypes = {
   user: PropTypes.shape({
     email: PropTypes.string.isRequired,
   }),
+  title: PropTypes.string.isRequired,
 };
 Header.defaultProps = {
   user: null,

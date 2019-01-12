@@ -57,6 +57,7 @@ class App extends PureComponent {
         onSignIn={signIn}
         onSignOut={signOut}
         user={currentUser}
+        title="DnD Tracker"
       />
     );
 
@@ -73,11 +74,7 @@ class App extends PureComponent {
 
     return (
       <>
-        <Header
-          onSignIn={signIn}
-          onSignOut={signOut}
-          user={currentUser}
-        />
+        {header}
         <Router history={history}>
           <div className={styles.appBody}>
             <Sidebar>
