@@ -9,6 +9,7 @@ import Page from '../../components/page';
 import { Card, CardHeader, CardBody } from '../../components/card';
 import { Button, KIND } from '../../components/button';
 import { InputWithLabel } from '../../components/forms';
+import Label from '../../components/label';
 import loaderHoc from '../../utils/hocs/loader';
 import styles from './styles.css';
 
@@ -73,6 +74,7 @@ const CampaignEditPage = (props) => {
             onChange={e => setName(e.target.value)}
             fullWidth
           />
+          <Label>Description</Label>
           <RichText
             value={description}
             onChange={setDescription}

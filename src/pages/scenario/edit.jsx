@@ -1,24 +1,13 @@
-import React, {
-  useState,
-  useEffect,
-} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as scenariosAction from '../../actions/scenarios';
 import * as commonActions from '../../actions/common';
-import {
-  Card,
-  CardHeader,
-  CardBody,
-} from '../../components/card';
-import {
-  Button,
-  KIND,
-} from '../../components/button';
-import {
-  InputWithLabel,
-  TextAriaWithLabel,
-} from '../../components/forms';
+import { Card, CardHeader, CardBody } from '../../components/card';
+import { Button, KIND } from '../../components/button';
+import Label from '../../components/label';
+import RichText from '../../components/richText';
+import { InputWithLabel } from '../../components/forms';
 import { ROUTES } from '../../constants';
 import Alert, { TYPES } from '../../components/alert';
 import styles from './styles.css';
@@ -89,12 +78,10 @@ const ScenarioEditPage = (props) => {
             onChange={e => setName(e.target.value)}
             fullWidth
           />
-          <TextAriaWithLabel
-            label="Description"
-            id="description"
+          <Label>Description</Label>
+          <RichText
             value={description}
-            onChange={e => setDescription(e.target.value)}
-            fullWidth
+            onChange={setDescription}
           />
         </CardBody>
       </Card>

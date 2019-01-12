@@ -4,17 +4,12 @@ import { connect } from 'react-redux';
 import * as scenariosAction from '../../actions/scenarios';
 import * as scenesAction from '../../actions/scenes';
 import * as commonActions from '../../actions/common';
-import {
-  Card,
-  CardHeader,
-  CardBody,
-} from '../../components/card';
+import { Card, CardHeader, CardBody } from '../../components/card';
 import { Button } from '../../components/button';
-import {
-  List,
-  ListItem,
-} from '../../components/list';
+import SanitizeHtml from '../../components/sanitizeHtml';
+import { List, ListItem } from '../../components/list';
 import Page from '../../components/page';
+import Loader from '../../components/loader';
 import { ROUTES } from '../../constants';
 
 import styles from './styles.css';
@@ -48,19 +43,17 @@ const ScenarioEditPage = (props) => {
     return () => resetSceneList();
   }, []);
 
-  if (!scenario) {
-    // TODO: use loader
-    return null;
-  }
-
   return (
     <Page>
       <Card className={styles.card}>
         <CardHeader>
-          {scenario.name}
+          {scenario?.name}
         </CardHeader>
         <CardBody>
-          {scenario.description}
+          {!scenario && (
+            <Loader fillParent />
+          )}
+          <SanitizeHtml>{scenario?.description}</SanitizeHtml>
         </CardBody>
       </Card>
 

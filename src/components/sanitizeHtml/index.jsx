@@ -20,7 +20,10 @@ const SanitizeHTML = ({ children }) => (
   <div dangerouslySetInnerHTML={sanitize(children)} />
 );
 SanitizeHTML.propTypes = {
-  children: PropTypes.string.isRequired,
+  children: PropTypes.string,
+};
+SanitizeHTML.defaultProps = {
+  children: '',
 };
 
 export default SanitizeHTML;
