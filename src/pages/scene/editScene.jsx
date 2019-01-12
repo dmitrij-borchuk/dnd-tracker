@@ -5,6 +5,7 @@ import React, {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReactQuill from 'react-quill';
+// TODO: move
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 import '!style-loader!css-loader!react-quill/dist/quill.snow.css';
 import * as scenesAction from '../../actions/scenes';
@@ -16,6 +17,7 @@ import { Button, KIND } from '../../components/button';
 import { InputWithLabel } from '../../components/forms';
 import Alert, { TYPES } from '../../components/alert';
 import Label from '../../components/label';
+import loaderHoc from '../../utils/hocs/loader';
 import styles from './styles.css';
 
 const SceneEditPage = (props) => {
@@ -136,34 +138,27 @@ const mapDispatchToProps = {
   redirect: commonActions.redirect,
 };
 
-const loaderHoc = Component => (props) => {
-  const {
-    getScene,
-    resetScene,
-    scene,
-    match: {
-      params: {
-        id,
-      },
-    },
-  } = props;
-  // const [loading, setLoading] = useState(true);
-  const loaded = !!scene;
-
-  useEffect(() => {
-    if (id) {
-      getScene(id);
-    }
-    return () => resetScene();
-  }, []);
-
-  if (id && !loaded) {
-    return (<Loader fillParent />);
-  }
-  return <Component {...props} />;
-};
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(loaderHoc(SceneEditPage));
+)(loaderHoc({
+  init: (props) => {
+    const {
+      getScene,
+      resetScene,
+      match: {
+        params: {
+          id,
+        },
+      },
+    } = props;
+
+    useEffect(() => {
+      if (id) {
+        getScene(id);
+      }
+      return () => resetScene();
+    }, []);
+  },
+  check: props => !props.match.params.id || !!props.scene,
+})(SceneEditPage));

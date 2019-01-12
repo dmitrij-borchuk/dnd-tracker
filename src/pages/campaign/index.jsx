@@ -10,6 +10,7 @@ import { Card, CardHeader, CardBody } from '../../components/card';
 import { Button, KIND as BTN_KIND } from '../../components/button';
 import { List, ListItem } from '../../components/list';
 import Alert, { TYPES } from '../../components/alert';
+import SanitizeHtml from '../../components/sanitizeHtml';
 import {
   Modal,
   ModalHeader,
@@ -30,6 +31,7 @@ const CampaignPage = (props) => {
     scenarios,
     redirect,
     scenariosLoading,
+    loading,
     removeScenario,
     error,
     scenariosError,
@@ -58,8 +60,11 @@ const CampaignPage = (props) => {
     <>
       <Page>
         <Card className={styles.card}>
-          <CardHeader>
+          <CardHeader className={styles.listHeader}>
             {campaign?.name}
+            <div className={styles.controls}>
+              <Button onClick={() => redirect(`${ROUTES.CAMPAIGNS_EDIT}/${id}`)}>Edit</Button>
+            </div>
           </CardHeader>
           <CardBody>
             {error && (
@@ -67,7 +72,10 @@ const CampaignPage = (props) => {
                 {error.message}
               </Alert>
             )}
-            {campaign?.description}
+            {loading && (
+              <Loader fillParent />
+            )}
+            <SanitizeHtml>{campaign?.description || ''}</SanitizeHtml>
           </CardBody>
         </Card>
 
@@ -175,6 +183,7 @@ CampaignPage.defaultProps = {
 const mapStateToProps = ({ campaigns, scenarios }) => ({
   campaign: campaigns.currentCampaign,
   error: campaigns.error,
+  loading: campaigns.loading,
   scenariosLoading: scenarios.loading,
   scenarios: scenarios.list,
   scenariosError: scenarios.error,
