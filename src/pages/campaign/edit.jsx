@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import ReactQuill from 'react-quill';
+import RichText from '../../components/richText';
 import * as campaignsAction from '../../actions/campaigns';
 import * as commonActions from '../../actions/common';
 import { ROUTES } from '../../constants';
@@ -73,7 +73,7 @@ const CampaignEditPage = (props) => {
             onChange={e => setName(e.target.value)}
             fullWidth
           />
-          <ReactQuill
+          <RichText
             value={description}
             onChange={setDescription}
           />

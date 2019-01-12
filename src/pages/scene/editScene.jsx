@@ -4,10 +4,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import ReactQuill from 'react-quill';
-// TODO: move
-// eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
-import '!style-loader!css-loader!react-quill/dist/quill.snow.css';
+import RichText from '../../components/richText';
 import * as scenesAction from '../../actions/scenes';
 import * as commonActions from '../../actions/common';
 import { ROUTES } from '../../constants';
@@ -94,7 +91,7 @@ const SceneEditPage = (props) => {
             fullWidth
           /> */}
           <Label>Description</Label>
-          <ReactQuill
+          <RichText
             value={description}
             onChange={setDescription}
           />
