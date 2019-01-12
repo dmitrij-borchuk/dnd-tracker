@@ -63,7 +63,7 @@ function* removeCampaignSaga(action) {
   try {
     const userId = yield select(getUserIdSelector);
     yield call(removeCampaign, userId, action.payload);
-    yield put(removeCampaignSuccess, action.payload);
+    yield put(removeCampaignSuccess(action.payload));
   } catch (e) {
     yield put(removeCampaignFailed(e));
   }

@@ -1,18 +1,23 @@
 
-import React, {
-  useEffect,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as campaignsAction from '../../actions/campaigns';
 import * as commonActions from '../../actions/common';
 import { ROUTES } from '../../constants';
+import { stopPropagation } from '../../utils';
 import {
   Card,
   CardHeader,
   CardBody,
 } from '../../components/card';
-import { Button } from '../../components/button';
+import {
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalControls,
+} from '../../components/modal';
+import { Button, KIND as BTN_KIND } from '../../components/button';
 import { List, ListItem } from '../../components/list';
 import Page from '../../components/page';
 import Alert, { TYPES } from '../../components/alert';
@@ -26,53 +31,85 @@ const CampaignsListPage = (props) => {
     redirect,
     error,
     loading,
+    removeCampaign,
   } = props;
+  const [deleteItem, setItemToDelete] = useState(null);
 
   useEffect(() => {
     getList();
   }, []);
 
   return (
-    <Page>
-      <Card>
-        <CardHeader>
-          <div className={styles.listHeader}>
-            Campaigns
+    <>
+      <Page>
+        <Card>
+          <CardHeader>
+            <div className={styles.listHeader}>
+              Campaigns
 
-            <div className={styles.controls}>
-              <Button onClick={() => redirect(ROUTES.CAMPAIGNS_EDIT)}>Add</Button>
+              <div className={styles.controls}>
+                <Button onClick={() => redirect(ROUTES.CAMPAIGNS_EDIT)}>Add</Button>
+              </div>
             </div>
-          </div>
-        </CardHeader>
-        <CardBody>
-          {error && (
-            <Alert type={TYPES.DANGER}>
-              {error.message}
-            </Alert>
-          )}
-          {loading && (
-            <Loader fillParent />
-          )}
-          <List>
-            {list.map(item => (
-              <ListItem
-                className={styles.listItem}
-                key={item.id || item.key}
-                onClick={() => redirect(`${ROUTES.CAMPAIGNS}/${item.id}`)}
-              >
-                {item.name}
-              </ListItem>
-            ))}
-          </List>
-        </CardBody>
-      </Card>
-    </Page>
+          </CardHeader>
+          <CardBody>
+            {error && (
+              <Alert type={TYPES.DANGER}>
+                {error.message}
+              </Alert>
+            )}
+            {loading && (
+              <Loader fillParent />
+            )}
+            <List>
+              {list.map(item => (
+                <ListItem
+                  className={styles.listItem}
+                  key={item.id}
+                  onClick={() => redirect(`${ROUTES.CAMPAIGNS}/${item.id}`)}
+                >
+                  {item.name}
+                  <span className={styles.controls}>
+                    <Button
+                      kind={BTN_KIND.DANGER}
+                      onClick={stopPropagation(() => setItemToDelete(item))}
+                    >
+                      <i className="fas fa-trash-alt" />
+                    </Button>
+                  </span>
+                </ListItem>
+              ))}
+            </List>
+          </CardBody>
+        </Card>
+      </Page>
+
+      {deleteItem && (
+        <Modal>
+          <ModalHeader>{deleteItem.name}</ModalHeader>
+          <ModalBody>Do you really want to delete this?</ModalBody>
+          <ModalControls>
+            <Button onClick={() => setItemToDelete(null)}>No</Button>
+            <Button
+              kind={BTN_KIND.DANGER}
+              onClick={() => {
+                setItemToDelete(null);
+                removeCampaign(deleteItem.id);
+              }}
+            >
+              Yes
+            </Button>
+          </ModalControls>
+        </Modal>
+      )}
+    </>
   );
 };
 
 CampaignsListPage.propTypes = {
   getList: PropTypes.func.isRequired,
   redirect: PropTypes.func.isRequired,
+  removeCampaign: PropTypes.func.isRequired,
   scenario: PropTypes.shape({
     name: PropTypes.string,
     description: PropTypes.string,
@@ -97,6 +134,7 @@ const mapStateToProps = ({ campaigns }) => ({
 
 const mapDispatchToProps = {
   getList: campaignsAction.getCampaigns,
+  removeCampaign: campaignsAction.removeCampaign,
   redirect: commonActions.redirect,
 };
 
