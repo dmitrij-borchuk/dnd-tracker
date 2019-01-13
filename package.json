@@ -1,6 +1,6 @@
 {
   "name": "dnd-tracker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "repository": "git@github.com:dmitrij-borchuk/dnd-tracker.git",
   "author": "Dmytro Borchuk <dborchuk@remit.se>",
