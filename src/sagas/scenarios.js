@@ -16,6 +16,7 @@ import {
   setScenario,
   removeScenarioSuccess,
   removeScenarioFailed,
+  fetchScenarioError,
 } from '../actions/scenarios';
 import {
   saveScenario,
@@ -33,9 +34,13 @@ function* fetchScenariosSaga(action) {
 }
 
 function* fetchScenarioSaga(action) {
-  const userId = yield select(getUserIdSelector);
-  const data = yield call(getScenario, userId, action.payload);
-  yield put(setScenario(data));
+  try {
+    const userId = yield select(getUserIdSelector);
+    const data = yield call(getScenario, userId, action.payload);
+    yield put(setScenario(data));
+  } catch (e) {
+    yield put(fetchScenarioError(e));
+  }
 }
 
 function* saveScenarioSaga(action) {

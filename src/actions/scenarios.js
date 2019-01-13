@@ -4,6 +4,12 @@ export const fetchScenario = data => ({
   payload: data,
 });
 
+export const FETCH_SCENARIO_ERROR = 'FETCH_SCENARIO_ERROR';
+export const fetchScenarioError = data => ({
+  type: FETCH_SCENARIO_ERROR,
+  payload: data,
+});
+
 export const SET_SCENARIO = 'SET_SCENARIO';
 export const setScenario = data => ({
   type: SET_SCENARIO,

@@ -10,7 +10,6 @@ import {
   GET_CAMPAIGNS,
   SAVE_CAMPAIGN,
   setCampaigns,
-  // SAVE_SCENARIO,
   FETCH_CAMPAIGN,
   REMOVE_CAMPAIGN,
   saveCampaignFailed,

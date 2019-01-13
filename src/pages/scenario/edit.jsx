@@ -10,13 +10,12 @@ import RichText from '../../components/richText';
 import { InputWithLabel } from '../../components/forms';
 import { ROUTES } from '../../constants';
 import Alert, { TYPES } from '../../components/alert';
+import loaderHoc from '../../utils/hocs/loader';
 import styles from './styles.css';
 
 const ScenarioEditPage = (props) => {
   const {
     saveScenario,
-    getScenario,
-    resetScenario,
     scenario,
     error,
     redirect,
@@ -27,16 +26,9 @@ const ScenarioEditPage = (props) => {
       },
     },
   } = props;
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [name, setName] = useState(scenario?.name || '');
+  const [description, setDescription] = useState(scenario?.description || '');
   const isEmpty = name === '';
-
-  useEffect(() => {
-    if (id) {
-      getScenario(id);
-    }
-    return () => resetScenario();
-  }, []);
 
   return (
     <div className="page-content">
@@ -54,6 +46,7 @@ const ScenarioEditPage = (props) => {
               </Button>
               <Button
                 onClick={() => saveScenario({
+                  ...scenario,
                   campaignId,
                   name,
                   description,
@@ -92,8 +85,6 @@ const ScenarioEditPage = (props) => {
 ScenarioEditPage.propTypes = {
   redirect: PropTypes.func.isRequired,
   saveScenario: PropTypes.func.isRequired,
-  resetScenario: PropTypes.func.isRequired,
-  getScenario: PropTypes.func.isRequired,
   scenario: PropTypes.shape({
     name: PropTypes.string,
     description: PropTypes.string,
@@ -126,4 +117,24 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ScenarioEditPage);
+)(loaderHoc({
+  init: (props) => {
+    const {
+      getScenario,
+      resetScenario,
+      match: {
+        params: {
+          id,
+        },
+      },
+    } = props;
+
+    useEffect(() => {
+      if (id) {
+        getScenario(id);
+      }
+      return () => resetScenario();
+    }, []);
+  },
+  check: props => !props.match.params.id || !!props.scenario,
+})(ScenarioEditPage));

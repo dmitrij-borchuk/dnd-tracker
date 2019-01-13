@@ -46,8 +46,11 @@ const ScenarioEditPage = (props) => {
   return (
     <Page>
       <Card className={styles.card}>
-        <CardHeader>
+        <CardHeader className={styles.listHeader}>
           {scenario?.name}
+          <div className={styles.controls}>
+            <Button onClick={() => redirect(`${ROUTES.SCENARIOS_EDIT}/${scenario.campaignId}/${id}`)}>Edit</Button>
+          </div>
         </CardHeader>
         <CardBody>
           {!scenario && (
