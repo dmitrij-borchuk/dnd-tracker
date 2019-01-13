@@ -23,6 +23,11 @@ module.exports = {
     // ),
   ],
   devtool: 'source-map',
+  devServer: {
+    contentBase: path.join(__dirname, 'dist'),
+    historyApiFallback: true,
+    port: 8082,
+  },
   resolve: {
     extensions: ['.js', '.json', '.jsx'],
   },
@@ -32,7 +37,12 @@ module.exports = {
         test: /\.css$/,
         use: [
           { loader: 'style-loader' },
-          { loader: 'css-loader' },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+            },
+          },
         ],
       },
       {

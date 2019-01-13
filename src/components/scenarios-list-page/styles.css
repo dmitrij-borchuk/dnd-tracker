@@ -1,0 +1,8 @@
+.listHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.listItem {
+  cursor: pointer;
+}
