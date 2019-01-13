@@ -49,3 +49,21 @@ export const saveSceneSuccess = data => ({
   type: SAVE_SCENE_SUCCESS,
   payload: data,
 });
+
+export const REMOVE_SCENE = 'REMOVE_SCENE';
+export const removeScene = data => ({
+  type: REMOVE_SCENE,
+  payload: data,
+});
+
+export const REMOVE_SCENE_FAILED = 'REMOVE_SCENE_FAILED';
+export const removeSceneFailed = data => ({
+  type: REMOVE_SCENE_FAILED,
+  payload: data,
+});
+
+export const REMOVE_SCENE_SUCCESS = 'REMOVE_SCENE_SUCCESS';
+export const removeSceneSuccess = data => ({
+  type: REMOVE_SCENE_SUCCESS,
+  payload: data,
+});

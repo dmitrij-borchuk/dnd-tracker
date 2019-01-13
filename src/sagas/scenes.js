@@ -10,15 +10,19 @@ import {
   SAVE_SCENE,
   GET_SCENES,
   FETCH_SCENE,
+  REMOVE_SCENE,
   saveSceneFailed,
   setScene,
   setScenes,
   saveSceneSuccess,
+  removeSceneSuccess,
+  removeSceneFailed,
 } from '../actions/scenes';
 import {
   saveScene,
   getScenes,
   getScene,
+  removeScene,
 } from '../api/scenes';
 
 const getUserIdSelector = state => state.auth.currentUser.uid;
@@ -50,10 +54,21 @@ function* saveSceneSaga(action) {
   }
 }
 
+function* removeSceneSaga(action) {
+  try {
+    const userId = yield select(getUserIdSelector);
+    yield call(removeScene, userId, action.payload);
+    yield put(removeSceneSuccess(action.payload));
+  } catch (e) {
+    yield put(removeSceneFailed(e));
+  }
+}
+
 function* mySaga() {
   yield takeLatest(SAVE_SCENE, saveSceneSaga);
   yield takeLatest(GET_SCENES, fetchScenesSaga);
   yield takeLatest(FETCH_SCENE, fetchSceneSaga);
+  yield takeLatest(REMOVE_SCENE, removeSceneSaga);
 }
 
 export default mySaga;

@@ -29,6 +29,9 @@ const ScenarioEditPage = (props) => {
   const [name, setName] = useState(scenario?.name || '');
   const [description, setDescription] = useState(scenario?.description || '');
   const isEmpty = name === '';
+  const cancelUrl = id
+    ? `${ROUTES.SCENARIOS}/${id}`
+    : `${ROUTES.CAMPAIGNS}/${campaignId}`;
 
   return (
     <div className="page-content">
@@ -39,7 +42,7 @@ const ScenarioEditPage = (props) => {
             &nbsp;scenario
             <div className={styles.controls}>
               <Button
-                onClick={() => redirect(`${ROUTES.CAMPAIGNS}/${campaignId}`)}
+                onClick={() => redirect(cancelUrl)}
                 kind={KIND.DANGER}
               >
                 Cancel
