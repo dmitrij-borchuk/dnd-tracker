@@ -1,6 +1,6 @@
-// TODO: add env vars
 export default {
-  apiKey: '<Web API Key>',
-  authDomain: '<Project ID>.firebaseapp.com',
-  databaseURL: '<Database url>',
+  apiKey: process.env.apiKey,
+  authDomain: process.env.authDomain,
+  projectId: process.env.projectId,
+  storageBucket: process.env.storageBucket,
 };
