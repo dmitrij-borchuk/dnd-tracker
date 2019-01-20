@@ -10,12 +10,13 @@ const Button = (props) => {
     onClick,
     kind,
     disabled,
+    className,
   } = props;
 
   return (
     <button
       type="button"
-      className={cn(styles.btn, kind2class[kind])}
+      className={cn(styles.btn, kind2class[kind], className)}
       onClick={onClick}
       disabled={disabled}
     >
@@ -27,12 +28,14 @@ Button.propTypes = {
   children: PropTypes.node.isRequired,
   onClick: PropTypes.func,
   kind: PropTypes.string,
+  className: PropTypes.string,
   disabled: PropTypes.bool,
 };
 Button.defaultProps = {
   onClick: () => {},
   kind: KIND.DEFAULT,
   disabled: false,
+  className: '',
 };
 
 export default Button;

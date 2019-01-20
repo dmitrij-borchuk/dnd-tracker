@@ -10,3 +10,18 @@
   top: 0;
   width: 100%;
 }
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  margin-left: 10px;
+}
+
+@media (min-width: 992px) {
+  .menuBtn {
+    display: none;
+  }
+}

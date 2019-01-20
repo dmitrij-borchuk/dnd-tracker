@@ -8,12 +8,25 @@ const Header = (props) => {
     user,
     onSignIn,
     onSignOut,
+    onMenuClick,
     title,
   } = props;
 
   return (
     <header className={styles.header}>
-      <div>{title}</div>
+      <span className={styles.left}>
+        <Button
+          kind={KIND.GHOST}
+          onClick={onMenuClick}
+          className={styles.menuBtn}
+        >
+          <i className="fas fa-bars" />
+        </Button>
+        <div className={styles.title}>
+          {title}
+        </div>
+      </span>
+
       {user ? (
         <Button
           kind={KIND.DANGER}
@@ -35,6 +48,7 @@ const Header = (props) => {
 Header.propTypes = {
   onSignIn: PropTypes.func.isRequired,
   onSignOut: PropTypes.func.isRequired,
+  onMenuClick: PropTypes.func.isRequired,
   user: PropTypes.shape({
     email: PropTypes.string.isRequired,
   }),

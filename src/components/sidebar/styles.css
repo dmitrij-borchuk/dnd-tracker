@@ -7,6 +7,12 @@
   position: fixed;
 }
 
+@media (max-width: 991px) {
+.sidebar.closed {
+    left: -200px;
+  }
+}
+
 .sidebarItem {
   cursor: pointer;
   padding: .75rem 1rem;

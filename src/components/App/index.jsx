@@ -1,5 +1,6 @@
-import React, { PureComponent } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import cn from 'classnames';
 import {
   Router,
   Route,
@@ -37,141 +38,136 @@ const redirectTo = url => () => (
   />
 );
 
-class App extends PureComponent {
-  componentDidMount() {
-    const {
-      setupApp,
-    } = this.props;
+const App = (props) => {
+  const {
+    signIn,
+    signOut,
+    currentUser,
+    setupApp,
+  } = props;
+  const [menuClosed, setMenuClosed] = useState(true);
+  const header = (
+    <Header
+      onSignIn={signIn}
+      onSignOut={signOut}
+      onMenuClick={() => setMenuClosed(!menuClosed)}
+      user={currentUser}
+      title="DnD Tracker"
+    />
+  );
 
-    setupApp();
-  }
+  useEffect(() => { setupApp(); }, []);
 
-  render() {
-    const {
-      signIn,
-      signOut,
-      currentUser,
-    } = this.props;
-    const header = (
-      <Header
-        onSignIn={signIn}
-        onSignOut={signOut}
-        user={currentUser}
-        title="DnD Tracker"
-      />
-    );
-
-    if (!currentUser) {
-      return (
-        <>
-          {header}
-          <div className={styles.appBody}>
-            You need to sign in to use this website
-          </div>
-        </>
-      );
-    }
-
+  if (!currentUser) {
     return (
       <>
         {header}
-        <Router history={history}>
-          <div className={styles.appBody}>
-            <Sidebar>
-              <Link to={ROUTES.CAMPAIGNS}>
-                <SidebarItem>
-                  Campaigns
-                </SidebarItem>
-              </Link>
-              <Link to={ROUTES.RESOURCES}>
-                <SidebarItem>
-                  Resources
-                </SidebarItem>
-              </Link>
-            </Sidebar>
-            <div className={styles.content}>
-              <Switch>
-                <Route
-                  path="/"
-                  exact
-                  component={redirectTo(ROUTES.CAMPAIGNS)}
-                />
-
-                {/* Scenarios */}
-                <Route
-                  path={`${ROUTES.SCENARIOS}/:id`}
-                  component={ScenarioPage}
-                  exact
-                />
-                <Route
-                  path={`${ROUTES.SCENARIOS_EDIT}/:campaignId`}
-                  component={ScenarioEditPage}
-                  exact
-                />
-                <Route
-                  path={`${ROUTES.SCENARIOS_EDIT}/:campaignId/:id`}
-                  component={ScenarioEditPage}
-                />
-
-                {/* Scenes */}
-                <Route
-                  path={`${ROUTES.SCENES}/:id`}
-                  component={ScenePage}
-                  exact
-                />
-                <Route
-                  path={`${ROUTES.SCENES_EDIT}/:scenarioId`}
-                  component={SceneEditPage}
-                  exact
-                />
-                <Route
-                  path={`${ROUTES.SCENES_EDIT}/:scenarioId/:id`}
-                  component={SceneEditPage}
-                />
-
-                {/* Campaigns */}
-                <Route
-                  path={ROUTES.CAMPAIGNS}
-                  component={CampaignsListPage}
-                  exact
-                />
-                <Route
-                  path={`${ROUTES.CAMPAIGNS_EDIT}`}
-                  component={CampaignEditPage}
-                  exact
-                />
-                <Route
-                  path={`${ROUTES.CAMPAIGNS}/:id`}
-                  component={CampaignPage}
-                  exact
-                />
-                <Route
-                  path={`${ROUTES.CAMPAIGNS_EDIT}/:id`}
-                  component={CampaignEditPage}
-                />
-
-                {/* Resources */}
-                <Route
-                  path={`${ROUTES.RESOURCES}`}
-                  component={ResourcesPage}
-                  exact
-                />
-                <Route
-                  path={`${ROUTES.RESOURCES_EDIT}`}
-                  component={ResourceEditPage}
-                  exact
-                />
-                <Route
-                  path={`${ROUTES.RESOURCES_EDIT}/:id`}
-                  component={ResourceEditPage}
-                />
-              </Switch>
-            </div>
-          </div>
-        </Router>
+        <div className={styles.appBody}>
+          You need to sign in to use this website
+        </div>
       </>
     );
   }
+
+  return (
+    <>
+      {header}
+      <Router history={history}>
+        <div className={styles.appBody}>
+          <Sidebar closed={menuClosed}>
+            <Link to={ROUTES.CAMPAIGNS}>
+              <SidebarItem>
+                Campaigns
+              </SidebarItem>
+            </Link>
+            <Link to={ROUTES.RESOURCES}>
+              <SidebarItem>
+                Resources
+              </SidebarItem>
+            </Link>
+          </Sidebar>
+          <div className={styles.content}>
+            <Switch>
+              <Route
+                path="/"
+                exact
+                component={redirectTo(ROUTES.CAMPAIGNS)}
+              />
+
+              {/* Scenarios */}
+              <Route
+                path={`${ROUTES.SCENARIOS}/:id`}
+                component={ScenarioPage}
+                exact
+              />
+              <Route
+                path={`${ROUTES.SCENARIOS_EDIT}/:campaignId`}
+                component={ScenarioEditPage}
+                exact
+              />
+              <Route
+                path={`${ROUTES.SCENARIOS_EDIT}/:campaignId/:id`}
+                component={ScenarioEditPage}
+              />
+
+              {/* Scenes */}
+              <Route
+                path={`${ROUTES.SCENES}/:id`}
+                component={ScenePage}
+                exact
+              />
+              <Route
+                path={`${ROUTES.SCENES_EDIT}/:scenarioId`}
+                component={SceneEditPage}
+                exact
+              />
+              <Route
+                path={`${ROUTES.SCENES_EDIT}/:scenarioId/:id`}
+                component={SceneEditPage}
+              />
+
+              {/* Campaigns */}
+              <Route
+                path={ROUTES.CAMPAIGNS}
+                component={CampaignsListPage}
+                exact
+              />
+              <Route
+                path={`${ROUTES.CAMPAIGNS_EDIT}`}
+                component={CampaignEditPage}
+                exact
+              />
+              <Route
+                path={`${ROUTES.CAMPAIGNS}/:id`}
+                component={CampaignPage}
+                exact
+              />
+              <Route
+                path={`${ROUTES.CAMPAIGNS_EDIT}/:id`}
+                component={CampaignEditPage}
+              />
+
+              {/* Resources */}
+              <Route
+                path={`${ROUTES.RESOURCES}`}
+                component={ResourcesPage}
+                exact
+              />
+              <Route
+                path={`${ROUTES.RESOURCES_EDIT}`}
+                component={ResourceEditPage}
+                exact
+              />
+              <Route
+                path={`${ROUTES.RESOURCES_EDIT}/:id`}
+                component={ResourceEditPage}
+              />
+            </Switch>
+          </div>
+        </div>
+      </Router>
+    </>
+  );
 }
 
 App.propTypes = {
