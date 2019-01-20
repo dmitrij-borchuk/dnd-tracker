@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as scenesAction from '../../actions/scenes';
 import * as commonActions from '../../actions/common';
+import * as resourcesActions from '../../actions/resources';
 import {
   Card,
   CardHeader,
@@ -15,6 +16,7 @@ import {
   ListItem,
 } from '../../components/list';
 import Page from '../../components/page';
+import Loader from '../../components/loader';
 import { ROUTES } from '../../constants';
 
 import styles from './styles.css';
@@ -22,17 +24,18 @@ import styles from './styles.css';
 const SceneEditPage = (props) => {
   const {
     getScene,
-    getScenes,
+    getResources,
     resetScene,
-    resetSceneList,
+    resetResourcesList,
     scene,
     redirect,
-    scenes,
+    resources,
     match: {
       params: {
         id,
       },
     },
+    loading,
   } = props;
 
   useEffect(() => {
@@ -43,34 +46,33 @@ const SceneEditPage = (props) => {
   }, []);
   useEffect(() => {
     if (id) {
-      getScenes(id);
+      getResources(id);
     }
-    return () => resetSceneList();
+    return () => resetResourcesList();
   }, []);
-
-  if (!scene) {
-    // TODO: use loader
-    return null;
-  }
 
   return (
     <Page>
       <Card className={styles.card}>
         <CardHeader className={styles.listHeader}>
-          {scene.name}
+          {scene?.name}
           <div className={styles.controls}>
             <Button
-              onClick={() => redirect(`${ROUTES.SCENES_EDIT}/${scene.scenarioId}/${scene.id}`)}
+              onClick={() => redirect(`${ROUTES.SCENES_EDIT}/${scene?.scenarioId}/${scene?.id}`)}
             >
               Edit
             </Button>
           </div>
         </CardHeader>
         <CardBody>
-          <SanitizeHtml>{scene.description}</SanitizeHtml>
+          {loading && (
+            <Loader fillParent />
+          )}
+          <SanitizeHtml>{scene?.description}</SanitizeHtml>
         </CardBody>
       </Card>
 
+      {/* Resources */}
       <Card>
         <CardHeader>
           <div className={styles.listHeader}>
@@ -86,7 +88,7 @@ const SceneEditPage = (props) => {
         </CardHeader>
         <CardBody>
           <List>
-            {scenes.map(item => (
+            {resources.map(item => (
               <ListItem
                 className={styles.listItem}
                 key={item.id}
@@ -104,37 +106,38 @@ const SceneEditPage = (props) => {
 
 SceneEditPage.propTypes = {
   redirect: PropTypes.func.isRequired,
-  getScenes: PropTypes.func.isRequired,
-  resetSceneList: PropTypes.func.isRequired,
+  getResources: PropTypes.func.isRequired,
+  resetResourcesList: PropTypes.func.isRequired,
   resetScene: PropTypes.func.isRequired,
   getScene: PropTypes.func.isRequired,
   scene: PropTypes.shape({
     name: PropTypes.string,
     description: PropTypes.string,
   }),
-  scenes: PropTypes.arrayOf(PropTypes.shape({
+  resources: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
-    description: PropTypes.string,
   })),
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string,
     }),
   }).isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 SceneEditPage.defaultProps = {
   scene: null,
-  scenes: [],
+  resources: [],
 };
 
 const mapStateToProps = ({ scenes }) => ({
   scene: scenes.currentScene,
   scenes: scenes.list,
+  loading: scenes.loading,
 });
 
 const mapDispatchToProps = {
-  getScenes: scenesAction.getScenes,
-  resetSceneList: scenesAction.resetSceneList,
+  getResources: resourcesActions.getLinkedResources,
+  resetResourcesList: resourcesActions.resetLinkedResourcesList,
   getScene: scenesAction.fetchScene,
   resetScene: scenesAction.resetScene,
   redirect: commonActions.redirect,

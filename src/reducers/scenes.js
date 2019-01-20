@@ -18,6 +18,7 @@ export default function (state = defaultState, action) {
     case actions.SET_SCENE:
       return {
         ...state,
+        loading: false,
         currentScene: action.payload,
       };
 
@@ -70,6 +71,12 @@ export default function (state = defaultState, action) {
         ...state,
         loading: false,
         error: action.payload,
+      };
+
+    case actions.FETCH_SCENE:
+      return {
+        ...state,
+        loading: true,
       };
 
     default:
