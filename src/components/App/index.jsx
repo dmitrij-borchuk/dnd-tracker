@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import cn from 'classnames';
 import {
   Router,
   Route,
@@ -75,12 +74,18 @@ const App = (props) => {
       <Router history={history}>
         <div className={styles.appBody}>
           <Sidebar closed={menuClosed}>
-            <Link to={ROUTES.CAMPAIGNS}>
+            <Link
+              onClick={() => setMenuClosed(true)}
+              to={ROUTES.CAMPAIGNS}
+            >
               <SidebarItem>
                 Campaigns
               </SidebarItem>
             </Link>
-            <Link to={ROUTES.RESOURCES}>
+            <Link
+              onClick={() => setMenuClosed(true)}
+              to={ROUTES.RESOURCES}
+            >
               <SidebarItem>
                 Resources
               </SidebarItem>
@@ -168,7 +173,7 @@ const App = (props) => {
       </Router>
     </>
   );
-}
+};
 
 App.propTypes = {
   setupApp: PropTypes.func.isRequired,
