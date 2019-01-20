@@ -1,7 +1,11 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const dotenv = require('dotenv');
 // const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
+
+dotenv.load();
 
 const envKeys = Object.keys(process.env).reduce((prev, next) => {
   // prev[`process.env.${next}`] = JSON.stringify(process.env[next]);
@@ -22,6 +26,9 @@ module.exports = {
       template: './src/index.html',
     }),
     new webpack.DefinePlugin(envKeys),
+    new CopyWebpackPlugin([
+      './_redirects',
+    ]),
     // new SWPrecacheWebpackPlugin(
     //   {
     //     cacheId: 'ketchup',
