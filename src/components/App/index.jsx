@@ -21,6 +21,7 @@ import ScenarioPage from '../../pages/scenario';
 import ScenePage from '../../pages/scene';
 import SceneEditPage from '../../pages/scene/editScene';
 import ResourceEditPage from '../../pages/resource/resourceEdit';
+import ResourceLinkingtPage from '../../pages/resource/linking';
 import ResourcesPage from '../../pages/resource/list';
 import Header from '../header';
 import {
@@ -166,6 +167,10 @@ const App = (props) => {
               <Route
                 path={`${ROUTES.RESOURCES_EDIT}/:id`}
                 component={ResourceEditPage}
+              />
+              <Route
+                path={`${ROUTES.RESOURCE_LINKING}/:id`}
+                component={ResourceLinkingtPage}
               />
             </Switch>
           </div>

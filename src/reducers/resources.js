@@ -11,10 +11,17 @@ const defaultState = {
 export default function (state = defaultState, action) {
   switch (action.type) {
     // Resources
+    case actions.GET_RESOURCES:
+      return {
+        ...state,
+        loading: true,
+      };
+
     case actions.SET_RESOURCES:
       return {
         ...state,
         list: action.payload,
+        loading: false,
       };
 
     case actions.SAVE_RESOURCE_FAILED:

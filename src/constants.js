@@ -11,4 +11,5 @@ export const ROUTES = {
 
   RESOURCES: '/resources',
   RESOURCES_EDIT: '/resources/edit',
+  RESOURCE_LINKING: '/resources/link',
 };

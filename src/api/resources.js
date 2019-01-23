@@ -12,3 +12,4 @@ export const getLinkedResources = (userId, linkedTo) => getList(
   `users/${userId}/linkedResources`,
   req => req.where('linkedTo', '==', linkedTo),
 );
+export const saveLinkedResources = (userId, data) => saveItem(`users/${userId}/linkedResources`, data);

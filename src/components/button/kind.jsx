@@ -1,7 +1,7 @@
 import styles from './styles.css';
 
 const KIND = {
-  DEFAULT: 'DEFAULT',
+  PRIMARY: 'PRIMARY',
   DANGER: 'DANGER',
   GHOST: 'GHOST',
 };

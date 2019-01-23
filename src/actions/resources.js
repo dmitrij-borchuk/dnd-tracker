@@ -44,3 +44,9 @@ export const RESET_LINKED_RESOURCES_LIST = 'RESET_LINKED_RESOURCES_LIST';
 export const resetLinkedResourcesList = () => ({
   type: RESET_LINKED_RESOURCES_LIST,
 });
+
+export const SAVE_LINKED_RESOURCE = 'SAVE_LINKED_RESOURCE';
+export const saveLinkedResource = data => ({
+  type: SAVE_LINKED_RESOURCE,
+  payload: data,
+});

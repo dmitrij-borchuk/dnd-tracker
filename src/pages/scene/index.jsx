@@ -79,7 +79,7 @@ const SceneEditPage = (props) => {
             Resources
             <div className={styles.controls}>
               <Button
-                onClick={() => redirect(ROUTES.RESOURCE_EDIT)}
+                onClick={() => redirect(`${ROUTES.RESOURCE_LINKING}/${id}`)}
               >
                 Add
               </Button>
@@ -92,7 +92,7 @@ const SceneEditPage = (props) => {
               <ListItem
                 className={styles.listItem}
                 key={item.id}
-                onClick={() => redirect(`${ROUTES.SCENES}/${item.id}`)}
+                onClick={() => console.warn('Not implemented: open linked resource')}
               >
                 {item.name}
               </ListItem>
@@ -129,10 +129,11 @@ SceneEditPage.defaultProps = {
   resources: [],
 };
 
-const mapStateToProps = ({ scenes }) => ({
+const mapStateToProps = ({ scenes, resources }) => ({
   scene: scenes.currentScene,
   scenes: scenes.list,
   loading: scenes.loading,
+  resources: resources.linkedResources,
 });
 
 const mapDispatchToProps = {

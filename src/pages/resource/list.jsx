@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardBody,
 } from '../../components/card';
-import { Button, SmallButton } from '../../components/button';
+import { Button } from '../../components/button';
 import {
   List,
   ListItem,
