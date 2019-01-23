@@ -21,6 +21,25 @@ export const setResources = data => ({
   payload: data,
 });
 
+// Resource
+export const GET_RESOURCE = 'GET_RESOURCE';
+export const getResource = data => ({
+  type: GET_RESOURCE,
+  payload: data,
+});
+
+export const SET_RESOURCE = 'SET_RESOURCE';
+export const setResource = data => ({
+  type: SET_RESOURCE,
+  payload: data,
+});
+
+export const RESET_RESOURCE = 'RESET_RESOURCE';
+export const resetResource = data => ({
+  type: RESET_RESOURCE,
+  payload: data,
+});
+
 // Linked resources
 export const GET_LINKED_RESOURCES = 'GET_LINKED_RESOURCES';
 export const getLinkedResources = data => ({

@@ -7,16 +7,7 @@ import {
 } from 'redux-saga/effects';
 import { ROUTES } from '../constants';
 import { push } from '../utils/history';
-import {
-  SAVE_RESOURCE,
-  setResources,
-  GET_RESOURCES,
-  saveResourceFailed,
-  GET_LINKED_RESOURCES,
-  SAVE_LINKED_RESOURCE,
-  getLinkedResourcesSuccess,
-  getLinkedResourcesFailed,
-} from '../actions/resources';
+import * as actions from '../actions/resources';
 import {
   uploadFile,
   getResourceUrl,
@@ -39,7 +30,7 @@ function* fetchResourcesSaga() {
     ...item,
     url: urls[index],
   }));
-  yield put(setResources(patchedData));
+  yield put(actions.setResources(patchedData));
 }
 
 function* saveResourceSaga(action) {
@@ -53,8 +44,19 @@ function* saveResourceSaga(action) {
     });
     push(ROUTES.RESOURCES);
   } catch (e) {
-    yield put(saveResourceFailed(e));
+    yield put(actions.saveResourceFailed(e));
   }
+}
+
+// Resource
+function* fetchResourceSaga(action) {
+  const userId = yield select(getUserIdSelector);
+  const data = yield call(getResource, userId, action.payload);
+  const url = yield call(getResourceUrl, userId, data.name);
+  yield put(actions.setResource({
+    ...data,
+    url,
+  }));
 }
 
 // Linked resources
@@ -65,9 +67,9 @@ function* getLinkedResourcesSaga(action) {
     const resources = yield all(
       data.map(item => call(getResource, userId, item.resourceId)),
     );
-    yield put(getLinkedResourcesSuccess(resources));
+    yield put(actions.getLinkedResourcesSuccess(resources));
   } catch (e) {
-    yield put(getLinkedResourcesFailed(e));
+    yield put(actions.getLinkedResourcesFailed(e));
   }
 }
 
@@ -77,15 +79,16 @@ function* saveLinkedResourceSaga(action) {
     yield call(saveLinkedResources, userId, action.payload);
     push(`${ROUTES.SCENES}/${action.payload.linkedTo}`);
   } catch (e) {
-    yield put(saveResourceFailed(e));
+    yield put(actions.saveResourceFailed(e));
   }
 }
 
 function* saga() {
-  yield takeLatest(SAVE_RESOURCE, saveResourceSaga);
-  yield takeLatest(GET_RESOURCES, fetchResourcesSaga);
-  yield takeLatest(GET_LINKED_RESOURCES, getLinkedResourcesSaga);
-  yield takeLatest(SAVE_LINKED_RESOURCE, saveLinkedResourceSaga);
+  yield takeLatest(actions.SAVE_RESOURCE, saveResourceSaga);
+  yield takeLatest(actions.GET_RESOURCES, fetchResourcesSaga);
+  yield takeLatest(actions.GET_LINKED_RESOURCES, getLinkedResourcesSaga);
+  yield takeLatest(actions.SAVE_LINKED_RESOURCE, saveLinkedResourceSaga);
+  yield takeLatest(actions.GET_RESOURCE, fetchResourceSaga);
 }
 
 export default saga;

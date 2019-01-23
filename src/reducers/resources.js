@@ -30,6 +30,23 @@ export default function (state = defaultState, action) {
         error: action.payload,
       };
 
+    // Resource
+    case actions.GET_RESOURCE:
+      return {
+        loading: true,
+      };
+
+    case actions.SET_RESOURCE:
+      return {
+        loading: false,
+        current: action.payload,
+      };
+
+    case actions.RESET_RESOURCE:
+      return {
+        current: null,
+      };
+
     // Linked resources
     case actions.GET_LINKED_RESOURCES:
       return {

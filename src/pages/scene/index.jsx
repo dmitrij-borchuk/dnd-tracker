@@ -92,7 +92,7 @@ const SceneEditPage = (props) => {
               <ListItem
                 className={styles.listItem}
                 key={item.id}
-                onClick={() => console.warn('Not implemented: open linked resource')}
+                onClick={() => redirect(`${ROUTES.RESOURCE_LINKED}/${item.id}`)}
               >
                 {item.name}
               </ListItem>
