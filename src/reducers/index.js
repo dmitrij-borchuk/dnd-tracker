@@ -5,6 +5,7 @@ import campaigns from './campaigns';
 import scenes from './scenes';
 import auth from './auth';
 import resources from './resources';
+import linkedResources from './linkedResources';
 
 export default combineReducers({
   common,
@@ -13,4 +14,5 @@ export default combineReducers({
   scenes,
   auth,
   resources,
+  linkedResources,
 });

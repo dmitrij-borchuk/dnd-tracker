@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as scenesAction from '../../actions/scenes';
 import * as commonActions from '../../actions/common';
-import * as resourcesActions from '../../actions/resources';
+import * as linkedResourcesActions from '../../actions/linkedResources';
 import {
   Card,
   CardHeader,
@@ -30,6 +30,7 @@ const SceneEditPage = (props) => {
     scene,
     redirect,
     resources,
+    linkedResources,
     match: {
       params: {
         id,
@@ -37,6 +38,7 @@ const SceneEditPage = (props) => {
     },
     loading,
   } = props;
+  const linked = Object.keys(linkedResources);
 
   useEffect(() => {
     if (id) {
@@ -88,13 +90,13 @@ const SceneEditPage = (props) => {
         </CardHeader>
         <CardBody>
           <List>
-            {resources.map(item => (
+            {linked.map(linkedId => (
               <ListItem
                 className={styles.listItem}
-                key={item.id}
-                onClick={() => redirect(`${ROUTES.RESOURCE_LINKED}/${item.id}`)}
+                key={linkedId}
+                onClick={() => redirect(`${ROUTES.RESOURCE_LINKED}/${linkedId}`)}
               >
-                {item.name}
+                {resources[linkedResources[linkedId].resourceId].name}
               </ListItem>
             ))}
           </List>
@@ -114,8 +116,12 @@ SceneEditPage.propTypes = {
     name: PropTypes.string,
     description: PropTypes.string,
   }),
-  resources: PropTypes.arrayOf(PropTypes.shape({
+  resources: PropTypes.objectOf(PropTypes.shape({
     name: PropTypes.string,
+  })),
+  linkedResources: PropTypes.objectOf(PropTypes.shape({
+    linkedTo: PropTypes.string,
+    resourceId: PropTypes.string,
   })),
   match: PropTypes.shape({
     params: PropTypes.shape({
@@ -126,19 +132,21 @@ SceneEditPage.propTypes = {
 };
 SceneEditPage.defaultProps = {
   scene: null,
-  resources: [],
+  resources: {},
+  linkedResources: {},
 };
 
-const mapStateToProps = ({ scenes, resources }) => ({
+const mapStateToProps = ({ scenes, resources, linkedResources }) => ({
   scene: scenes.currentScene,
   scenes: scenes.list,
   loading: scenes.loading,
-  resources: resources.linkedResources,
+  resources: resources.list,
+  linkedResources,
 });
 
 const mapDispatchToProps = {
-  getResources: resourcesActions.getLinkedResources,
-  resetResourcesList: resourcesActions.resetLinkedResourcesList,
+  getResources: linkedResourcesActions.getLinkedResources,
+  resetResourcesList: linkedResourcesActions.resetLinkedResourcesList,
   getScene: scenesAction.fetchScene,
   resetScene: scenesAction.resetScene,
   redirect: commonActions.redirect,

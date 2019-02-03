@@ -1,7 +1,8 @@
 import * as actions from '../actions/resources';
+import { arrayToMap } from './utils';
 
 const defaultState = {
-  list: [],
+  list: {},
   loading: false,
   current: null,
   error: null,
@@ -20,8 +21,7 @@ export default function (state = defaultState, action) {
     case actions.SET_RESOURCES:
       return {
         ...state,
-        list: action.payload,
-        loading: false,
+        list: arrayToMap(action.payload),
       };
 
     case actions.SAVE_RESOURCE_FAILED:
@@ -45,33 +45,6 @@ export default function (state = defaultState, action) {
     case actions.RESET_RESOURCE:
       return {
         current: null,
-      };
-
-    // Linked resources
-    case actions.GET_LINKED_RESOURCES:
-      return {
-        ...state,
-        loading: true,
-      };
-
-    case actions.GET_LINKED_RESOURCES_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        linkedResources: action.payload,
-      };
-
-    case actions.GET_LINKED_RESOURCES_FAILED:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-
-    case actions.RESET_LINKED_RESOURCES_LIST:
-      return {
-        ...state,
-        linkedResources: [],
       };
 
     default:

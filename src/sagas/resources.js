@@ -8,6 +8,7 @@ import {
 import { ROUTES } from '../constants';
 import { push } from '../utils/history';
 import * as actions from '../actions/resources';
+import * as linkedResourcesActions from '../actions/linkedResources';
 import {
   uploadFile,
   getResourceUrl,
@@ -67,7 +68,8 @@ function* getLinkedResourcesSaga(action) {
     const resources = yield all(
       data.map(item => call(getResource, userId, item.resourceId)),
     );
-    yield put(actions.getLinkedResourcesSuccess(resources));
+    yield put(actions.setResources(resources));
+    yield put(linkedResourcesActions.setLinkedResources(data));
   } catch (e) {
     yield put(actions.getLinkedResourcesFailed(e));
   }
@@ -86,8 +88,8 @@ function* saveLinkedResourceSaga(action) {
 function* saga() {
   yield takeLatest(actions.SAVE_RESOURCE, saveResourceSaga);
   yield takeLatest(actions.GET_RESOURCES, fetchResourcesSaga);
-  yield takeLatest(actions.GET_LINKED_RESOURCES, getLinkedResourcesSaga);
-  yield takeLatest(actions.SAVE_LINKED_RESOURCE, saveLinkedResourceSaga);
+  yield takeLatest(linkedResourcesActions.GET_LINKED_RESOURCES, getLinkedResourcesSaga);
+  yield takeLatest(linkedResourcesActions.SAVE_LINKED_RESOURCE, saveLinkedResourceSaga);
   yield takeLatest(actions.GET_RESOURCE, fetchResourceSaga);
 }
 
