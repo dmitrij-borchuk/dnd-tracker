@@ -33,7 +33,7 @@ Button.propTypes = {
 };
 Button.defaultProps = {
   onClick: () => {},
-  kind: KIND.DEFAULT,
+  kind: KIND.PRIMARY,
   disabled: false,
   className: '',
 };

@@ -11,4 +11,14 @@ const loaderHoc = config => Component => (props) => {
   return <Component {...props} />;
 };
 
+export const loaderHoc2 = initFn => Component => (props) => {
+  const check = initFn(props);
+  const loaded = check(props);
+
+  if (!loaded) {
+    return (<Loader fillParent />);
+  }
+  return <Component {...props} />;
+};
+
 export default loaderHoc;

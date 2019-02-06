@@ -4,6 +4,18 @@ export const getLinkedResources = data => ({
   payload: data,
 });
 
+export const GET_LINKED_RESOURCE = 'GET_LINKED_RESOURCE';
+export const getLinkedResource = data => ({
+  type: GET_LINKED_RESOURCE,
+  payload: data,
+});
+
+export const GET_LINKED_RESOURCE_FAILED = 'GET_LINKED_RESOURCE_FAILED';
+export const getLinkedResourceFailed = data => ({
+  type: GET_LINKED_RESOURCE_FAILED,
+  payload: data,
+});
+
 export const SET_LINKED_RESOURCES = 'SET_LINKED_RESOURCES';
 export const setLinkedResources = data => ({
   type: SET_LINKED_RESOURCES,

@@ -6,6 +6,8 @@ import scenes from './scenes';
 import auth from './auth';
 import resources from './resources';
 import linkedResources from './linkedResources';
+import points from './points';
+import linkedResourcesPage from './linkedResourcesPage';
 
 export default combineReducers({
   common,
@@ -15,4 +17,6 @@ export default combineReducers({
   auth,
   resources,
   linkedResources,
+  points,
+  linkedResourcesPage,
 });

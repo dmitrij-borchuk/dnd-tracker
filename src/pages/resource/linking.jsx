@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as commonActions from '../../actions/common';
 import * as resourcesActions from '../../actions/resources';
+import * as linkedResources from '../../actions/linkedResources';
 import { ROUTES } from '../../constants';
 import { Card, CardHeader, CardBody } from '../../components/card';
 import Page from '../../components/page';
@@ -135,7 +136,7 @@ const mapStateToProps = ({ resources }) => ({
 
 const mapDispatchToProps = {
   redirect: commonActions.redirect,
-  save: resourcesActions.saveLinkedResource,
+  save: linkedResources.saveLinkedResource,
   getResources: resourcesActions.getResources,
 };
 

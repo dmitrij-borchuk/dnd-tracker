@@ -5,6 +5,7 @@ import scenesSaga from './scenes';
 import resourcesSaga from './resources';
 import authSaga from './auth';
 import commonSaga from './common';
+import pointsSaga from './points';
 
 function* saga() {
   yield all([
@@ -14,6 +15,7 @@ function* saga() {
     resourcesSaga(),
     authSaga(),
     commonSaga(),
+    pointsSaga(),
   ]);
 }
 
