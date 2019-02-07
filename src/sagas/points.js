@@ -36,7 +36,7 @@ function* savePointSaga(action) {
   try {
     const userId = yield select(getUserIdSelector);
     yield savePoint(userId, action.payload);
-    yield put(actions.savePointSuccess());
+    yield put(actions.savePointSuccess(action.payload));
     yield put(linkedResourcesPageActions.setModalState(false));
   } catch (error) {
     yield put(actions.savePointFailed(error));

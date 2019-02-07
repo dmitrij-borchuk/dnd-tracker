@@ -8,6 +8,12 @@ export default function (state = defaultState, action) {
     case actions.SET_POINTS:
       return arrayToMap(action.payload);
 
+    case actions.SAVE_POINT_SUCCESS:
+      return {
+        ...state,
+        [action.payload.id]: action.payload,
+      };
+
     default:
       return state;
   }

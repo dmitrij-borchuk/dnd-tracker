@@ -11,7 +11,7 @@ import {
   ModalControls,
 } from '../modal';
 
-const LinkedResourcePage = (props) => {
+const EditPointModal = (props) => {
   const {
     onSave,
     onCancel,
@@ -59,7 +59,7 @@ const LinkedResourcePage = (props) => {
   );
 };
 
-LinkedResourcePage.propTypes = {
+EditPointModal.propTypes = {
   onSave: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   data: PropTypes.shape({
@@ -67,8 +67,8 @@ LinkedResourcePage.propTypes = {
     description: PropTypes.string,
   }),
 };
-LinkedResourcePage.defaultProps = {
+EditPointModal.defaultProps = {
   data: {},
 };
 
-export default LinkedResourcePage;
+export default EditPointModal;

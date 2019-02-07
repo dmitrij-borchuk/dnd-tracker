@@ -11,7 +11,8 @@ import { loaderHoc2 } from '../../utils/hocs/loader';
 import { Card, CardHeader, CardBody } from '../../components/card';
 import Page from '../../components/page';
 import { Button, KIND } from '../../components/button';
-import EditPointModal from '../../components/editPoint';
+import PointsAccordion from './pointsAccordion';
+import PointModal from './pointModal';
 import styles from './styles.css';
 
 const coordsToPercents = data => `${data * 100}%`;
@@ -35,8 +36,11 @@ const LinkedResourcePage = (props) => {
   const resource = resources[linked.resourceId];
   const [addMode, setAddMode] = useState(false);
   const [clickCoords, setClickCoords] = useState(null);
+  const [hoveredPoint, setHoveredPoint] = useState(null);
+  const [selectedPoint, setSelectedPoint] = useState(null);
   const imgRef = useRef(null);
   let pointCoords;
+
   if (imgRef && clickCoords) {
     const {
       top,
@@ -78,15 +82,6 @@ const LinkedResourcePage = (props) => {
               >
                 Back
               </Button>
-              {/* <Button
-                onClick={() => savePoints({
-                  sceneId: linked.linkedTo,
-                  points: editedPoints,
-                })}
-                kind={KIND.PRIMARY}
-              >
-                Save
-              </Button> */}
             </div>
           </div>
         </CardHeader>
@@ -99,6 +94,10 @@ const LinkedResourcePage = (props) => {
               Add point
             </Button>
           </div>
+          <PointsAccordion
+            points={points}
+            onClick={point => setHoveredPoint(point)}
+          />
           <div className={styles.imgContainer}>
             <img
               src={resource.url}
@@ -110,21 +109,29 @@ const LinkedResourcePage = (props) => {
             {Object.keys(points).map(key => (
               <div
                 key={key}
-                className={styles.point}
+                className={cn(styles.point, { [styles.hovered]: hoveredPoint?.id === key })}
                 style={{
                   left: coordsToPercents(points[key].x),
                   top: coordsToPercents(points[key].y),
+                }}
+                onClick={() => {
+                  setSelectedPoint(points[key]);
+                  setModalState(true);
                 }}
               />
             ))}
           </div>
         </CardBody>
       </Card>
+
       {showPointModal && (
-        <EditPointModal
+        <PointModal
           onSave={onPointSave}
-          onCancel={() => setModalState(false)}
-          data={{}}
+          onClose={() => {
+            setSelectedPoint(null);
+            setModalState(false);
+          }}
+          data={selectedPoint}
         />
       )}
     </Page>
