@@ -31,8 +31,6 @@ const LinkedResourcePage = (props) => {
     points,
     showPointModal,
   } = props;
-  console.log('=-= points', points)
-  console.log('=-= showPointModal', showPointModal)
   const linked = linkedResources[id];
   const resource = resources[linked.resourceId];
   const [addMode, setAddMode] = useState(false);

@@ -1,0 +1,8 @@
+.container {
+  transition: height .5s;
+  overflow: hidden;
+}
+
+.title {
+  cursor: pointer;
+}
