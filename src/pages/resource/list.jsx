@@ -22,8 +22,9 @@ const ResourceEditPage = (props) => {
   const {
     getList,
     redirect,
-    list,
+    resources,
   } = props;
+  const keys = Object.keys(resources);
 
   useEffect(() => {
     getList();
@@ -46,14 +47,14 @@ const ResourceEditPage = (props) => {
         </CardHeader>
         <CardBody>
           <List>
-            {list.map(item => (
+            {keys.map(key => (
               <ListItem
                 className={styles.listItem}
-                key={item.id}
+                key={resources[key].id}
               >
-                {item.name}
+                {resources[key].name}
                 <a
-                  href={item.url}
+                  href={resources[key].url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.controls}
@@ -74,17 +75,16 @@ const ResourceEditPage = (props) => {
 ResourceEditPage.propTypes = {
   redirect: PropTypes.func.isRequired,
   getList: PropTypes.func.isRequired,
-  list: PropTypes.arrayOf(PropTypes.shape({
+  resources: PropTypes.objectOf(PropTypes.shape({
     name: PropTypes.string,
-    description: PropTypes.string,
   })),
 };
 ResourceEditPage.defaultProps = {
-  list: [],
+  resources: {}
 };
 
 const mapStateToProps = ({ resources }) => ({
-  list: resources.list,
+  resources: resources.list,
 });
 
 const mapDispatchToProps = {

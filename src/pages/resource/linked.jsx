@@ -104,6 +104,7 @@ const LinkedResourcePage = (props) => {
               alt="Resource"
               className={cn(styles.bigImg, { [styles.cursorCrosshair]: addMode })}
               ref={imgRef}
+              onTouchStart={onImgClick}
               onClick={onImgClick}
             />
             {Object.keys(points).map(key => (
