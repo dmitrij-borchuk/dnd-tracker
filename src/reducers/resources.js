@@ -22,6 +22,7 @@ export default function (state = defaultState, action) {
       return {
         ...state,
         list: arrayToMap(action.payload),
+        loading: false,
       };
 
     case actions.SAVE_RESOURCE_FAILED:

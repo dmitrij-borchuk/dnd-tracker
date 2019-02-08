@@ -27,17 +27,19 @@ const ResourceEditPage = (props) => {
       },
     },
   } = props;
+  const keys = Object.keys(resources);
   const loading = resourcesLoading;
-  const resourcesOptions = resources.map(item => ({
-    value: item.id,
-    text: item.name,
+  const resourcesOptions = keys.map(key => ({
+    value: resources[key].id,
+    text: resources[key].name,
   }));
   resourcesOptions.unshift({
     value: '',
     text: 'Select resource',
   });
   const [resourceId, setResource] = useState('');
-  const resource = resources.find(item => item.id === resourceId);
+  const resourceKey = keys.find(key => resources[key].id === resourceId);
+  const resource = resources[resourceKey];
 
   useEffect(() => {
     getResources();
@@ -108,7 +110,7 @@ ResourceEditPage.propTypes = {
     name: PropTypes.string,
     description: PropTypes.string,
   }),
-  resources: PropTypes.arrayOf(PropTypes.shape({
+  resources: PropTypes.objectOf(PropTypes.shape({
     name: PropTypes.string,
     id: PropTypes.string,
     url: PropTypes.string,
@@ -125,7 +127,7 @@ ResourceEditPage.propTypes = {
 ResourceEditPage.defaultProps = {
   scenario: null,
   error: null,
-  resources: [],
+  resources: {},
 };
 
 const mapStateToProps = ({ resources }) => ({

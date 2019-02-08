@@ -80,7 +80,7 @@ ResourceEditPage.propTypes = {
   })),
 };
 ResourceEditPage.defaultProps = {
-  resources: {}
+  resources: {},
 };
 
 const mapStateToProps = ({ resources }) => ({
