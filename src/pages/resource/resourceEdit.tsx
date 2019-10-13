@@ -1,7 +1,7 @@
-import React, {
+import * as React from 'react';
+import {
   useState,
 } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as scenariosAction from '../../actions/scenarios';
 import * as scenesAction from '../../actions/scenes';
@@ -23,13 +23,15 @@ import {
   Button,
   KIND,
 } from '../../components/button';
-import styles from './styles.css';
 import { ROUTES } from '../../constants';
 import Loader from '../../components/loader';
+import { IFileEvent, HTMLInputEvent } from '../../interfaces/fileEvent';
+// import styles from './styles.css';
+const styles = require('./styles.css');
 
-const FILE_TYPES = {
-  IMAGE: 'IMAGE',
-};
+enum FILE_TYPES {
+  IMAGE = 'IMAGE'
+}
 const TYPES_OPTIONS = [
   {
     value: FILE_TYPES.IMAGE,
@@ -37,7 +39,7 @@ const TYPES_OPTIONS = [
   },
 ];
 
-const validator = (config, values) => {
+const validator = (config, values): Record<string, string> => {
   const errors = {}
   const items = Object.keys(config)
   items.forEach((item) => {
@@ -50,7 +52,20 @@ const validator = (config, values) => {
 
 const hasErrors = (errors) => Object.keys(errors).length > 0
 
-const ResourceEditPage = (props) => {
+interface IResource {
+  name: string,
+  description: string,
+  type: FILE_TYPES,
+  file: File,
+}
+interface IResourceEditPageProps {
+  redirect: (path: string) => void,
+  error: Error,
+  save: (resource: IResource) => void,
+  loading: boolean,
+}
+
+const ResourceEditPage: React.FC<IResourceEditPageProps> = (props) => {
   const {
     redirect,
     error,
@@ -60,7 +75,7 @@ const ResourceEditPage = (props) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [type, setType] = useState(FILE_TYPES.IMAGE);
-  const [files, setFile] = useState('');
+  const [files, setFile] = useState<{ data: FileList | null, value: string }>();
   const fieldsValidationConfig = {
     name: {
       required: true,
@@ -141,8 +156,8 @@ const ResourceEditPage = (props) => {
               type="file"
               label="Select file"
               id="file"
-              value={files.value}
-              onChange={e => setFile({
+              value={files && files.value}
+              onChange={(e: HTMLInputEvent) => setFile({
                 data: e.target.files,
                 value: e.target.value,
               })}
@@ -155,26 +170,26 @@ const ResourceEditPage = (props) => {
   );
 };
 
-ResourceEditPage.propTypes = {
-  redirect: PropTypes.func.isRequired,
-  loading: PropTypes.bool,
-  scenario: PropTypes.shape({
-    name: PropTypes.string,
-    description: PropTypes.string,
-  }),
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string,
-    }),
-  }).isRequired,
-  save: PropTypes.func.isRequired,
-  error: PropTypes.instanceOf(Error),
-};
-ResourceEditPage.defaultProps = {
-  scenario: null,
-  error: null,
-  loading: false,
-};
+// ResourceEditPage.propTypes = {
+//   redirect: PropTypes.func.isRequired,
+//   loading: PropTypes.bool,
+//   scenario: PropTypes.shape({
+//     name: PropTypes.string,
+//     description: PropTypes.string,
+//   }),
+//   match: PropTypes.shape({
+//     params: PropTypes.shape({
+//       id: PropTypes.string,
+//     }),
+//   }).isRequired,
+//   save: PropTypes.func.isRequired,
+//   error: PropTypes.instanceOf(Error),
+// };
+// ResourceEditPage.defaultProps = {
+//   scenario: null,
+//   error: null,
+//   loading: false,
+// };
 
 const mapStateToProps = ({ resources }) => ({
   error: resources.error,
