@@ -54,7 +54,7 @@ const ScenarioPage = (props) => {
   }, []);
 
   if (!scenario) {
-    return <div>Loading</div>;
+    return <Loader fillParent />
   }
 
   return (
@@ -68,9 +68,6 @@ const ScenarioPage = (props) => {
             </div>
           </CardHeader>
           <CardBody>
-            {!scenario && (
-              <Loader fillParent />
-            )}
             <SanitizeHtml>{scenario.description}</SanitizeHtml>
           </CardBody>
         </Card>

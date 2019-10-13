@@ -25,8 +25,7 @@ import {
 } from '../../components/button';
 import { ROUTES } from '../../constants';
 import Loader from '../../components/loader';
-import { IFileEvent, HTMLInputEvent } from '../../interfaces/fileEvent';
-// import styles from './styles.css';
+import { HTMLInputEvent } from '../../interfaces/fileEvent';
 const styles = require('./styles.css');
 
 enum FILE_TYPES {
