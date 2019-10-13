@@ -32,8 +32,8 @@ const SceneEditPage = (props) => {
     ? `${ROUTES.SCENES}/${id}`
     : `${ROUTES.SCENARIOS}/${scenarioId}`;
 
-  const [name, setName] = useState(scene?.name || '');
-  const [description, setDescription] = useState(scene?.description || '');
+  const [name, setName] = useState(scene.name || '');
+  const [description, setDescription] = useState(scene.description || '');
   const isEmpty = name === '';
 
   return (

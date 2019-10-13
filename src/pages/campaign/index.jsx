@@ -56,12 +56,16 @@ const CampaignPage = (props) => {
     return () => resetScenarioList();
   }, []);
 
+  if (!campaign) {
+    return <Loader fillParent />
+  }
+
   return (
     <>
       <Page>
         <Card className={styles.card}>
           <CardHeader className={styles.listHeader}>
-            {campaign?.name}
+            {campaign.name}
             <div className={styles.controls}>
               <Button onClick={() => redirect(`${ROUTES.CAMPAIGNS_EDIT}/${id}`)}>Edit</Button>
             </div>
@@ -75,57 +79,55 @@ const CampaignPage = (props) => {
             {loading && (
               <Loader fillParent />
             )}
-            <SanitizeHtml>{campaign?.description || ''}</SanitizeHtml>
+            <SanitizeHtml>{campaign.description || ''}</SanitizeHtml>
           </CardBody>
         </Card>
 
-        {campaign && (
-          <Card>
-            <CardHeader>
-              <div className={styles.listHeader}>
-                Scenarios
-                <div className={styles.controls}>
-                  <Button
-                    onClick={() => redirect(`${ROUTES.SCENARIOS_EDIT}/${id}`)}
-                  >
-                    Add
-                  </Button>
-                </div>
+        <Card>
+          <CardHeader>
+            <div className={styles.listHeader}>
+              Scenarios
+              <div className={styles.controls}>
+                <Button
+                  onClick={() => redirect(`${ROUTES.SCENARIOS_EDIT}/${id}`)}
+                >
+                  Add
+                </Button>
               </div>
-            </CardHeader>
-            <CardBody>
-              {scenariosError && (
-                <Alert type={TYPES.DANGER}>
-                  {scenariosError.message}
-                </Alert>
-              )}
-              {scenariosLoading && (
-                <Loader fillParent />
-              )}
+            </div>
+          </CardHeader>
+          <CardBody>
+            {scenariosError && (
+              <Alert type={TYPES.DANGER}>
+                {scenariosError.message}
+              </Alert>
+            )}
+            {scenariosLoading && (
+              <Loader fillParent />
+            )}
 
-              {/* Scenarios */}
-              <List>
-                {scenarios.map(item => (
-                  <ListItem
-                    className={styles.listItem}
-                    key={item.id}
-                    onClick={() => redirect(`${ROUTES.SCENARIOS}/${item.id}`)}
-                  >
-                    {item.name}
-                    <span className={styles.controls}>
-                      <Button
-                        kind={BTN_KIND.DANGER}
-                        onClick={stopPropagation(() => setItemToDelete(item))}
-                      >
-                        <i className="fas fa-trash-alt" />
-                      </Button>
-                    </span>
-                  </ListItem>
-                ))}
-              </List>
-            </CardBody>
-          </Card>
-        )}
+            {/* Scenarios */}
+            <List>
+              {scenarios.map(item => (
+                <ListItem
+                  className={styles.listItem}
+                  key={item.id}
+                  onClick={() => redirect(`${ROUTES.SCENARIOS}/${item.id}`)}
+                >
+                  {item.name}
+                  <span className={styles.controls}>
+                    <Button
+                      kind={BTN_KIND.DANGER}
+                      onClick={stopPropagation(() => setItemToDelete(item))}
+                    >
+                      <i className="fas fa-trash-alt" />
+                    </Button>
+                  </span>
+                </ListItem>
+              ))}
+            </List>
+          </CardBody>
+        </Card>
       </Page>
 
       {deleteItem && (
@@ -157,6 +159,7 @@ CampaignPage.propTypes = {
   resetScenarioList: PropTypes.func.isRequired,
   getCampaign: PropTypes.func.isRequired,
   getScenarios: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
   campaign: PropTypes.shape({
     name: PropTypes.string,
     description: PropTypes.string,
@@ -178,6 +181,7 @@ CampaignPage.defaultProps = {
   campaign: null,
   scenarios: [],
   scenariosLoading: false,
+  loading: false,
 };
 
 const mapStateToProps = ({ campaigns, scenarios }) => ({

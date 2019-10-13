@@ -34,8 +34,8 @@ const CampaignEditPage = (props) => {
     return () => resetCampaign();
   }, []);
 
-  const [name, setName] = useState(campaign?.name || '');
-  const [description, setDescription] = useState(campaign?.description || '');
+  const [name, setName] = useState(campaign.name || '');
+  const [description, setDescription] = useState(campaign.description || '');
 
   if (id && !campaign) {
     // TODO: Use loader

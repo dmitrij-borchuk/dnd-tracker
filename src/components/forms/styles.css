@@ -20,3 +20,7 @@
 .label {
   margin-bottom: .5rem;
 }
+
+.error {
+  color: red;
+}

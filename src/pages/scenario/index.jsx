@@ -21,7 +21,7 @@ import { ROUTES } from '../../constants';
 
 import styles from './styles.css';
 
-const ScenarioEditPage = (props) => {
+const ScenarioPage = (props) => {
   const {
     getScenario,
     getScenes,
@@ -53,21 +53,22 @@ const ScenarioEditPage = (props) => {
     return () => resetSceneList();
   }, []);
 
+  if (!scenario) {
+    return <Loader fillParent />
+  }
+
   return (
     <>
       <Page>
         <Card className={styles.card}>
           <CardHeader className={styles.listHeader}>
-            {scenario?.name}
+            {scenario.name}
             <div className={styles.controls}>
               <Button onClick={() => redirect(`${ROUTES.SCENARIOS_EDIT}/${scenario.campaignId}/${id}`)}>Edit</Button>
             </div>
           </CardHeader>
           <CardBody>
-            {!scenario && (
-              <Loader fillParent />
-            )}
-            <SanitizeHtml>{scenario?.description}</SanitizeHtml>
+            <SanitizeHtml>{scenario.description}</SanitizeHtml>
           </CardBody>
         </Card>
 
@@ -133,7 +134,7 @@ const ScenarioEditPage = (props) => {
   );
 };
 
-ScenarioEditPage.propTypes = {
+ScenarioPage.propTypes = {
   redirect: PropTypes.func.isRequired,
   getScenes: PropTypes.func.isRequired,
   resetSceneList: PropTypes.func.isRequired,
@@ -155,7 +156,7 @@ ScenarioEditPage.propTypes = {
     }),
   }).isRequired,
 };
-ScenarioEditPage.defaultProps = {
+ScenarioPage.defaultProps = {
   scenario: null,
   scenes: [],
 };
@@ -178,4 +179,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ScenarioEditPage);
+)(ScenarioPage);

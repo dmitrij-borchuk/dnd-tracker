@@ -5,7 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const dotenv = require('dotenv');
 // const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 
-dotenv.load();
+dotenv.config();
 
 const envKeys = Object.keys(process.env).reduce((prev, next) => {
   // prev[`process.env.${next}`] = JSON.stringify(process.env[next]);
@@ -16,7 +16,7 @@ const envKeys = Object.keys(process.env).reduce((prev, next) => {
 }, {});
 
 module.exports = {
-  entry: ['@babel/polyfill', './src/index.jsx'],
+  entry: ['@babel/polyfill', './src/index.tsx'],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
@@ -46,18 +46,20 @@ module.exports = {
     port: 8082,
   },
   resolve: {
-    extensions: ['.js', '.json', '.jsx'],
+    extensions: ['.json', '.ts', '.tsx', '.js', '.jsx'],
   },
   module: {
     rules: [
       {
         test: /\.css$/,
         use: [
-          { loader: 'style-loader' },
+          'style-loader',
           {
-            loader: 'css-loader',
+            loader: 'typings-for-css-modules-loader',
             options: {
               modules: true,
+              namedExport: true,
+              exportOnlyLocals: true,
             },
           },
         ],
@@ -68,6 +70,12 @@ module.exports = {
         use: {
           loader: 'babel-loader',
         },
+      },
+      { test: /\.(ts|tsx)?$/, use: 'awesome-typescript-loader' },
+      {
+        test: /\.js$/,
+        use: ['source-map-loader'],
+        enforce: 'pre',
       },
       {
         test: /\.(webmanifest|mp3)$/i,

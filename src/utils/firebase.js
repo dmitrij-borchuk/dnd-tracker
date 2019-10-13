@@ -31,10 +31,6 @@ export const storage = firebase.storage();
 
 // Initialize Cloud Firestore through Firebase
 export const db = firebase.firestore();
-// Disable deprecated features
-db.settings({
-  timestampsInSnapshots: true,
-});
 
 export const signIn = () => {
   const provider = new firebase.auth.GoogleAuthProvider();

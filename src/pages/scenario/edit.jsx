@@ -26,8 +26,8 @@ const ScenarioEditPage = (props) => {
       },
     },
   } = props;
-  const [name, setName] = useState(scenario?.name || '');
-  const [description, setDescription] = useState(scenario?.description || '');
+  const [name, setName] = useState(scenario.name || '');
+  const [description, setDescription] = useState(scenario.description || '');
   const isEmpty = name === '';
   const cancelUrl = id
     ? `${ROUTES.SCENARIOS}/${id}`

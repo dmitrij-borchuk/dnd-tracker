@@ -37,6 +37,7 @@ function* saveResourceSaga(action) {
       description: action.payload.description,
       type: action.payload.type,
     });
+    yield put(actions.saveResourceSuccess());
     push(ROUTES.RESOURCES);
   } catch (e) {
     yield put(actions.saveResourceFailed(e));
