@@ -56,7 +56,7 @@ const CampaignPage = (props) => {
     return () => resetScenarioList();
   }, []);
 
-  if (!campaign || loading) {
+  if (!campaign) {
     return <Loader fillParent />
   }
 

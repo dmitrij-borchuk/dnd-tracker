@@ -26,7 +26,7 @@ import {
 import { ROUTES } from '../../constants';
 import Loader from '../../components/loader';
 import { HTMLInputEvent } from '../../interfaces/fileEvent';
-const styles = require('./styles.css');
+import * as styles from './styles.css';
 
 enum FILE_TYPES {
   IMAGE = 'IMAGE'

@@ -36,7 +36,7 @@
     "babel-loader": "^8.0.6",
     "classnames": "^2.2.6",
     "copy-webpack-plugin": "^5.0.4",
-    "css-loader": "^3.2.0",
+    "css-loader": "^1.0.1",
     "dotenv": "^8.1.0",
     "eslint": "^6.5.1",
     "eslint-config-airbnb": "^18.0.1",
@@ -61,6 +61,7 @@
     "source-map-loader": "^0.2.4",
     "style-loader": "^1.0.0",
     "typescript": "^3.6.4",
+    "typings-for-css-modules-loader": "^1.7.0",
     "webpack": "^4.41.1",
     "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.8.2"
