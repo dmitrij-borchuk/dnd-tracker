@@ -25,12 +25,6 @@ export default function (state = defaultState, action) {
         loading: false,
       };
 
-    case actions.SAVE_RESOURCE_FAILED:
-      return {
-        ...state,
-        error: action.payload,
-      };
-
     // Resource
     case actions.GET_RESOURCE:
       return {
@@ -41,6 +35,24 @@ export default function (state = defaultState, action) {
       return {
         loading: false,
         current: action.payload,
+      };
+
+    case actions.SAVE_RESOURCE:
+      return {
+        loading: true,
+      };
+
+    case actions.SAVE_RESOURCE_FAILED:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+
+    case actions.saveResourceSuccess:
+      return {
+        ...state,
+        loading: false,
       };
 
     case actions.RESET_RESOURCE:

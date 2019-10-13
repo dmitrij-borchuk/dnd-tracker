@@ -1,6 +1,5 @@
 import React, {
   useState,
-  // useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -13,24 +12,20 @@ import {
   CardHeader,
   CardBody,
 } from '../../components/card';
-// import {
-//   List,
-//   ListItem,
-// } from '../../components/list';
 import Page from '../../components/page';
 import Alert, { TYPES } from '../../components/alert';
 import {
-  InputWithLabel,
   TextAriaWithLabel,
   SelectWithLabel,
+  Field,
 } from '../../components/forms';
-// import { ROUTES } from '../../constants';
 import {
   Button,
   KIND,
 } from '../../components/button';
 import styles from './styles.css';
 import { ROUTES } from '../../constants';
+import Loader from '../../components/loader';
 
 const FILE_TYPES = {
   IMAGE: 'IMAGE',
@@ -42,46 +37,47 @@ const TYPES_OPTIONS = [
   },
 ];
 
+const validator = (config, values) => {
+  const errors = {}
+  const items = Object.keys(config)
+  items.forEach((item) => {
+    if (config[item].required && !values[item]) {
+      errors[item] = 'Required'
+    }
+  })
+  return errors
+}
+
+const hasErrors = (errors) => Object.keys(errors).length > 0
+
 const ResourceEditPage = (props) => {
   const {
-    // getScenario,
-    // getScenes,
-    // resetScenario,
-    // resetSceneList,
-    // scenario,
     redirect,
-    // scenes,
-    // match: {
-    //   params: {
-    //     id,
-    //   },
-    // },
     error,
     save,
+    loading,
   } = props;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [type, setType] = useState(FILE_TYPES.IMAGE);
   const [files, setFile] = useState('');
+  const fieldsValidationConfig = {
+    name: {
+      required: true,
+    },
+    file: {
+      required: type === FILE_TYPES.IMAGE,
+    },
+  }
+  const errors = validator(fieldsValidationConfig, {
+    name,
+    file: files && files.data[0],
+  })
+  const isValid = !hasErrors(errors)
 
-  // useEffect(() => {
-  //   if (id) {
-  //     getScenario(id);
-  //   }
-  //   return () => resetScenario();
-  // }, []);
-  // useEffect(() => {
-  //   if (id) {
-  //     getScenes(id);
-  //   }
-  //   return () => resetSceneList();
-  // }, []);
-
-  // if (!scenario) {
-  //   // TODO: use loader
-  //   return null;
-  // }
-
+  if (loading) {
+    return <Loader fillParent />
+  }
   return (
     <Page>
       <Card>
@@ -102,6 +98,7 @@ const ResourceEditPage = (props) => {
                   type,
                   file: files.data[0],
                 })}
+                disabled={!isValid}
               >
                 Save
               </Button>
@@ -114,7 +111,8 @@ const ResourceEditPage = (props) => {
               {error.message}
             </Alert>
           )}
-          <InputWithLabel
+          <Field
+            error={errors.name}
             label="Name"
             id="name"
             value={name}
@@ -138,7 +136,8 @@ const ResourceEditPage = (props) => {
           />
 
           {type === FILE_TYPES.IMAGE && (
-            <InputWithLabel
+            <Field
+              error={errors.file}
               type="file"
               label="Select file"
               id="file"
@@ -158,18 +157,11 @@ const ResourceEditPage = (props) => {
 
 ResourceEditPage.propTypes = {
   redirect: PropTypes.func.isRequired,
-  // getScenes: PropTypes.func.isRequired,
-  // resetSceneList: PropTypes.func.isRequired,
-  // resetScenario: PropTypes.func.isRequired,
-  // getScenario: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
   scenario: PropTypes.shape({
     name: PropTypes.string,
     description: PropTypes.string,
   }),
-  // scenes: PropTypes.arrayOf(PropTypes.shape({
-  //   name: PropTypes.string,
-  //   description: PropTypes.string,
-  // })),
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string,
@@ -181,10 +173,12 @@ ResourceEditPage.propTypes = {
 ResourceEditPage.defaultProps = {
   scenario: null,
   error: null,
+  loading: false,
 };
 
 const mapStateToProps = ({ resources }) => ({
   error: resources.error,
+  loading: resources.loading,
 });
 
 const mapDispatchToProps = {

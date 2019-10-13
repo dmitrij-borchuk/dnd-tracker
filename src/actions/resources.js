@@ -10,6 +10,12 @@ export const saveResourceFailed = data => ({
   payload: data,
 });
 
+export const SAVE_RESOURCE_SUCCESS = 'SAVE_RESOURCE_SUCCESS';
+export const saveResourceSuccess = data => ({
+  type: SAVE_RESOURCE_SUCCESS,
+  payload: data,
+});
+
 export const GET_RESOURCES = 'GET_RESOURCES';
 export const getResources = () => ({
   type: GET_RESOURCES,
