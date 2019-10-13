@@ -56,12 +56,16 @@ const CampaignPage = (props) => {
     return () => resetScenarioList();
   }, []);
 
+  if (!campaign) {
+    return <div>Loading</div>;
+  }
+
   return (
     <>
       <Page>
         <Card className={styles.card}>
           <CardHeader className={styles.listHeader}>
-            {campaign?.name}
+            {campaign.name}
             <div className={styles.controls}>
               <Button onClick={() => redirect(`${ROUTES.CAMPAIGNS_EDIT}/${id}`)}>Edit</Button>
             </div>
@@ -75,7 +79,7 @@ const CampaignPage = (props) => {
             {loading && (
               <Loader fillParent />
             )}
-            <SanitizeHtml>{campaign?.description || ''}</SanitizeHtml>
+            <SanitizeHtml>{campaign.description || ''}</SanitizeHtml>
           </CardBody>
         </Card>
 

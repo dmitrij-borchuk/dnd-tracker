@@ -31,7 +31,7 @@ import {
 } from '../sidebar';
 import styles from './styles.css';
 
-const redirectTo = url => () => (
+const redirectTo = (url) => () => (
   <Redirect
     to={{
       pathname: url,
@@ -201,7 +201,7 @@ const mapStateToProps = ({ auth }) => ({
   currentUser: auth.currentUser,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   getScenarios: () => dispatch(scenariosActions.getScenarios()),
   setupApp: () => dispatch(commonActions.setupApp()),
   signIn: () => dispatch(authActions.signIn()),

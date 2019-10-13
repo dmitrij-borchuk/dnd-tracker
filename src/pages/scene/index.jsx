@@ -53,14 +53,18 @@ const SceneEditPage = (props) => {
     return () => resetResourcesList();
   }, []);
 
+  if (!scene) {
+    return <div>Loading</div>;
+  }
+
   return (
     <Page>
       <Card className={styles.card}>
         <CardHeader className={styles.listHeader}>
-          {scene?.name}
+          {scene.name}
           <div className={styles.controls}>
             <Button
-              onClick={() => redirect(`${ROUTES.SCENES_EDIT}/${scene?.scenarioId}/${scene?.id}`)}
+              onClick={() => redirect(`${ROUTES.SCENES_EDIT}/${scene.scenarioId}/${scene.id}`)}
             >
               Edit
             </Button>
@@ -70,7 +74,7 @@ const SceneEditPage = (props) => {
           {loading && (
             <Loader fillParent />
           )}
-          <SanitizeHtml>{scene?.description}</SanitizeHtml>
+          <SanitizeHtml>{scene.description}</SanitizeHtml>
         </CardBody>
       </Card>
 

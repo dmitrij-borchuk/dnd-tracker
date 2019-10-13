@@ -1,6 +1,6 @@
-import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory } from 'history';
 
-export const history = createHistory();
+export const history = createBrowserHistory();
 
 // Get the current location.
 export const getLocation = () => history.location;

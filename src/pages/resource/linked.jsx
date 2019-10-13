@@ -110,7 +110,7 @@ const LinkedResourcePage = (props) => {
             {Object.keys(points).map(key => (
               <div
                 key={key}
-                className={cn(styles.point, { [styles.hovered]: hoveredPoint?.id === key })}
+                className={cn(styles.point, { [styles.hovered]: hoveredPoint && hoveredPoint.id === key })}
                 style={{
                   left: coordsToPercents(points[key].x),
                   top: coordsToPercents(points[key].y),

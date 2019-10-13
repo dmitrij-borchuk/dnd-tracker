@@ -30,6 +30,7 @@ import {
   KIND,
 } from '../../components/button';
 import styles from './styles.css';
+import { ROUTES } from '../../constants';
 
 const FILE_TYPES = {
   IMAGE: 'IMAGE',
@@ -48,7 +49,7 @@ const ResourceEditPage = (props) => {
     // resetScenario,
     // resetSceneList,
     // scenario,
-    // redirect,
+    redirect,
     // scenes,
     // match: {
     //   params: {
@@ -89,7 +90,7 @@ const ResourceEditPage = (props) => {
             Resources
             <div className={styles.controls}>
               <Button
-                onClick={() => console.log('=-= click')}
+                onClick={() => redirect(ROUTES.RESOURCES)}
                 kind={KIND.DANGER}
               >
                 Cancel
@@ -156,7 +157,7 @@ const ResourceEditPage = (props) => {
 };
 
 ResourceEditPage.propTypes = {
-  // redirect: PropTypes.func.isRequired,
+  redirect: PropTypes.func.isRequired,
   // getScenes: PropTypes.func.isRequired,
   // resetSceneList: PropTypes.func.isRequired,
   // resetScenario: PropTypes.func.isRequired,
