@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
   useState,
 } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import * as scenariosAction from '../../actions/scenarios';
 import * as scenesAction from '../../actions/scenes';
 import * as commonActions from '../../actions/common';
@@ -27,29 +27,12 @@ import { ROUTES } from '../../constants';
 import Loader from '../../components/loader';
 import { HTMLInputEvent } from '../../interfaces/fileEvent';
 import * as styles from './styles.css';
+import { IStore } from '../../interfaces/store';
+import { mapDispatchToActions } from '../../utils/common';
 
 enum FILE_TYPES {
   IMAGE = 'IMAGE'
 }
-const TYPES_OPTIONS = [
-  {
-    value: FILE_TYPES.IMAGE,
-    text: 'Image',
-  },
-];
-
-const validator = (config, values): Record<string, string> => {
-  const errors = {}
-  const items = Object.keys(config)
-  items.forEach((item) => {
-    if (config[item].required && !values[item]) {
-      errors[item] = 'Required'
-    }
-  })
-  return errors
-}
-
-const hasErrors = (errors) => Object.keys(errors).length > 0
 
 interface IResource {
   name: string,
@@ -58,23 +41,72 @@ interface IResource {
   file: File,
 }
 interface IResourceEditPageProps {
-  redirect: (path: string) => void,
-  error: Error,
-  save: (resource: IResource) => void,
-  loading: boolean,
+}
+interface IValidationItemConfig {
+  required?: boolean
+}
+interface IFileState {
+  data: File
+  value: string
+}
+type ValidationConfig<T> = {
+  [P in keyof T]?: IValidationItemConfig;
 }
 
-const ResourceEditPage: React.FC<IResourceEditPageProps> = (props) => {
+const TYPES_OPTIONS = [
+  {
+    value: FILE_TYPES.IMAGE,
+    text: 'Image',
+  },
+];
+
+const validator = (config: ValidationConfig<IResource>, values: Partial<IResource>): Record<string, string> => {
+  const errors: Record<string, string> = {}
+  const items = Object.keys(values) as (keyof IResource)[]
+  items.forEach((item) => {
+    const itemConfig = config[item]
+    if (itemConfig && itemConfig.required && !values[item]) {
+      errors[item] = 'Required'
+    }
+  })
+  return errors
+}
+
+const hasErrors = (errors: Record<string, string>) => Object.keys(errors).length > 0
+
+const selector = ({ resources }: IStore) => ({
+  error: resources.error,
+  loading: resources.loading,
+})
+
+export const ResourceEditPage: React.FC<IResourceEditPageProps> = () => {
   const {
-    redirect,
     error,
-    save,
     loading,
-  } = props;
+  } = useSelector(selector)
+  const dispatch = useDispatch()
+  const [
+    redirect,
+    save,
+  ] = mapDispatchToActions(dispatch, [
+    commonActions.redirect,
+    resourcesActions.saveResource,
+  ])
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [type, setType] = useState(FILE_TYPES.IMAGE);
-  const [files, setFile] = useState<{ data: FileList | null, value: string }>();
+  const [files, setFile] = useState<IFileState>();
+  const onSubmit = React.useCallback(() => {
+    if (!files || !files.data) {
+      return
+    }
+    save({
+      name,
+      description,
+      type,
+      file: files.data,
+    })
+  }, [name, description, type, files])
   const fieldsValidationConfig = {
     name: {
       required: true,
@@ -85,7 +117,7 @@ const ResourceEditPage: React.FC<IResourceEditPageProps> = (props) => {
   }
   const errors = validator(fieldsValidationConfig, {
     name,
-    file: files && files.data[0],
+    file: files && files.data,
   })
   const isValid = !hasErrors(errors)
 
@@ -106,12 +138,7 @@ const ResourceEditPage: React.FC<IResourceEditPageProps> = (props) => {
                 Cancel
               </Button>
               <Button
-                onClick={() => save({
-                  name,
-                  description,
-                  type,
-                  file: files.data[0],
-                })}
+                onClick={onSubmit}
                 disabled={!isValid}
               >
                 Save
@@ -156,10 +183,16 @@ const ResourceEditPage: React.FC<IResourceEditPageProps> = (props) => {
               label="Select file"
               id="file"
               value={files && files.value}
-              onChange={(e: HTMLInputEvent) => setFile({
-                data: e.target.files,
-                value: e.target.value,
-              })}
+              onChange={(e: HTMLInputEvent) => {
+                if (!e.target.files) {
+                  setFile(undefined)
+                } else {
+                  setFile({
+                    data:e.target.files[0],
+                    value: e.target.value,
+                  })
+                }
+              }}
               fullWidth
             />
           )}
@@ -168,43 +201,3 @@ const ResourceEditPage: React.FC<IResourceEditPageProps> = (props) => {
     </Page>
   );
 };
-
-// ResourceEditPage.propTypes = {
-//   redirect: PropTypes.func.isRequired,
-//   loading: PropTypes.bool,
-//   scenario: PropTypes.shape({
-//     name: PropTypes.string,
-//     description: PropTypes.string,
-//   }),
-//   match: PropTypes.shape({
-//     params: PropTypes.shape({
-//       id: PropTypes.string,
-//     }),
-//   }).isRequired,
-//   save: PropTypes.func.isRequired,
-//   error: PropTypes.instanceOf(Error),
-// };
-// ResourceEditPage.defaultProps = {
-//   scenario: null,
-//   error: null,
-//   loading: false,
-// };
-
-const mapStateToProps = ({ resources }) => ({
-  error: resources.error,
-  loading: resources.loading,
-});
-
-const mapDispatchToProps = {
-  getScenes: scenesAction.getScenes,
-  resetSceneList: scenesAction.resetSceneList,
-  getScenario: scenariosAction.fetchScenario,
-  resetScenario: scenariosAction.resetScenario,
-  redirect: commonActions.redirect,
-  save: resourcesActions.saveResource,
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ResourceEditPage);

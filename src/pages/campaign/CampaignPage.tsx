@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import * as campaignsAction from '../../actions/campaigns';
 import * as scenariosAction from '../../actions/scenarios';
 import * as commonActions from '../../actions/common';
@@ -19,29 +19,61 @@ import {
 } from '../../components/modal';
 import Page from '../../components/page';
 import Loader from '../../components/loader';
-import styles from './styles.css';
+import * as styles from './styles.css';
+import { IStore } from '../../interfaces/store';
+import { IScenario } from '../../interfaces/scenario';
+import { mapDispatchToActions } from '../../utils/common';
+ 
+const selector = ({ campaigns, scenarios }: IStore) => ({
+  campaign: campaigns.currentCampaign,
+  error: campaigns.error,
+  loading: campaigns.loading,
+  scenariosLoading: scenarios.loading,
+  scenarios: scenarios.list,
+  scenariosError: scenarios.error,
+})
 
-const CampaignPage = (props) => {
+interface ICampaignPageProps {
+  match: {
+    params: {
+      id: string,
+    },
+  },
+}
+export const CampaignPage: React.FC<ICampaignPageProps> = (props) => {
   const {
-    getCampaign,
-    getScenarios,
-    resetCampaign,
-    resetScenarioList,
     campaign,
-    scenarios,
-    redirect,
-    scenariosLoading,
-    loading,
-    removeScenario,
     error,
+    loading,
+    scenariosLoading,
+    scenarios,
     scenariosError,
+  } = useSelector(selector)
+  const dispatch = useDispatch()
+  
+  const [
+    getCampaign,
+    resetCampaign,
+    removeScenario,
+    getScenarios,
+    resetScenarioList,
+    redirect,
+  ] = mapDispatchToActions(dispatch, [
+    campaignsAction.fetchCampaign,
+    campaignsAction.resetCampaign,
+    scenariosAction.removeScenario,
+    scenariosAction.getScenarios,
+    scenariosAction.resetScenarioList,
+    commonActions.redirect,
+  ])
+  const {
     match: {
       params: {
         id,
       },
     },
   } = props;
-  const [deleteItem, setItemToDelete] = useState(null);
+  const [deleteItem, setItemToDelete] = useState<IScenario | null>(null);
 
   useEffect(() => {
     if (id) {
@@ -152,57 +184,57 @@ const CampaignPage = (props) => {
   );
 };
 
-CampaignPage.propTypes = {
-  redirect: PropTypes.func.isRequired,
-  removeScenario: PropTypes.func.isRequired,
-  resetCampaign: PropTypes.func.isRequired,
-  resetScenarioList: PropTypes.func.isRequired,
-  getCampaign: PropTypes.func.isRequired,
-  getScenarios: PropTypes.func.isRequired,
-  loading: PropTypes.bool,
-  campaign: PropTypes.shape({
-    name: PropTypes.string,
-    description: PropTypes.string,
-  }),
-  scenarios: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string,
-    description: PropTypes.string,
-  })),
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string,
-    }),
-  }).isRequired,
-  scenariosLoading: PropTypes.bool,
-  error: PropTypes.instanceOf(Error),
-  scenariosError: PropTypes.instanceOf(Error),
-};
-CampaignPage.defaultProps = {
-  campaign: null,
-  scenarios: [],
-  scenariosLoading: false,
-  loading: false,
-};
+// CampaignPage.propTypes = {
+//   redirect: PropTypes.func.isRequired,
+//   removeScenario: PropTypes.func.isRequired,
+//   resetCampaign: PropTypes.func.isRequired,
+//   resetScenarioList: PropTypes.func.isRequired,
+//   getCampaign: PropTypes.func.isRequired,
+//   getScenarios: PropTypes.func.isRequired,
+//   loading: PropTypes.bool,
+//   campaign: PropTypes.shape({
+//     name: PropTypes.string,
+//     description: PropTypes.string,
+//   }),
+//   scenarios: PropTypes.arrayOf(PropTypes.shape({
+//     name: PropTypes.string,
+//     description: PropTypes.string,
+//   })),
+//   match: PropTypes.shape({
+//     params: PropTypes.shape({
+//       id: PropTypes.string,
+//     }),
+//   }).isRequired,
+//   scenariosLoading: PropTypes.bool,
+//   error: PropTypes.instanceOf(Error),
+//   scenariosError: PropTypes.instanceOf(Error),
+// };
+// CampaignPage.defaultProps = {
+//   campaign: null,
+//   scenarios: [],
+//   scenariosLoading: false,
+//   loading: false,
+// };
 
-const mapStateToProps = ({ campaigns, scenarios }) => ({
-  campaign: campaigns.currentCampaign,
-  error: campaigns.error,
-  loading: campaigns.loading,
-  scenariosLoading: scenarios.loading,
-  scenarios: scenarios.list,
-  scenariosError: scenarios.error,
-});
+// const mapStateToProps = ({ campaigns, scenarios }) => ({
+//   campaign: campaigns.currentCampaign,
+//   error: campaigns.error,
+//   loading: campaigns.loading,
+//   scenariosLoading: scenarios.loading,
+//   scenarios: scenarios.list,
+//   scenariosError: scenarios.error,
+// });
 
-const mapDispatchToProps = {
-  getCampaign: campaignsAction.fetchCampaign,
-  resetCampaign: campaignsAction.resetCampaign,
-  removeScenario: scenariosAction.removeScenario,
-  getScenarios: scenariosAction.getScenarios,
-  resetScenarioList: scenariosAction.resetScenarioList,
-  redirect: commonActions.redirect,
-};
+// const mapDispatchToProps = {
+//   getCampaign: campaignsAction.fetchCampaign,
+//   resetCampaign: campaignsAction.resetCampaign,
+//   removeScenario: scenariosAction.removeScenario,
+//   getScenarios: scenariosAction.getScenarios,
+//   resetScenarioList: scenariosAction.resetScenarioList,
+//   redirect: commonActions.redirect,
+// };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(CampaignPage);
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps,
+// )(CampaignPage);
