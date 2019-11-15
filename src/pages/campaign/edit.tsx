@@ -1,41 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import RichText from "../../components/richText";
-import * as campaignsAction from "../../actions/campaigns";
-import * as commonActions from "../../actions/common";
-import { ROUTES } from "../../constants";
-import Page from "../../components/page";
-import { Card, CardHeader, CardBody } from "../../components/card";
-import { Button, KIND } from "../../components/button";
-import { InputWithLabel } from "../../components/forms";
-import Label from "../../components/label";
-import loaderHoc from "../../utils/hocs/loader";
-import styles from "./styles.css";
-import { ICampaign } from "../../interfaces";
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import RichText from '../../components/richText';
+import * as campaignsAction from '../../actions/campaigns';
+import * as commonActions from '../../actions/common';
+import { ROUTES } from '../../constants';
+import Page from '../../components/page';
+import { Card, CardHeader, CardBody } from '../../components/card';
+import { Button, KIND } from '../../components/button';
+import { InputWithLabel } from '../../components/forms';
+import Label from '../../components/label';
+import loaderHoc from '../../utils/hocs/loader';
+import * as styles from './styles.css';
+import { ICampaign } from '../../interfaces';
 
-// CampaignEditPage.propTypes = {
-//   saveCampaign: PropTypes.func.isRequired,
-//   redirect: PropTypes.func.isRequired,
-//   resetCampaign: PropTypes.func.isRequired,
-//   getCampaign: PropTypes.func.isRequired,
-//   campaign: PropTypes.shape({
-//     name: PropTypes.string,
-//     description: PropTypes.string,
-//   }),
-//   match: PropTypes.shape({
-//     params: PropTypes.shape({
-//       id: PropTypes.string,
-//     }),
-//   }).isRequired,
-// };
-// CampaignEditPage.defaultProps = {
-//   campaign: null,
-// };
 interface ICampaignEditPageProps {
   saveCampaign: (campaign: ICampaign) => void;
   getCampaign: (id: string) => void;
   resetCampaign: () => void;
-  campaign: ICampaign;
+  campaign: ICampaign | null;
   redirect: (path: string) => void;
   match: {
     params: {
@@ -62,13 +45,8 @@ const CampaignEditPage: React.FC<ICampaignEditPageProps> = (props) => {
     return () => resetCampaign();
   }, []);
 
-  const [name, setName] = useState(campaign.name || "");
-  const [description, setDescription] = useState(campaign.description || "");
-
-  if (id && !campaign) {
-    // TODO: Use loader
-    return null;
-  }
+  const [name, setName] = useState(campaign ? campaign.name : '');
+  const [description, setDescription] = useState(campaign ? campaign.description : '');
 
   return (
     <Page>
@@ -109,7 +87,12 @@ const CampaignEditPage: React.FC<ICampaignEditPageProps> = (props) => {
   );
 };
 
-const mapStateToProps = ({ campaigns }) => ({
+interface IState {
+  campaigns: {
+    currentCampaign: ICampaign;
+  };
+}
+const mapStateToProps = ({ campaigns }: IState) => ({
   campaign: campaigns.currentCampaign,
 });
 
@@ -126,7 +109,7 @@ export default connect(
   mapDispatchToProps,
 )(
   loaderHoc({
-    init: (props) => {
+    init: (props: ICampaignEditPageProps) => {
       const {
         getCampaign,
         resetCampaign,
@@ -142,6 +125,6 @@ export default connect(
         return () => resetCampaign();
       }, []);
     },
-    check: (props) => !props.match.params.id || !!props.campaign,
+    check: (props: ICampaignEditPageProps) => !props.match.params.id || !!props.campaign,
   })(CampaignEditPage),
 );

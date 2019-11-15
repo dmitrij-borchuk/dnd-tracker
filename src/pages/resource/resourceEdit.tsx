@@ -1,35 +1,22 @@
 import * as React from 'react';
-import {
-  useState,
-} from 'react';
+import { useState } from 'react';
 import { connect } from 'react-redux';
 import * as scenariosAction from '../../actions/scenarios';
 import * as scenesAction from '../../actions/scenes';
 import * as commonActions from '../../actions/common';
 import * as resourcesActions from '../../actions/resources';
-import {
-  Card,
-  CardHeader,
-  CardBody,
-} from '../../components/card';
+import { Card, CardHeader, CardBody } from '../../components/card';
 import Page from '../../components/page';
 import Alert, { TYPES } from '../../components/alert';
-import {
-  TextAriaWithLabel,
-  SelectWithLabel,
-  Field,
-} from '../../components/forms';
-import {
-  Button,
-  KIND,
-} from '../../components/button';
+import { TextAriaWithLabel, SelectWithLabel, Field } from '../../components/forms';
+import { Button, KIND } from '../../components/button';
 import { ROUTES } from '../../constants';
 import Loader from '../../components/loader';
 import { HTMLInputEvent } from '../../interfaces/fileEvent';
 import * as styles from './styles.css';
 
 enum FILE_TYPES {
-  IMAGE = 'IMAGE'
+  IMAGE = 'IMAGE',
 }
 const TYPES_OPTIONS = [
   {
@@ -38,43 +25,38 @@ const TYPES_OPTIONS = [
   },
 ];
 
-const validator = (config, values): Record<string, string> => {
-  const errors = {}
-  const items = Object.keys(config)
+const validator = (config: any, values: any): Record<string, string> => {
+  const errors: any = {};
+  const items = Object.keys(config);
   items.forEach((item) => {
     if (config[item].required && !values[item]) {
-      errors[item] = 'Required'
+      errors[item] = 'Required';
     }
-  })
-  return errors
-}
+  });
+  return errors;
+};
 
-const hasErrors = (errors) => Object.keys(errors).length > 0
+const hasErrors = (errors: any) => Object.keys(errors).length > 0;
 
 interface IResource {
-  name: string,
-  description: string,
-  type: FILE_TYPES,
-  file: File,
+  name: string;
+  description: string;
+  type: FILE_TYPES;
+  file: File;
 }
 interface IResourceEditPageProps {
-  redirect: (path: string) => void,
-  error: Error,
-  save: (resource: IResource) => void,
-  loading: boolean,
+  redirect: (path: string) => void;
+  error: Error;
+  save: (resource: IResource) => void;
+  loading: boolean;
 }
 
 const ResourceEditPage: React.FC<IResourceEditPageProps> = (props) => {
-  const {
-    redirect,
-    error,
-    save,
-    loading,
-  } = props;
+  const { redirect, error, save, loading } = props;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [type, setType] = useState(FILE_TYPES.IMAGE);
-  const [files, setFile] = useState<{ data: FileList | null, value: string }>();
+  const [files, setFile] = useState<{ data: FileList | null; value: string }>();
   const fieldsValidationConfig = {
     name: {
       required: true,
@@ -82,15 +64,15 @@ const ResourceEditPage: React.FC<IResourceEditPageProps> = (props) => {
     file: {
       required: type === FILE_TYPES.IMAGE,
     },
-  }
+  };
   const errors = validator(fieldsValidationConfig, {
     name,
-    file: files && files.data[0],
-  })
-  const isValid = !hasErrors(errors)
+    file: files && files.data && files.data[0],
+  });
+  const isValid = !hasErrors(errors);
 
   if (loading) {
-    return <Loader fillParent />
+    return <Loader fillParent />;
   }
   return (
     <Page>
@@ -99,19 +81,21 @@ const ResourceEditPage: React.FC<IResourceEditPageProps> = (props) => {
           <div className={styles.listHeader}>
             Resources
             <div className={styles.controls}>
-              <Button
-                onClick={() => redirect(ROUTES.RESOURCES)}
-                kind={KIND.DANGER}
-              >
+              <Button onClick={() => redirect(ROUTES.RESOURCES)} kind={KIND.DANGER}>
                 Cancel
               </Button>
               <Button
-                onClick={() => save({
-                  name,
-                  description,
-                  type,
-                  file: files.data[0],
-                })}
+                onClick={() => {
+                  const file = files && files.data && files.data[0];
+                  if (file) {
+                    save({
+                      name,
+                      description,
+                      type,
+                      file,
+                    });
+                  }
+                }}
                 disabled={!isValid}
               >
                 Save
@@ -120,24 +104,20 @@ const ResourceEditPage: React.FC<IResourceEditPageProps> = (props) => {
           </div>
         </CardHeader>
         <CardBody>
-          {error && (
-            <Alert type={TYPES.DANGER}>
-              {error.message}
-            </Alert>
-          )}
+          {error && <Alert type={TYPES.DANGER}>{error.message}</Alert>}
           <Field
             error={errors.name}
             label="Name"
             id="name"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             fullWidth
           />
           <TextAriaWithLabel
             label="Description"
             id="description"
             value={description}
-            onChange={e => setDescription(e.target.value)}
+            onChange={(e) => setDescription(e.target.value)}
             fullWidth
           />
           <SelectWithLabel
@@ -145,7 +125,7 @@ const ResourceEditPage: React.FC<IResourceEditPageProps> = (props) => {
             id="type"
             value={type}
             options={TYPES_OPTIONS}
-            onChange={e => setType(e.target.value)}
+            onChange={(e) => setType(e.target.value)}
             fullWidth
           />
 
@@ -156,10 +136,12 @@ const ResourceEditPage: React.FC<IResourceEditPageProps> = (props) => {
               label="Select file"
               id="file"
               value={files && files.value}
-              onChange={(e: HTMLInputEvent) => setFile({
-                data: e.target.files,
-                value: e.target.value,
-              })}
+              onChange={(e: HTMLInputEvent) =>
+                setFile({
+                  data: e.target.files,
+                  value: e.target.value,
+                })
+              }
               fullWidth
             />
           )}
@@ -190,7 +172,7 @@ const ResourceEditPage: React.FC<IResourceEditPageProps> = (props) => {
 //   loading: false,
 // };
 
-const mapStateToProps = ({ resources }) => ({
+const mapStateToProps = ({ resources }: any) => ({
   error: resources.error,
   loading: resources.loading,
 });
@@ -204,7 +186,4 @@ const mapDispatchToProps = {
   save: resourcesActions.saveResource,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ResourceEditPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ResourceEditPage);

@@ -43,6 +43,7 @@
     "implicit-arrow-linebreak": 0,
     "@typescript-eslint/interface-name-prefix": 0,
     "@typescript-eslint/explicit-function-return-type": 0,
+    "import/no-duplicates": 0,
     "react/jsx-curly-newline": 0
   }
 }
