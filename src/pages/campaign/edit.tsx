@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import RichText from '../../components/richText';
 import * as campaignsAction from '../../actions/campaigns';
@@ -11,9 +11,22 @@ import { Button, KIND } from '../../components/button';
 import { InputWithLabel } from '../../components/forms';
 import Label from '../../components/label';
 import loaderHoc from '../../utils/hocs/loader';
-import styles from './styles.css';
+import * as styles from './styles.css';
+import { ICampaign } from '../../interfaces';
 
-const CampaignEditPage = (props) => {
+interface ICampaignEditPageProps {
+  saveCampaign: (campaign: ICampaign) => void;
+  getCampaign: (id: string) => void;
+  resetCampaign: () => void;
+  campaign: ICampaign | null;
+  redirect: (path: string) => void;
+  match: {
+    params: {
+      id: string;
+    };
+  };
+}
+const CampaignEditPage: React.FC<ICampaignEditPageProps> = (props) => {
   const {
     saveCampaign,
     getCampaign,
@@ -21,9 +34,7 @@ const CampaignEditPage = (props) => {
     campaign,
     redirect,
     match: {
-      params: {
-        id,
-      },
+      params: { id },
     },
   } = props;
 
@@ -34,13 +45,8 @@ const CampaignEditPage = (props) => {
     return () => resetCampaign();
   }, []);
 
-  const [name, setName] = useState(campaign.name || '');
-  const [description, setDescription] = useState(campaign.description || '');
-
-  if (id && !campaign) {
-    // TODO: Use loader
-    return null;
-  }
+  const [name, setName] = useState(campaign ? campaign.name : '');
+  const [description, setDescription] = useState(campaign ? campaign.description : '');
 
   return (
     <Page>
@@ -48,18 +54,17 @@ const CampaignEditPage = (props) => {
         <CardHeader flex>
           Create campaign
           <div className={styles.controls}>
-            <Button
-              onClick={() => redirect(ROUTES.CAMPAIGNS)}
-              kind={KIND.DANGER}
-            >
+            <Button onClick={() => redirect(ROUTES.CAMPAIGNS)} kind={KIND.DANGER}>
               Cancel
             </Button>
             <Button
-              onClick={() => saveCampaign({
-                ...campaign,
-                name,
-                description,
-              })}
+              onClick={() =>
+                saveCampaign({
+                  ...campaign,
+                  name,
+                  description,
+                })
+              }
             >
               Save
             </Button>
@@ -71,40 +76,23 @@ const CampaignEditPage = (props) => {
             id="name"
             key="name"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             fullWidth
           />
           <Label>Description</Label>
-          <RichText
-            value={description}
-            onChange={setDescription}
-          />
+          <RichText value={description} onChange={setDescription} />
         </CardBody>
       </Card>
     </Page>
   );
 };
 
-CampaignEditPage.propTypes = {
-  saveCampaign: PropTypes.func.isRequired,
-  redirect: PropTypes.func.isRequired,
-  resetCampaign: PropTypes.func.isRequired,
-  getCampaign: PropTypes.func.isRequired,
-  campaign: PropTypes.shape({
-    name: PropTypes.string,
-    description: PropTypes.string,
-  }),
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string,
-    }),
-  }).isRequired,
-};
-CampaignEditPage.defaultProps = {
-  campaign: null,
-};
-
-const mapStateToProps = ({ campaigns }) => ({
+interface IState {
+  campaigns: {
+    currentCampaign: ICampaign;
+  };
+}
+const mapStateToProps = ({ campaigns }: IState) => ({
   campaign: campaigns.currentCampaign,
 });
 
@@ -119,24 +107,24 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(loaderHoc({
-  init: (props) => {
-    const {
-      getCampaign,
-      resetCampaign,
-      match: {
-        params: {
-          id,
+)(
+  loaderHoc({
+    init: (props: ICampaignEditPageProps) => {
+      const {
+        getCampaign,
+        resetCampaign,
+        match: {
+          params: { id },
         },
-      },
-    } = props;
+      } = props;
 
-    useEffect(() => {
-      if (id) {
-        getCampaign(id);
-      }
-      return () => resetCampaign();
-    }, []);
-  },
-  check: props => !props.match.params.id || !!props.campaign,
-})(CampaignEditPage));
+      useEffect(() => {
+        if (id) {
+          getCampaign(id);
+        }
+        return () => resetCampaign();
+      }, []);
+    },
+    check: (props: ICampaignEditPageProps) => !props.match.params.id || !!props.campaign,
+  })(CampaignEditPage),
+);

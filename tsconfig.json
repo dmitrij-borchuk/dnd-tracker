@@ -3,7 +3,8 @@
         "outDir": "./built",
         "allowJs": true,
         "jsx": "react",
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "strict": true
     },
     "include": [
         "./src/**/*"
