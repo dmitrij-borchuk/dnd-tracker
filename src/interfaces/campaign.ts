@@ -1,4 +1,4 @@
 export interface ICampaign {
-  name: string
-  description: string
+  name: string;
+  description: string;
 }

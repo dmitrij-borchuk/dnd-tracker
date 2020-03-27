@@ -1,28 +1,15 @@
 import * as React from 'react';
-import {
-  useState,
-} from 'react';
+import { useState } from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import * as scenariosAction from '../../actions/scenarios';
 import * as scenesAction from '../../actions/scenes';
 import * as commonActions from '../../actions/common';
 import * as resourcesActions from '../../actions/resources';
-import {
-  Card,
-  CardHeader,
-  CardBody,
-} from '../../components/card';
+import { Card, CardHeader, CardBody } from '../../components/card';
 import Page from '../../components/page';
 import Alert, { TYPES } from '../../components/alert';
-import {
-  TextAriaWithLabel,
-  SelectWithLabel,
-  Field,
-} from '../../components/forms';
-import {
-  Button,
-  KIND,
-} from '../../components/button';
+import { TextAriaWithLabel, SelectWithLabel, Field } from '../../components/forms';
+import { Button, KIND } from '../../components/button';
 import { ROUTES } from '../../constants';
 import Loader from '../../components/loader';
 import { HTMLInputEvent } from '../../interfaces/fileEvent';
@@ -31,7 +18,7 @@ import { IStore } from '../../interfaces/store';
 import { mapDispatchToActions } from '../../utils/common';
 
 enum FILE_TYPES {
-  IMAGE = 'IMAGE'
+  IMAGE = 'IMAGE',
 }
 
 interface IResource {
@@ -66,11 +53,11 @@ const validator = (config: ValidationConfig<IResource>, values: Partial<IResourc
   items.forEach((item) => {
     const itemConfig = config[item]
     if (itemConfig && itemConfig.required && !values[item]) {
-      errors[item] = 'Required'
+      errors[item] = 'Required';
     }
-  })
-  return errors
-}
+  });
+  return errors;
+};
 
 const hasErrors = (errors: Record<string, string>) => Object.keys(errors).length > 0
 
@@ -78,6 +65,18 @@ const selector = ({ resources }: IStore) => ({
   error: resources.error,
   loading: resources.loading,
 })
+interface IResource {
+  name: string;
+  description: string;
+  type: FILE_TYPES;
+  file: File;
+}
+interface IResourceEditPageProps {
+  redirect: (path: string) => void;
+  error: Error;
+  save: (resource: IResource) => void;
+  loading: boolean;
+}
 
 export const ResourceEditPage: React.FC<IResourceEditPageProps> = () => {
   const {
@@ -114,7 +113,7 @@ export const ResourceEditPage: React.FC<IResourceEditPageProps> = () => {
     file: {
       required: type === FILE_TYPES.IMAGE,
     },
-  }
+  };
   const errors = validator(fieldsValidationConfig, {
     name,
     file: files && files.data,
@@ -122,7 +121,7 @@ export const ResourceEditPage: React.FC<IResourceEditPageProps> = () => {
   const isValid = !hasErrors(errors)
 
   if (loading) {
-    return <Loader fillParent />
+    return <Loader fillParent />;
   }
   return (
     <Page>
@@ -131,10 +130,7 @@ export const ResourceEditPage: React.FC<IResourceEditPageProps> = () => {
           <div className={styles.listHeader}>
             Resources
             <div className={styles.controls}>
-              <Button
-                onClick={() => redirect(ROUTES.RESOURCES)}
-                kind={KIND.DANGER}
-              >
+              <Button onClick={() => redirect(ROUTES.RESOURCES)} kind={KIND.DANGER}>
                 Cancel
               </Button>
               <Button
@@ -147,24 +143,20 @@ export const ResourceEditPage: React.FC<IResourceEditPageProps> = () => {
           </div>
         </CardHeader>
         <CardBody>
-          {error && (
-            <Alert type={TYPES.DANGER}>
-              {error.message}
-            </Alert>
-          )}
+          {error && <Alert type={TYPES.DANGER}>{error.message}</Alert>}
           <Field
             error={errors.name}
             label="Name"
             id="name"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             fullWidth
           />
           <TextAriaWithLabel
             label="Description"
             id="description"
             value={description}
-            onChange={e => setDescription(e.target.value)}
+            onChange={(e) => setDescription(e.target.value)}
             fullWidth
           />
           <SelectWithLabel
@@ -172,7 +164,7 @@ export const ResourceEditPage: React.FC<IResourceEditPageProps> = () => {
             id="type"
             value={type}
             options={TYPES_OPTIONS}
-            onChange={e => setType(e.target.value)}
+            onChange={(e) => setType(e.target.value)}
             fullWidth
           />
 

@@ -26,9 +26,7 @@ module.exports = {
       template: './src/index.html',
     }),
     new webpack.DefinePlugin(envKeys),
-    new CopyWebpackPlugin([
-      './_redirects',
-    ]),
+    new CopyWebpackPlugin(['./_redirects']),
     // new SWPrecacheWebpackPlugin(
     //   {
     //     cacheId: 'ketchup',
