@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import * as scenariosAction from '../../actions/scenarios';
 import * as scenesAction from '../../actions/scenes';
@@ -10,18 +10,31 @@ import SanitizeHtml from '../../components/sanitizeHtml';
 import { List, ListItem } from '../../components/list';
 import Page from '../../components/page';
 import Loader from '../../components/loader';
-import {
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalControls,
-} from '../../components/modal';
+import { Modal, ModalHeader, ModalBody, ModalControls } from '../../components/modal';
 import { stopPropagation } from '../../utils';
 import { ROUTES } from '../../constants';
+import { IScenario } from '../../interfaces/scenario';
+import * as styles from './styles.css';
+import { IScene } from '../../interfaces';
 
-import styles from './styles.css';
 
-const ScenarioPage = (props) => {
+interface IScenarioPageProps {
+  getScenario: (id: string) => void,
+  getScenes: (id: string) => void,
+  resetScenario: () => void,
+  resetSceneList: () => void,
+  scenario: IScenario,
+  redirect: (url: string) => void,
+  scenes: IScene[],
+  removeScene: (id: string) => void,
+  scenesLoading: boolean,
+  match: {
+    params: {
+      id: string,
+    },
+  }
+}
+const ScenarioPage = (props: IScenarioPageProps) => {
   const {
     getScenario,
     getScenes,
@@ -33,12 +46,10 @@ const ScenarioPage = (props) => {
     removeScene,
     scenesLoading,
     match: {
-      params: {
-        id,
-      },
+      params: { id },
     },
   } = props;
-  const [deleteItem, setItemToDelete] = useState(null);
+  const [deleteItem, setItemToDelete] = useState<IScene | null>(null);
 
   useEffect(() => {
     if (id) {
@@ -61,7 +72,7 @@ const ScenarioPage = (props) => {
     <>
       <Page>
         <Card className={styles.card}>
-          <CardHeader className={styles.listHeader}>
+          <CardHeader flex>
             {scenario.name}
             <div className={styles.controls}>
               <Button onClick={() => redirect(`${ROUTES.SCENARIOS_EDIT}/${scenario.campaignId}/${id}`)}>Edit</Button>
@@ -73,16 +84,14 @@ const ScenarioPage = (props) => {
         </Card>
 
         <Card>
-          <CardHeader>
-            <div className={styles.listHeader}>
-              Scenes
-              <div className={styles.controls}>
-                <Button
-                  onClick={() => redirect(`${ROUTES.SCENES_EDIT}/${id}`)}
-                >
-                  Add
-                </Button>
-              </div>
+          <CardHeader flex>
+            Scenes
+            <div className={styles.controls}>
+              <Button
+                onClick={() => redirect(`${ROUTES.SCENES_EDIT}/${id}`)}
+              >
+                Add
+              </Button>
             </div>
           </CardHeader>
           <CardBody>
@@ -134,34 +143,43 @@ const ScenarioPage = (props) => {
   );
 };
 
-ScenarioPage.propTypes = {
-  redirect: PropTypes.func.isRequired,
-  getScenes: PropTypes.func.isRequired,
-  resetSceneList: PropTypes.func.isRequired,
-  resetScenario: PropTypes.func.isRequired,
-  removeScene: PropTypes.func.isRequired,
-  getScenario: PropTypes.func.isRequired,
-  scenesLoading: PropTypes.bool.isRequired,
-  scenario: PropTypes.shape({
-    name: PropTypes.string,
-    description: PropTypes.string,
-  }),
-  scenes: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string,
-    description: PropTypes.string,
-  })),
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string,
-    }),
-  }).isRequired,
-};
-ScenarioPage.defaultProps = {
-  scenario: null,
-  scenes: [],
-};
+// ScenarioPage.propTypes = {
+//   redirect: PropTypes.func.isRequired,
+//   getScenes: PropTypes.func.isRequired,
+//   resetSceneList: PropTypes.func.isRequired,
+//   resetScenario: PropTypes.func.isRequired,
+//   removeScene: PropTypes.func.isRequired,
+//   getScenario: PropTypes.func.isRequired,
+//   scenesLoading: PropTypes.bool.isRequired,
+//   scenario: PropTypes.shape({
+//     name: PropTypes.string,
+//     description: PropTypes.string,
+//   }),
+//   scenes: PropTypes.arrayOf(PropTypes.shape({
+//     name: PropTypes.string,
+//     description: PropTypes.string,
+//   })),
+//   match: PropTypes.shape({
+//     params: PropTypes.shape({
+//       id: PropTypes.string,
+//     }),
+//   }).isRequired,
+// };
+// ScenarioPage.defaultProps = {
+//   scenario: null,
+//   scenes: [],
+// };
 
-const mapStateToProps = ({ scenarios, scenes }) => ({
+interface IState {
+  scenarios: {
+    currentScenario: IScenario
+  }
+  scenes: {
+    list: IScene[]
+    loading: boolean
+  }
+}
+const mapStateToProps = ({ scenarios, scenes }: IState) => ({
   scenario: scenarios.currentScenario,
   scenes: scenes.list,
   scenesLoading: scenes.loading,

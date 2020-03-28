@@ -13,10 +13,10 @@ import Alert, { TYPES } from '../../components/alert';
 import Label from '../../components/label';
 import loaderHoc from '../../utils/hocs/loader';
 import * as styles from './styles.css';
-import { IScene } from '../../interfaces';
+import { IScene, IRawScene } from '../../interfaces';
 
 interface ISceneEditPageProps {
-  saveScene: (scene: IScene) => void;
+  saveScene: (scene: IScene | IRawScene) => void;
   scene: IScene | null;
   redirect: (url: string) => void;
   loading: boolean;
