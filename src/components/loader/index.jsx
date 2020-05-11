@@ -13,7 +13,7 @@ const Loader = (props) => {
   );
 };
 Loader.propTypes = {
-  fillParent: PropTypes.bool.isRequired,
+  fillParent: PropTypes.bool,
 };
 
 export default Loader;

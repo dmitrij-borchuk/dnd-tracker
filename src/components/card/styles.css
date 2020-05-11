@@ -1,6 +1,6 @@
 .cardContainer {
   border: 1px solid #c8ced3;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
 }
 
 .cardHeader {
@@ -19,5 +19,10 @@
 .headerFlex {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+.carControls {
+  display: flex;
   align-items: center;
 }

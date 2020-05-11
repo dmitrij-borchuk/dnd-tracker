@@ -1,37 +1,44 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import * as scenariosAction from '../../actions/scenarios';
-import * as scenesAction from '../../actions/scenes';
-import * as commonActions from '../../actions/common';
-import { Card, CardHeader, CardBody } from '../../components/card';
-import { Button, KIND as BTN_KIND } from '../../components/button';
-import SanitizeHtml from '../../components/sanitizeHtml';
-import { List, ListItem } from '../../components/list';
-import Page from '../../components/page';
-import Loader from '../../components/loader';
-import { Modal, ModalHeader, ModalBody, ModalControls } from '../../components/modal';
-import { stopPropagation } from '../../utils';
-import { ROUTES } from '../../constants';
-import { IScenario } from '../../interfaces/scenario';
-import * as styles from './styles.css';
-import { IScene } from '../../interfaces';
+import * as React from 'react'
+import { useEffect, useState, useCallback } from 'react'
+import { connect, useSelector, useDispatch } from 'react-redux'
+import * as scenariosAction from '../../actions/scenarios'
+import * as scenesAction from '../../actions/scenes'
+import * as commonActions from '../../actions/common'
+import * as linkedResources from '../../actions/linkedResources'
+import { Card, CardHeader, CardBody, CardControls } from '../../components/card'
+import { Button, KIND as BTN_KIND } from '../../components/button'
+import SanitizeHtml from '../../components/sanitizeHtml'
+import { List, ListItem } from '../../components/list'
+import Page from '../../components/page'
+import Loader from '../../components/loader'
+import { Modal, ModalHeader, ModalBody, ModalControls } from '../../components/modal'
+import { stopPropagation } from '../../utils'
+import { ROUTES } from '../../constants'
+import { IScenario } from '../../interfaces/scenario'
+import * as styles from './styles.css'
+import { IScene, ILinkedResource, IStore } from '../../interfaces'
+import { DropMenu } from '../../components/dropMenu/dropMenu'
+import { ResourceSelector } from '../../components/resourceSelector/ResourceSelector'
+import { IResource } from '../../interfaces/resource'
+import * as linkedResourcesActions from '../../actions/linkedResources'
+import { LinkedResourcesList } from '../../components/linkedResourcesList/LinkedResourcesList'
 
-
+const resourcesSelector = ({ resources }: IStore) => resources.list
 interface IScenarioPageProps {
-  getScenario: (id: string) => void,
-  getScenes: (id: string) => void,
-  resetScenario: () => void,
-  resetSceneList: () => void,
-  scenario: IScenario,
-  redirect: (url: string) => void,
-  scenes: IScene[],
-  removeScene: (id: string) => void,
-  scenesLoading: boolean,
+  getScenario: (id: string) => void
+  getScenes: (id: string) => void
+  resetScenario: () => void
+  resetSceneList: () => void
+  scenario: IScenario
+  redirect: (url: string) => void
+  scenes: IScene[]
+  removeScene: (id: string) => void
+  scenesLoading: boolean
+  linkResource: (data: ILinkedResource) => void
   match: {
     params: {
-      id: string,
-    },
+      id: string
+    }
   }
 }
 const ScenarioPage = (props: IScenarioPageProps) => {
@@ -45,24 +52,41 @@ const ScenarioPage = (props: IScenarioPageProps) => {
     scenes,
     removeScene,
     scenesLoading,
+    linkResource,
     match: {
       params: { id },
     },
-  } = props;
-  const [deleteItem, setItemToDelete] = useState<IScene | null>(null);
+  } = props
+  const resources = useSelector(resourcesSelector)
+  const dispatch = useDispatch()
+  const linkedKeys = Object.keys(resources)
+  const [deleteItem, setItemToDelete] = useState<IScene | null>(null)
+  const [showResourceSelector, setShowResourceSelector] = useState(false)
+  const onResourceSelect = useCallback((res: IResource) => {
+    linkResource({
+      linkedTo: id,
+      resourceId: res.id,
+    })
+    setShowResourceSelector(false)
+  }, [])
 
   useEffect(() => {
     if (id) {
-      getScenario(id);
+      getScenario(id)
     }
-    return () => resetScenario();
-  }, []);
+
+    dispatch(linkedResourcesActions.getLinkedResources(id))
+    return () => {
+      resetScenario()
+      dispatch(linkedResourcesActions.resetLinkedResourcesList())
+    }
+  }, [])
   useEffect(() => {
     if (id) {
-      getScenes(id);
+      getScenes(id)
     }
-    return () => resetSceneList();
-  }, []);
+    return () => resetSceneList()
+  }, [])
 
   if (!scenario) {
     return <Loader fillParent />
@@ -74,32 +98,29 @@ const ScenarioPage = (props: IScenarioPageProps) => {
         <Card className={styles.card}>
           <CardHeader flex>
             {scenario.name}
-            <div className={styles.controls}>
+            <CardControls>
+              <DropMenu options={[{ label: 'Resource', onClick: () => setShowResourceSelector(true) }]}>
+                <Button>Add</Button>
+              </DropMenu>
               <Button onClick={() => redirect(`${ROUTES.SCENARIOS_EDIT}/${scenario.campaignId}/${id}`)}>Edit</Button>
-            </div>
+            </CardControls>
           </CardHeader>
           <CardBody>
             <SanitizeHtml>{scenario.description}</SanitizeHtml>
           </CardBody>
         </Card>
 
-        <Card>
+        <Card className={styles.card}>
           <CardHeader flex>
             Scenes
-            <div className={styles.controls}>
-              <Button
-                onClick={() => redirect(`${ROUTES.SCENES_EDIT}/${id}`)}
-              >
-                Add
-              </Button>
-            </div>
+            <CardControls>
+              <Button onClick={() => redirect(`${ROUTES.SCENES_EDIT}/${id}`)}>Add</Button>
+            </CardControls>
           </CardHeader>
           <CardBody>
-            {scenesLoading && (
-              <Loader fillParent />
-            )}
+            {scenesLoading && <Loader fillParent />}
             <List>
-              {scenes.map(item => (
+              {scenes.map((item) => (
                 <ListItem
                   className={styles.listItem}
                   key={item.id}
@@ -107,10 +128,7 @@ const ScenarioPage = (props: IScenarioPageProps) => {
                 >
                   {item.name}
                   <span className={styles.controls}>
-                    <Button
-                      kind={BTN_KIND.DANGER}
-                      onClick={stopPropagation(() => setItemToDelete(item))}
-                    >
+                    <Button kind={BTN_KIND.DANGER} onClick={stopPropagation(() => setItemToDelete(item))}>
                       <i className="fas fa-trash-alt" />
                     </Button>
                   </span>
@@ -119,6 +137,8 @@ const ScenarioPage = (props: IScenarioPageProps) => {
             </List>
           </CardBody>
         </Card>
+
+        <LinkedResourcesList objectId={id} />
       </Page>
 
       {deleteItem && (
@@ -130,8 +150,8 @@ const ScenarioPage = (props: IScenarioPageProps) => {
             <Button
               kind={BTN_KIND.DANGER}
               onClick={() => {
-                setItemToDelete(null);
-                removeScene(deleteItem.id);
+                setItemToDelete(null)
+                removeScene(deleteItem.id)
               }}
             >
               Yes
@@ -139,9 +159,19 @@ const ScenarioPage = (props: IScenarioPageProps) => {
           </ModalControls>
         </Modal>
       )}
+      {showResourceSelector && (
+        <Modal>
+          <ModalHeader onClose={() => setShowResourceSelector(false)} withClose>
+            Add resource
+          </ModalHeader>
+          <ModalBody>
+            <ResourceSelector onSelect={onResourceSelect} />
+          </ModalBody>
+        </Modal>
+      )}
     </>
-  );
-};
+  )
+}
 
 // ScenarioPage.propTypes = {
 //   redirect: PropTypes.func.isRequired,
@@ -183,7 +213,7 @@ const mapStateToProps = ({ scenarios, scenes }: IState) => ({
   scenario: scenarios.currentScenario,
   scenes: scenes.list,
   scenesLoading: scenes.loading,
-});
+})
 
 const mapDispatchToProps = {
   getScenes: scenesAction.getScenes,
@@ -192,9 +222,7 @@ const mapDispatchToProps = {
   getScenario: scenariosAction.fetchScenario,
   resetScenario: scenariosAction.resetScenario,
   redirect: commonActions.redirect,
-};
+  linkResource: linkedResources.saveLinkedResource,
+}
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ScenarioPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ScenarioPage)

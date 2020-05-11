@@ -11,6 +11,16 @@
   box-sizing: border-box;
 }
 
+:global .root {
+  padding-top: 55px;
+}
+
+:global .center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 a {
   color: inherit;
   text-decoration: none;

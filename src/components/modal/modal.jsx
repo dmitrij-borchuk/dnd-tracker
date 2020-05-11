@@ -9,8 +9,10 @@ const Modal = (props) => {
   } = props;
   return (
     <div className={cn(styles.overlay)}>
-      <div className={cn(styles.modal)}>
-        {children}
+      <div className={cn(styles.modalScroll)}>
+        <div className={cn(styles.modal)}>
+          {children}
+        </div>
       </div>
     </div>
   );
