@@ -1,5 +1,5 @@
-import * as firebase from 'firebase';
-import getConfig from '../config/keys';
+import * as firebase from 'firebase'
+import getConfig from '../config/keys'
 
 // TODO:
 /*
@@ -23,25 +23,26 @@ import getConfig from '../config/keys';
   import 'firebase/<PACKAGE>';
 */
 
-const FirebaseConfig = getConfig();
+const FirebaseConfig = getConfig()
 
-firebase.initializeApp(FirebaseConfig);
+firebase.initializeApp(FirebaseConfig)
 
-export const storage = firebase.storage();
+export const storage = firebase.storage()
 
 // Initialize Cloud Firestore through Firebase
-export const db = firebase.firestore();
+export const db = firebase.firestore()
 
 export const signIn = () => {
-  const provider = new firebase.auth.GoogleAuthProvider();
+  const provider = new firebase.auth.GoogleAuthProvider()
 
-  return firebase.auth().signInWithPopup(provider);
-};
+  return firebase.auth().signInWithPopup(provider)
+}
 
-export const signOut = () => firebase.auth().signOut();
+export const signOut = () => firebase.auth().signOut()
 
-export const getCurrentUser = () => new Promise((res) => {
-  firebase.auth().onAuthStateChanged((user) => {
-    res(user);
-  });
-});
+export const getCurrentUser = () =>
+  new Promise((res) => {
+    firebase.auth().onAuthStateChanged((user) => {
+      res(user)
+    })
+  })

@@ -3,7 +3,8 @@
     "airbnb",
     "plugin:@typescript-eslint/recommended",
     "prettier/@typescript-eslint",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:react/recommended"
   ],
   "globals": {
     "describe": true,
@@ -20,10 +21,7 @@
     "sourceType": "module"
   },
   "rules": {
-    "function-paren-newline": [
-      "error",
-      "consistent"
-    ],
+    "function-paren-newline": ["error", "consistent"],
     "jsx-a11y/click-events-have-key-events": 0,
     "jsx-a11y/no-noninteractive-element-interactions": 0,
     "jsx-a11y/no-static-element-interactions": 0,
@@ -32,10 +30,7 @@
     "react/jsx-filename-extension": [
       1,
       {
-        "extensions": [
-          ".tsx",
-          ".jsx"
-        ]
+        "extensions": [".tsx", ".jsx"]
       }
     ],
     "react/prop-types": 0,

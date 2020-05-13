@@ -1,5 +1,8 @@
-// eslint-disable-next-line import/prefer-default-export
 export const ROUTES = {
+  HOME: '/',
+  CONTAINER_EDIT: '/edit',
+  CONTAINER_CREATE: '/create',
+
   SCENARIOS: '/scenarios',
   SCENARIOS_EDIT: '/scenarios/edit',
 
@@ -13,4 +16,4 @@ export const ROUTES = {
   RESOURCES_EDIT: '/resources/edit',
   RESOURCE_LINKING: '/resources/link',
   RESOURCE_LINKED: '/resources/linked',
-};
+}

@@ -8,6 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1;
 }
 
 .modal {
@@ -21,6 +22,8 @@
   font-size: 18px;
   color: #fff;
   padding: 16px 10px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .header.primary {
@@ -40,4 +43,22 @@
   display: flex;
   justify-content: flex-end;
   padding: 10px;
+}
+
+.modalScroll {
+  max-height: 100%;
+  overflow: auto;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .modalScroll {
+    padding: 50px;
+  }
+}
+
+.modalHeaderClose {
+  background: none;
+  border: none;
+  color: #fff;
 }

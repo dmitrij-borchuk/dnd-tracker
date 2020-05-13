@@ -1,0 +1,20 @@
+.dropMenu {
+  cursor: pointer;
+  position: relative;
+}
+
+.select {
+  background-color: #fff;
+  border: 1px solid #c8ced3;
+  border-radius: 3px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+
+.option {
+  height: 30px;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+}

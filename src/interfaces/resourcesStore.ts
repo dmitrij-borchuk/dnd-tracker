@@ -1,7 +1,8 @@
-// import { ICampaign } from './campaign'
+import { IResource } from './resource'
+import { Vocabulary } from '../types';
 
 export interface IResourcesStore {
-  // currentCampaign: ICampaign,
+  list: Vocabulary<IResource>,
   error: Error,
   loading: boolean,
 }
