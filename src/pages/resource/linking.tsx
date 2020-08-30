@@ -13,7 +13,7 @@ import { Button, KIND } from '../../components/button';
 import Loader from '../../components/loader';
 import styles from './styles.css';
 
-const ResourceEditPage = (props) => {
+const ResourceEditPage = (props: any) => {
   const {
     error,
     save,
@@ -38,7 +38,7 @@ const ResourceEditPage = (props) => {
     text: 'Select resource',
   });
   const [resourceId, setResource] = useState('');
-  const resourceKey = keys.find(key => resources[key].id === resourceId);
+  const resourceKey = keys.find(key => resources[key].id === resourceId) as string;
   const resource = resources[resourceKey];
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const ResourceEditPage = (props) => {
             Resource linking
             <div className={styles.controls}>
               <Button
-                onClick={() => redirect(`${ROUTES.SCENES}/${id}`)}
+                onClick={() => redirect(`/${id}`)}
                 kind={KIND.DANGER}
               >
                 Cancel
@@ -130,7 +130,7 @@ ResourceEditPage.defaultProps = {
   resources: {},
 };
 
-const mapStateToProps = ({ resources }) => ({
+const mapStateToProps = ({ resources }: { resources: any }) => ({
   error: resources.error,
   resources: resources.list,
   resourcesLoading: resources.loading,

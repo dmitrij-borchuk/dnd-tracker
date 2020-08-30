@@ -8,4 +8,4 @@ export const getContainers = (userId: string, parentId?: string) =>
   getList(getPath(userId), (req) => req.where('parentId', '==', parentId || 'root'))
 export const getContainer = (userId: string, id: string) => getItem(getPath(userId), id)
 export const saveContainers = (userId: string, data: IContainerToSave) => saveItem(getPath(userId), data)
-// export const removePoint = (userId, id) => removeItem(`users/${userId}/points`, id)
+export const removeContainer = (userId: string, id: string) => removeItem(getPath(userId), id)

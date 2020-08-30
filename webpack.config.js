@@ -26,7 +26,11 @@ module.exports = {
       template: './src/index.html',
     }),
     new webpack.DefinePlugin(envKeys),
-    new CopyWebpackPlugin(['./_redirects']),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: './_redirects' },
+      ],
+    }),
     // new SWPrecacheWebpackPlugin(
     //   {
     //     cacheId: 'ketchup',
@@ -73,11 +77,11 @@ module.exports = {
         },
       },
       { test: /\.(ts|tsx)?$/, use: 'awesome-typescript-loader' },
-      {
-        test: /\.js$/,
-        use: ['source-map-loader'],
-        enforce: 'pre',
-      },
+      // {
+      //   test: /\.js$/,
+      //   use: ['source-map-loader'],
+      //   enforce: 'pre',
+      // },
       {
         test: /\.(webmanifest|mp3)$/i,
         use: {

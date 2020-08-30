@@ -76,6 +76,16 @@ export const saveContainer = (data: IContainerToSave): ISaveContainerAction => (
   payload: data,
 })
 
+export const REMOVE_CONTAINER = 'REMOVE_CONTAINER'
+export interface IRemoveContainerAction {
+  type: typeof REMOVE_CONTAINER
+  payload: IContainer
+}
+export const removeContainer = (data: IContainer): IRemoveContainerAction => ({
+  type: REMOVE_CONTAINER,
+  payload: data,
+})
+
 export type ContainersAction =
   | IFetchContainersAction
   | ISetContainersErrorAction

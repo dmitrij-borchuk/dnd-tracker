@@ -72,13 +72,18 @@ function* getLinkedResourcesSaga(action) {
 
 function* getLinkedResourceSaga(action) {
   try {
+    console.log('=-= getLinkedResourceSaga', action.payload)
     const userId = yield select(getUserIdSelector);
+    console.log('=-= userId', userId)
     const linkedResource = yield call(resourcesApi.getLinkedResource, userId, action.payload);
+    console.log('=-= linkedResource', linkedResource)
     const resource = yield call(resourcesApi.getResource, userId, linkedResource.resourceId);
+    console.log('=-= resource', resource)
     resource.url = yield call(getResourceUrl, userId, resource.name);
     yield put(actions.setResources([resource]));
     yield put(linkedResourcesActions.setLinkedResources([linkedResource]));
   } catch (e) {
+    console.log('=-= e', e)
     yield put(linkedResourcesActions.getLinkedResourceFailed(e));
   }
 }
@@ -87,7 +92,7 @@ function* saveLinkedResourceSaga(action) {
   try {
     const userId = yield select(getUserIdSelector);
     yield call(resourcesApi.saveLinkedResources, userId, action.payload);
-    push(`${ROUTES.SCENES}/${action.payload.linkedTo}`);
+    push(`/${action.payload.linkedTo}`);
   } catch (e) {
     yield put(actions.saveResourceFailed(e));
   }

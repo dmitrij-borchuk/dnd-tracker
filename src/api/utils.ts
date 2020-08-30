@@ -3,7 +3,7 @@ import { IContainer } from '../interfaces/container'
 
 type FBQuery = firebase.firestore.Query<IContainer>
 type FilterFn = (reference: FBQuery) => FBQuery
-export const getList = (collection: string, filterFn: FilterFn) => {
+export const getList = (collection: string, filterFn?: FilterFn) => {
   let req: FBQuery = (db.collection(collection) as unknown) as FBQuery
 
   if (filterFn) {
@@ -12,8 +12,8 @@ export const getList = (collection: string, filterFn: FilterFn) => {
 
   return req.get().then((querySnapshot) =>
     querySnapshot.docs.map((doc) => ({
-      id: doc.id,
       ...doc.data(),
+      id: doc.id,
     })),
   )
 }

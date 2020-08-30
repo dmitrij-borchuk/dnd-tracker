@@ -53,7 +53,7 @@ export const ContainersList = (props: IContainersListProps) => {
             <List>
               {list.map((item) => (
                 <ListItem key={item.id} onClick={() => redirect(`/${item.id}`)}>
-                  {item.name}
+                  <div>{item.name}</div>
                   <Button kind={BTN_KIND.DANGER} onClick={stopPropagation(() => setItemToDelete(item))}>
                     <i className="fas fa-trash-alt" />
                   </Button>

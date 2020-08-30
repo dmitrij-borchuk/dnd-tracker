@@ -44,9 +44,9 @@ function* savePointSaga(action) {
 }
 
 function* mySaga() {
-  yield takeLatest(actions.GET_POINTS, getPointsSaga);
-  yield takeLatest(actions.SAVE_POINTS, savePointsSaga);
-  yield takeLatest(actions.SAVE_POINT, savePointSaga);
+  yield takeLatest('GET_POINTS', getPointsSaga);
+  yield takeLatest('SAVE_POINTS', savePointsSaga);
+  yield takeLatest('SAVE_POINT', savePointSaga);
 }
 
 export default mySaga;

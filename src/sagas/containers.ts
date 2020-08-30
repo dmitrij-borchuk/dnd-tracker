@@ -25,9 +25,11 @@ import {
   FETCH_CONTAINER,
   IFetchContainerAction,
   setCurrentContainer,
+  REMOVE_CONTAINER,
+  IRemoveContainerAction,
 } from '../actions/containers'
 import { IStore } from '../interfaces'
-import { getContainers, saveContainers, getContainer } from '../api/containers'
+import { getContainers, saveContainers, getContainer, removeContainer } from '../api/containers'
 
 const getUserIdSelector = (state: IStore) => state.auth.currentUser.uid
 
@@ -77,21 +79,21 @@ function* fetchContainerSaga(action: IFetchContainerAction) {
 //   }
 // }
 
-// function* removeCampaignSaga(action) {
-//   try {
-//     const userId = yield select(getUserIdSelector)
-//     yield call(removeCampaign, userId, action.payload)
-//     yield put(removeCampaignSuccess(action.payload))
-//   } catch (e) {
-//     yield put(removeCampaignFailed(e))
-//   }
-// }
+function* removeContainerSaga(action: IRemoveContainerAction) {
+  try {
+    const userId = yield select(getUserIdSelector)
+    yield call(removeContainer, userId, action.payload.id)
+    // yield put(removeCampaignSuccess(action.payload))
+  } catch (e) {
+    yield put(removeCampaignFailed(e))
+  }
+}
 
 function* containersSaga() {
   yield takeLatest(FETCH_CONTAINERS, fetchContainersSaga)
   yield takeLatest(SAVE_CONTAINER, saveContainerSaga)
   yield takeLatest(FETCH_CONTAINER, fetchContainerSaga)
-  // yield takeLatest(REMOVE_CAMPAIGN, removeCampaignSaga)
+  yield takeLatest(REMOVE_CONTAINER, removeContainerSaga)
 }
 
 export default containersSaga

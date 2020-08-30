@@ -29,13 +29,13 @@ interface IContainerEditPageProps {
 export const ContainerEdit: React.FC<IContainerEditPageProps> = (props) => {
   const { isCreate = false } = props
   // 'id' is a parent id if 'isCreate === true'
-  const { id } = useParams()
+  const { id } = useParams<{ id: string }>()
   const { container, redirect } = useSelector(selector)
   const dispatch = useDispatch()
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const onCancel = React.useCallback(() => {
-    dispatch(redirect(`${ROUTES.HOME}${id}`))
+    dispatch(redirect(`${ROUTES.HOME}${id || ''}`))
   }, [id])
   const onSave = React.useCallback(() => {
     dispatch(
@@ -43,7 +43,7 @@ export const ContainerEdit: React.FC<IContainerEditPageProps> = (props) => {
         ...container,
         name,
         description,
-        parentId: isCreate ? 'root' : id,
+        parentId: id || 'root',
       }),
     )
   }, [container, name, description, isCreate])
@@ -60,6 +60,9 @@ export const ContainerEdit: React.FC<IContainerEditPageProps> = (props) => {
     if (container) {
       setName(container.name)
       setDescription(container.description)
+    } else {
+      setName('')
+      setDescription('')
     }
   }, [container])
 

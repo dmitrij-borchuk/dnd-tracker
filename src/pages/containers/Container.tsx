@@ -21,13 +21,18 @@ import { mapDispatchToActions } from '../../utils/common'
 import { useParams } from 'react-router-dom'
 import { IContainer } from '../../interfaces/container'
 import { fetchContainer, resetContainersStore, fetchContainers } from '../../actions/containers'
+import * as linkedResourcesActions from '../../actions/linkedResources'
+import { IResource } from '../../interfaces/resource'
+import { ILinkedResource } from '../../interfaces'
 
-const selector = ({ containers }: IStore) => ({
+const selector = ({ containers, resources, linkedResources }: IStore) => ({
   error: containers.error,
   list: containers.list,
   listLoading: containers.listLoading,
   container: containers.current,
   redirect: commonActions.redirect,
+  resources: resources.list,
+  linkedResources: linkedResources.list,
 })
 
 interface IContainerProps {
@@ -38,38 +43,42 @@ interface IContainerProps {
   }
 }
 export const Container: React.FC<IContainerProps> = (props) => {
-  const { error, listLoading, list, container } = useSelector(selector)
+  const { error, listLoading, list, container, resources, linkedResources } = useSelector(selector)
+  const linkedResourcesList = Object.values(linkedResources)
   const dispatch = useDispatch()
-  const { id } = useParams()
+  const { id } = useParams<{ id: string }>()
 
-  const [
-    getCampaign,
-    resetCampaign,
-    removeScenario,
-    getScenarios,
-    resetScenarioList,
-    redirect,
-  ] = mapDispatchToActions(dispatch, [
-    campaignsAction.fetchCampaign,
-    campaignsAction.resetCampaign,
-    scenariosAction.removeScenario,
-    scenariosAction.getScenarios,
-    scenariosAction.resetScenarioList,
-    commonActions.redirect,
-  ])
+  const [removeScenario] = mapDispatchToActions(dispatch, [scenariosAction.removeScenario])
   const [deleteItem, setItemToDelete] = useState<IContainer | null>(null)
+  const [deleteResource, setResourceToDelete] = useState<ILinkedResource | null>(null)
   const onEdit = React.useCallback(() => {
     dispatch(commonActions.redirect(`${ROUTES.CONTAINER_EDIT}/${id}`))
   }, [id])
   const onAddClick = React.useCallback(() => {
     dispatch(commonActions.redirect(`${ROUTES.CONTAINER_CREATE}/${id}`))
   }, [id])
+  const onItemClick = React.useCallback((item: IContainer) => {
+    dispatch(commonActions.redirect(`/${item.id}`))
+  }, [])
+  const onAddResource = React.useCallback(() => {
+    dispatch(commonActions.redirect(`${ROUTES.RESOURCE_LINKING}/${id}`))
+  }, [])
+  const onResourceClick = React.useCallback((item: ILinkedResource) => {
+    dispatch(commonActions.redirect(`${ROUTES.RESOURCE_LINKED}/${item.id}`))
+  }, [])
 
   useEffect(() => {
     dispatch(fetchContainer(id))
     dispatch(fetchContainers(id))
     return () => {
       dispatch(resetContainersStore())
+    }
+  }, [id])
+  
+  useEffect(() => {
+    dispatch(linkedResourcesActions.getLinkedResources(id))
+    return () => {
+      dispatch(linkedResourcesActions.resetLinkedResourcesList())
     }
   }, [])
 
@@ -91,6 +100,7 @@ export const Container: React.FC<IContainerProps> = (props) => {
           </CardBody>
         </Card>
 
+        {/* Pages */}
         <Card>
           <CardHeader flex>
             List
@@ -99,12 +109,34 @@ export const Container: React.FC<IContainerProps> = (props) => {
           <CardBody>
             {listLoading && <Loader fillParent />}
 
-            {/* Scenarios */}
             <List>
               {list.map((item) => (
-                <ListItem key={item.id} onClick={() => redirect(`${ROUTES.SCENARIOS}/${item.id}`)}>
+                <ListItem key={item.id} onClick={() => onItemClick(item)}>
                   {item.name}
                   <Button kind={BTN_KIND.DANGER} onClick={stopPropagation(() => setItemToDelete(item))}>
+                    <i className="fas fa-trash-alt" />
+                  </Button>
+                </ListItem>
+              ))}
+            </List>
+          </CardBody>
+        </Card>
+
+        {/* Resources */}
+        <Card>
+          <CardHeader flex>
+            Resources
+            <Button onClick={onAddResource}>Add</Button>
+          </CardHeader>
+          <CardBody>
+            {/* TODO */}
+            {/* {listLoading && <Loader fillParent />} */}
+
+            <List>
+              {linkedResourcesList.map((item) => (
+                <ListItem key={item.id} onClick={() => onResourceClick(item)}>
+                  {resources[item.resourceId].name}
+                  <Button kind={BTN_KIND.DANGER} onClick={stopPropagation(() => setResourceToDelete(item))}>
                     <i className="fas fa-trash-alt" />
                   </Button>
                 </ListItem>

@@ -7,16 +7,16 @@ import { ROUTES } from '../../constants'
 import * as scenariosActions from '../../actions/scenarios'
 import * as commonActions from '../../actions/common'
 import * as authActions from '../../actions/auth'
-import ScenarioEditPage from '../../pages/scenario/edit'
+// import ScenarioEditPage from '../../pages/scenario/edit'
 import CampaignsListPage from '../../pages/campaign/list'
 import CampaignEditPage from '../../pages/campaign/edit'
 import { CampaignPage } from '../../pages/campaign'
-import ScenarioPage from '../../pages/scenario'
+// import ScenarioPage from '../../pages/scenario'
 import ScenePage from '../../pages/scene'
 import SceneEditPage from '../../pages/scene/editScene'
 import { ResourceEditPage } from '../../pages/resource/resourceEdit'
 import ResourceLinkingPage from '../../pages/resource/linking'
-import ResourceLinkedPage from '../../pages/resource/linked'
+import { LinkedResourcePage } from '../../pages/resource/linked'
 import ResourcesPage from '../../pages/resource/list'
 import Header from '../header'
 import { Sidebar, SidebarItem } from '../sidebar'
@@ -84,12 +84,15 @@ const App = (props) => {
               <Route path={ROUTES.CONTAINER_CREATE} exact>
                 <ContainerEdit isCreate={true} />
               </Route>
+              <Route path={`${ROUTES.CONTAINER_CREATE}/:id`} exact>
+                <ContainerEdit isCreate={true} />
+              </Route>
               <Route path="/:id" component={Container} exact />
 
               {/* Scenarios */}
-              <Route path={`${ROUTES.SCENARIOS}/:id`} component={ScenarioPage} exact />
+              {/* <Route path={`${ROUTES.SCENARIOS}/:id`} component={ScenarioPage} exact />
               <Route path={`${ROUTES.SCENARIOS_EDIT}/:campaignId`} component={ScenarioEditPage} exact />
-              <Route path={`${ROUTES.SCENARIOS_EDIT}/:campaignId/:id`} component={ScenarioEditPage} />
+              <Route path={`${ROUTES.SCENARIOS_EDIT}/:campaignId/:id`} component={ScenarioEditPage} /> */}
 
               {/* Scenes */}
               <Route path={`${ROUTES.SCENES}/:id`} component={ScenePage} exact />
@@ -107,7 +110,7 @@ const App = (props) => {
               <Route path={`${ROUTES.RESOURCES_EDIT}`} component={ResourceEditPage} exact />
               <Route path={`${ROUTES.RESOURCES_EDIT}/:id`} component={ResourceEditPage} />
               <Route path={`${ROUTES.RESOURCE_LINKING}/:id`} component={ResourceLinkingPage} />
-              <Route path={`${ROUTES.RESOURCE_LINKED}/:id`} component={ResourceLinkedPage} />
+              <Route path={`${ROUTES.RESOURCE_LINKED}/:id`} component={LinkedResourcePage} />
             </Switch>
           </div>
         </div>

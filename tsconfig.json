@@ -1,14 +1,13 @@
 {
-    "compilerOptions": {
-        "outDir": "./built",
-        "allowJs": true,
-        "jsx": "react",
-        "allowSyntheticDefaultImports": true,
-        "strict": true,
-        "noImplicitAny": true,
-        "incremental": true
-    },
-    "include": [
-        "./src/**/*"
-    ],
+  "compilerOptions": {
+    "outDir": "./built",
+    "allowJs": true,
+    "jsx": "react",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "incremental": true
+  },
+  "include": ["./src/**/*"]
 }
