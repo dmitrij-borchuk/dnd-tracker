@@ -62,7 +62,7 @@ export const Container: React.FC<IContainerProps> = (props) => {
   }, [])
   const onAddResource = React.useCallback(() => {
     dispatch(commonActions.redirect(`${ROUTES.RESOURCE_LINKING}/${id}`))
-  }, [])
+  }, [id])
   const onResourceClick = React.useCallback((item: ILinkedResource) => {
     dispatch(commonActions.redirect(`${ROUTES.RESOURCE_LINKED}/${item.id}`))
   }, [])
@@ -80,7 +80,7 @@ export const Container: React.FC<IContainerProps> = (props) => {
     return () => {
       dispatch(linkedResourcesActions.resetLinkedResourcesList())
     }
-  }, [])
+  }, [id])
 
   if (!container) {
     return <Loader fillParent />
